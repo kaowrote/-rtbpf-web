@@ -1,152 +1,88 @@
-"use client";
-
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, MapPin, Users, ArrowRight, Clock, Tag } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Calendar, MapPin, Users, ArrowRight, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { prisma } from "@/lib/prisma";
 
-// ===== Mock Data =====
-const EVENT_TYPES = ["ALL", "AWARD_CEREMONY", "SEMINAR", "WORKSHOP", "SCREENING"] as const;
-type EventType = typeof EVENT_TYPES[number];
+export const revalidate = 60;
 
-const EVENT_TYPE_LABELS: Record<EventType, string> = {
+const EVENT_TYPE_LABELS: Record<string, string> = {
     ALL: "ทั้งหมด",
     AWARD_CEREMONY: "งานประกาศรางวัล",
     SEMINAR: "สัมมนา",
     WORKSHOP: "เวิร์คช็อป",
     SCREENING: "ฉายผลงาน",
+    PRESS_CONFERENCE: "งานแถลงข่าว",
+    OTHER: "อื่นๆ"
 };
 
-interface MockEvent {
-    id: string;
-    title: string;
-    excerpt: string;
-    type: Exclude<EventType, "ALL">;
-    status: "UPCOMING" | "OPEN_FOR_REGISTRATION" | "COMPLETED" | "SOLD_OUT";
-    startDate: string;
-    endDate?: string;
-    time: string;
-    venue: string;
-    location: string;
-    capacity: number;
-    registered: number;
-    imageUrl: string;
-    isFeatured?: boolean;
-}
-
-const MOCK_EVENTS: MockEvent[] = [
-    {
-        id: "evt-1",
-        title: "งานประกาศผลรางวัลนาฏราช ครั้งที่ 17",
-        excerpt: "ค่ำคืนแห่งเกียรติยศที่ยิ่งใหญ่ที่สุดของวงการวิทยุและโทรทัศน์ไทย ร่วมเป็นสักขีพยานในงานประกาศผลรางวัลนาฏราช ครั้งที่ 17 พร้อมการแสดงพิเศษจากศิลปินชั้นนำ",
-        type: "AWARD_CEREMONY",
-        status: "OPEN_FOR_REGISTRATION",
-        startDate: "15 มิถุนายน 2026",
-        time: "18:00 - 22:00 น.",
-        venue: "หอประชุมใหญ่ ศูนย์วัฒนธรรมแห่งประเทศไทย",
-        location: "กรุงเทพมหานคร",
-        capacity: 2000,
-        registered: 1456,
-        imageUrl: "https://images.unsplash.com/photo-1540575467063-178a50a2df87?q=80&w=2670&auto=format&fit=crop",
-        isFeatured: true,
-    },
-    {
-        id: "evt-2",
-        title: "สัมมนา: อนาคตของสื่อไทยในยุค AI",
-        excerpt: "เจาะลึกผลกระทบของเทคโนโลยี AI ต่อวงการสื่อสารมวลชน การปรับตัวของคนทำสื่อ และทิศทางอุตสาหกรรมในอีก 5 ปีข้างหน้า",
-        type: "SEMINAR",
-        status: "OPEN_FOR_REGISTRATION",
-        startDate: "28 มีนาคม 2026",
-        time: "09:00 - 16:00 น.",
-        venue: "โรงแรมเซ็นทารา แกรนด์ แอท เซ็นทรัลเวิลด์",
-        location: "กรุงเทพมหานคร",
-        capacity: 300,
-        registered: 187,
-        imageUrl: "https://images.unsplash.com/photo-1591115765373-5207764f72e7?q=80&w=2670&auto=format&fit=crop",
-    },
-    {
-        id: "evt-3",
-        title: "Workshop: การผลิตคอนเทนต์ข้ามแพลตฟอร์ม",
-        excerpt: "เรียนรู้เทคนิคการผลิตเนื้อหาที่ใช้ได้ทั้งโทรทัศน์ ออนไลน์ และโซเชียลมีเดีย จากผู้เชี่ยวชาญระดับประเทศ พร้อมลงมือปฏิบัติจริง",
-        type: "WORKSHOP",
-        status: "UPCOMING",
-        startDate: "10 เมษายน 2026",
-        endDate: "12 เมษายน 2026",
-        time: "10:00 - 17:00 น.",
-        venue: "สมาคมวิชาชีพฯ สำนักงานใหญ่",
-        location: "กรุงเทพมหานคร",
-        capacity: 50,
-        registered: 50,
-        imageUrl: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?q=80&w=2670&auto=format&fit=crop",
-    },
-    {
-        id: "evt-4",
-        title: "ฉายผลงาน: สารคดีไทยร่วมสมัย",
-        excerpt: "รวมสารคดีคุณภาพจากผู้กำกับรุ่นใหม่ที่ได้รับการคัดเลือกมาฉายพิเศษ พร้อมเสวนาหลังฉายร่วมกับทีมผู้สร้าง",
-        type: "SCREENING",
-        status: "OPEN_FOR_REGISTRATION",
-        startDate: "5 พฤษภาคม 2026",
-        time: "13:00 - 20:00 น.",
-        venue: "โรงภาพยนตร์ IMAX, Paragon Cineplex",
-        location: "กรุงเทพมหานคร",
-        capacity: 500,
-        registered: 342,
-        imageUrl: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2670&auto=format&fit=crop",
-    },
-    {
-        id: "evt-5",
-        title: "สัมมนาเชิงปฏิบัติการ: จริยธรรมสื่อในยุคดิจิทัล",
-        excerpt: "ร่วมถกปัญหาจริยธรรมในการทำงานสื่อ ตั้งแต่การตรวจสอบข้อมูล Deepfake ไปจนถึงความรับผิดชอบต่อสังคมของสื่อมวลชน",
-        type: "SEMINAR",
-        status: "COMPLETED",
-        startDate: "15 มกราคม 2026",
-        time: "09:00 - 15:00 น.",
-        venue: "ห้องประชุมสีดา จุฬาลงกรณ์มหาวิทยาลัย",
-        location: "กรุงเทพมหานคร",
-        capacity: 200,
-        registered: 200,
-        imageUrl: "https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=2670&auto=format&fit=crop",
-    },
-    {
-        id: "evt-6",
-        title: "Workshop: เทคนิคการถ่ายภาพยนตร์สั้น",
-        excerpt: "อบรมเชิงปฏิบัติการสำหรับผู้สนใจงานถ่ายภาพยนตร์ เรียนรู้เทคนิคเฉพาะทางจากผู้กำกับภาพมืออาชีพ",
-        type: "WORKSHOP",
-        status: "COMPLETED",
-        startDate: "20 กุมภาพันธ์ 2026",
-        time: "10:00 - 18:00 น.",
-        venue: "Studio M, Malee Tower",
-        location: "กรุงเทพมหานคร",
-        capacity: 30,
-        registered: 30,
-        imageUrl: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2670&auto=format&fit=crop",
-    },
-];
-
-const STATUS_CONFIG: Record<MockEvent["status"], { label: string; color: string }> = {
-    UPCOMING: { label: "เร็วๆ นี้", color: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20" },
-    OPEN_FOR_REGISTRATION: { label: "เปิดรับลงทะเบียน", color: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20" },
-    COMPLETED: { label: "จบแล้ว", color: "bg-gray-500/10 text-gray-500 border-gray-500/20" },
-    SOLD_OUT: { label: "เต็มแล้ว", color: "bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20" },
+const STATUS_CONFIG: Record<string, { label: string; color: string; sortOrder: number }> = {
+    UPCOMING: { label: "เร็วๆ นี้", color: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20", sortOrder: 2 },
+    OPEN_FOR_REGISTRATION: { label: "เปิดรับลงทะเบียน", color: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20", sortOrder: 1 },
+    COMPLETED: { label: "จบแล้ว", color: "bg-gray-500/10 text-gray-500 border-gray-500/20", sortOrder: 4 },
+    SOLD_OUT: { label: "เต็มแล้ว", color: "bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20", sortOrder: 3 },
 };
 
-export default function EventsPage() {
-    const [activeFilter, setActiveFilter] = useState<EventType>("ALL");
+export default async function EventsPage({ searchParams }: { searchParams: Promise<{ type?: string }> }) {
+    const params = await searchParams;
+    const filterType = params.type || "ALL";
 
-    const filteredEvents = activeFilter === "ALL"
-        ? MOCK_EVENTS
-        : MOCK_EVENTS.filter((e) => e.type === activeFilter);
+    // Fetch Events
+    const rawEvents = await prisma.event.findMany({
+        orderBy: {
+            startDate: "asc"
+        }
+    });
 
-    const featuredEvent = MOCK_EVENTS.find((e) => e.isFeatured);
-    const regularEvents = filteredEvents.filter((e) => !e.isFeatured || activeFilter !== "ALL");
+    const mappedEvents = rawEvents.map(event => {
+        const dateObj = event.startDate;
+        const formattedDate = new Intl.DateTimeFormat('th-TH', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        }).format(dateObj);
+
+        const timeString = new Intl.DateTimeFormat('en-GB', {
+            hour: '2-digit',
+            minute: '2-digit'
+        }).format(dateObj) + " น.";
+
+        return {
+            id: event.id,
+            slug: event.slug,
+            title: event.title,
+            excerpt: event.description || "รายละเอียดเพิ่มเติม...",
+            type: event.eventType,
+            status: event.status,
+            startDate: formattedDate,
+            time: timeString,
+            venue: event.location || "สมาพันธ์สมาคมวิชาชีพฯ",
+            capacity: Number(event.capacity) || 0,
+            imageUrl: event.imageUrl || "https://images.unsplash.com/photo-1540575467063-178a50a2df87?q=80&w=2670&auto=format&fit=crop",
+        };
+    }).sort((a, b) => {
+        // Sort by status
+        const aOrder = STATUS_CONFIG[a.status]?.sortOrder || 99;
+        const bOrder = STATUS_CONFIG[b.status]?.sortOrder || 99;
+        return aOrder - bOrder;
+    });
+
+    const filteredEvents = filterType === "ALL"
+        ? mappedEvents
+        : mappedEvents.filter((e) => e.type === filterType);
+
+    const featuredEvent = filteredEvents.length > 0 ? filteredEvents[0] : null;
+    const regularEvents = filteredEvents.length > 1 ? filteredEvents.slice(1) : [];
+
+    const types = ["ALL", "AWARD_CEREMONY", "SEMINAR", "WORKSHOP"];
 
     return (
         <div className="flex flex-col min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
 
             {/* ===== HERO: Featured Event ===== */}
-            {featuredEvent && activeFilter === "ALL" && (
+            {featuredEvent && filterType === "ALL" && (
                 <section className="relative w-full h-[60vh] md:h-[75vh] flex items-end overflow-hidden">
                     <Image
                         src={featuredEvent.imageUrl}
@@ -160,20 +96,21 @@ export default function EventsPage() {
                     <div className="container relative z-10 px-6 mx-auto pb-12 md:pb-20">
                         <div className="max-w-3xl">
                             <div className="flex items-center gap-3 mb-4">
-                                <Badge className={`rounded-none px-3 py-1 font-sans text-[10px] uppercase tracking-widest border ${STATUS_CONFIG[featuredEvent.status].color}`}>
-                                    {STATUS_CONFIG[featuredEvent.status].label}
+                                <Badge className={`rounded-none px-3 py-1 font-sans text-[10px] uppercase tracking-widest border ${STATUS_CONFIG[featuredEvent.status]?.color || STATUS_CONFIG['UPCOMING'].color}`}>
+                                    {STATUS_CONFIG[featuredEvent.status]?.label || "ประกาศ"}
                                 </Badge>
                                 <Badge className="bg-white/20 hover:bg-white/30 text-white backdrop-blur-md border border-white/30 rounded-none px-3 py-1 font-sans text-[10px] uppercase tracking-widest">
-                                    {EVENT_TYPE_LABELS[featuredEvent.type]}
+                                    {EVENT_TYPE_LABELS[featuredEvent.type] || "กิจกรรม"}
                                 </Badge>
                             </div>
 
                             <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold font-thai text-white leading-tight mb-4">
                                 {featuredEvent.title}
                             </h1>
-                            <p className="text-white/80 font-thai text-base md:text-lg leading-relaxed mb-8 max-w-2xl line-clamp-2">
-                                {featuredEvent.excerpt}
-                            </p>
+                            <div
+                                className="text-white/80 font-thai text-base md:text-lg leading-relaxed mb-8 max-w-2xl line-clamp-2 prose prose-invert"
+                                dangerouslySetInnerHTML={{ __html: featuredEvent.excerpt }}
+                            />
 
                             <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-white/70 text-sm font-sans mb-8">
                                 <span className="flex items-center gap-2">
@@ -191,14 +128,14 @@ export default function EventsPage() {
                             </div>
 
                             <div className="flex gap-4">
-                                <Link href={`/events/${featuredEvent.id}`}>
-                                    <Button className="bg-[#C9A84C] text-black hover:bg-[#b8963d] rounded-none h-12 px-8 font-bold uppercase tracking-widest text-sm transition-all duration-300">
+                                <Link href={`/events/${featuredEvent.slug}`}>
+                                    <Button className="bg-[#C9A84C] text-black hover:bg-[#b8963d] rounded-none h-12 px-8 font-bold uppercase tracking-widest text-sm transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-xl shadow-[#C9A84C]/20 border border-[#C9A84C]">
                                         ลงทะเบียน
                                     </Button>
                                 </Link>
-                                <Link href={`/events/${featuredEvent.id}`}>
+                                <Link href={`/events/${featuredEvent.slug}`}>
                                     <Button variant="outline" className="border-white/30 text-white hover:bg-white/10 rounded-none h-12 px-8 font-bold uppercase tracking-widest text-sm bg-transparent transition-all duration-300">
-                                        รายละเอียด
+                                        ข้อมูลกิจกรรม
                                     </Button>
                                 </Link>
                             </div>
@@ -207,151 +144,116 @@ export default function EventsPage() {
                 </section>
             )}
 
-            {/* ===== FILTER TABS + EVENT LISTING ===== */}
-            <section className="w-full py-16 md:py-24 bg-gray-50 dark:bg-[#050505] transition-colors">
-                <div className="container mx-auto px-6">
-
-                    {/* Section header */}
-                    <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12 border-b border-gray-200 dark:border-zinc-800 pb-8">
-                        <div>
-                            <h2 className="text-3xl md:text-5xl font-bold font-thai text-black dark:text-white uppercase tracking-wide">
-                                กิจกรรม
-                            </h2>
-                            <p className="text-gray-500 dark:text-gray-400 font-thai mt-2 text-base">
-                                งานสัมมนา เวิร์คช็อป งานประกาศรางวัล และกิจกรรมต่างๆ ของสมาพันธ์ฯ
-                            </p>
-                        </div>
-
-                        {/* Filter tabs */}
-                        <div className="flex flex-wrap gap-2">
-                            {EVENT_TYPES.map((type) => (
-                                <button
-                                    key={type}
-                                    onClick={() => setActiveFilter(type)}
-                                    className={`px-4 py-2 text-xs font-bold uppercase tracking-widest transition-all duration-200 border ${activeFilter === type
-                                        ? "bg-black dark:bg-white text-white dark:text-black border-black dark:border-white"
-                                        : "bg-transparent text-gray-600 dark:text-gray-400 border-gray-300 dark:border-zinc-700 hover:border-black dark:hover:border-white hover:text-black dark:hover:text-white"
-                                        }`}
-                                >
-                                    {EVENT_TYPE_LABELS[type]}
-                                </button>
-                            ))}
-                        </div>
+            {/* ===== HEADER LINE IF NO HERO ===== */}
+            {(!featuredEvent || filterType !== "ALL") && (
+                <section className="w-full bg-gray-50 dark:bg-[#050505] py-16 md:py-24 border-b border-gray-200 dark:border-white/10">
+                    <div className="container px-6 mx-auto text-center">
+                        <h1 className="text-4xl md:text-6xl font-bold font-thai text-black dark:text-white uppercase tracking-wider mb-4">
+                            Events <span className="text-[#C9A84C]">&</span> Activities
+                        </h1>
+                        <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 font-thai max-w-2xl mx-auto">
+                            กิจกรรม งานประกาศรางวัล และการสัมมนาจากสมาพันธ์และภาคีเครือข่าย
+                        </p>
                     </div>
+                </section>
+            )}
 
-                    {/* Events Grid */}
-                    <div className="grid grid-cols-1 gap-y-12">
-                        {(activeFilter === "ALL" ? regularEvents.filter(e => !e.isFeatured) : regularEvents).map((event) => (
-                            <Link
-                                key={event.id}
-                                href={`/events/${event.id}`}
-                                className={`group flex flex-col md:flex-row gap-6 md:gap-10 border-b border-gray-200 dark:border-white/10 pb-12 ${event.status === "COMPLETED" ? "opacity-60 hover:opacity-100" : ""
-                                    } transition-opacity`}
-                            >
-                                {/* Image Left */}
-                                <div className="relative w-full md:w-5/12 lg:w-1/3 aspect-[16/10] md:aspect-[4/3] overflow-hidden bg-gray-100 dark:bg-zinc-900 shrink-0">
-                                    <Image
-                                        src={event.imageUrl}
-                                        alt={event.title}
-                                        fill
-                                        className="object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out"
-                                    />
-                                    <div className={`absolute top-4 left-4 px-3 py-1 text-[10px] uppercase font-bold tracking-widest font-sans border ${STATUS_CONFIG[event.status].color}`}>
-                                        {STATUS_CONFIG[event.status].label}
-                                    </div>
-                                </div>
-
-                                {/* Content Right */}
-                                <div className="flex flex-col flex-1 py-2 justify-center">
-                                    {/* Type badge */}
-                                    <div className="flex items-center gap-3 mb-3">
-                                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#C9A84C] font-sans flex items-center gap-1.5">
-                                            <Tag className="w-3 h-3" />
-                                            {EVENT_TYPE_LABELS[event.type]}
-                                        </span>
-                                    </div>
-
-                                    <h3 className="text-2xl md:text-3xl font-bold font-thai text-black dark:text-white group-hover:text-[#C9A84C] transition-colors leading-snug mb-3">
-                                        {event.title}
-                                    </h3>
-                                    <p className="text-gray-600 dark:text-gray-400 font-thai text-base leading-relaxed line-clamp-2 mb-5">
-                                        {event.excerpt}
-                                    </p>
-
-                                    {/* Event meta info */}
-                                    <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-gray-500 dark:text-gray-400 font-sans mb-5">
-                                        <span className="flex items-center gap-1.5">
-                                            <Calendar className="w-3.5 h-3.5 text-[#C9A84C]" />
-                                            {event.startDate}{event.endDate && ` — ${event.endDate}`}
-                                        </span>
-                                        <span className="flex items-center gap-1.5">
-                                            <Clock className="w-3.5 h-3.5 text-[#C9A84C]" />
-                                            {event.time}
-                                        </span>
-                                        <span className="flex items-center gap-1.5">
-                                            <MapPin className="w-3.5 h-3.5 text-[#C9A84C]" />
-                                            {event.venue}
-                                        </span>
-                                    </div>
-
-                                    {/* Capacity bar */}
-                                    <div className="flex items-center gap-4">
-                                        <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
-                                            <Users className="w-3.5 h-3.5" />
-                                            <span>{event.registered}/{event.capacity} ที่นั่ง</span>
-                                        </div>
-                                        <div className="w-32 h-1.5 bg-gray-200 dark:bg-zinc-800 rounded-full overflow-hidden">
-                                            <div
-                                                className={`h-full rounded-full transition-all duration-500 ${event.registered >= event.capacity
-                                                    ? "bg-red-500"
-                                                    : event.registered >= event.capacity * 0.8
-                                                        ? "bg-amber-500"
-                                                        : "bg-[#C9A84C]"
-                                                    } ${[
-                                                        "w-0", "w-[5%]", "w-[10%]", "w-[15%]", "w-[20%]", "w-[25%]", "w-[30%]", "w-[35%]", "w-[40%]", "w-[45%]", "w-[50%]", "w-[55%]", "w-[60%]", "w-[65%]", "w-[70%]", "w-[75%]", "w-[80%]", "w-[85%]", "w-[90%]", "w-[95%]", "w-full"
-                                                    ][Math.floor(Math.min((event.registered / event.capacity) * 100, 100) / 5)] || "w-full"}`}
-                                            ></div>
-                                        </div>
-                                        {event.status !== "COMPLETED" && (
-                                            <span className="text-sm font-bold uppercase tracking-widest text-[#1B2A4A] dark:text-white group-hover:text-[#C9A84C] transition-colors flex items-center ml-auto">
-                                                ดูรายละเอียด <ArrowRight className="ml-2 w-4 h-4" />
-                                            </span>
-                                        )}
-                                    </div>
-                                </div>
+            {/* ===== FILTER ===== */}
+            <div className="sticky top-0 z-40 bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-md border-b border-gray-200 dark:border-zinc-800">
+                <div className="container mx-auto px-6 overflow-x-auto scroolbar-hide">
+                    <div className="flex space-x-6 py-4 min-w-max">
+                        {types.map((typeLabel) => (
+                            <Link key={typeLabel} href={`/events?type=${typeLabel}`}>
+                                <button
+                                    className={`relative text-xs uppercase tracking-widest font-bold pb-1 transition-colors hover:text-[#C9A84C]
+                                        ${filterType === typeLabel ? 'text-[#C9A84C]' : 'text-gray-500 dark:text-gray-400'}`}
+                                >
+                                    {EVENT_TYPE_LABELS[typeLabel] || typeLabel}
+                                    {filterType === typeLabel && (
+                                        <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#C9A84C]"></span>
+                                    )}
+                                </button>
                             </Link>
                         ))}
                     </div>
+                </div>
+            </div>
 
-                    {/* Empty state */}
-                    {(activeFilter === "ALL" ? regularEvents.filter(e => !e.isFeatured) : regularEvents).length === 0 && (
-                        <div className="text-center py-20">
-                            <p className="text-gray-400 font-thai text-lg">ยังไม่มีกิจกรรมในหมวดนี้</p>
+            {/* ===== REGULAR EVENTS GRID ===== */}
+            <section className="container mx-auto px-6 py-16 md:py-24">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {regularEvents.map((event) => (
+                        <div key={event.id} className="group relative bg-white dark:bg-black border border-gray-100 dark:border-zinc-800 shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col h-full rounded-sm overflow-hidden transform hover:-translate-y-1">
+                            {/* Card Image */}
+                            <div className="relative w-full aspect-[4/3] overflow-hidden bg-gray-100 dark:bg-zinc-900 border-b border-gray-100 dark:border-zinc-800">
+                                <Image
+                                    src={event.imageUrl}
+                                    alt={event.title}
+                                    fill
+                                    className="object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out"
+                                />
+
+                                {/* Overlays on Image */}
+                                <div className="absolute top-4 left-4 flex flex-col items-start gap-2">
+                                    <Badge className="bg-black/70 backdrop-blur-sm text-white hover:bg-black/90 uppercase tracking-widest text-[10px] px-3 py-1 rounded-sm font-bold border-none shadow-none">
+                                        {EVENT_TYPE_LABELS[event.type] || event.type}
+                                    </Badge>
+                                    <Badge className={`${STATUS_CONFIG[event.status]?.color || STATUS_CONFIG['UPCOMING'].color} backdrop-blur-sm bg-white/90 dark:bg-black/80 font-bold uppercase tracking-widest text-[10px] px-3 py-1 rounded-sm shadow-none`}>
+                                        {STATUS_CONFIG[event.status]?.label || "สถานะไม่ระบุ"}
+                                    </Badge>
+                                </div>
+                            </div>
+
+                            {/* Card Content */}
+                            <div className="flex flex-col flex-grow p-6 md:p-8 relative">
+                                {/* Title & Text */}
+                                <div className="mb-8 relative z-10 flex-grow">
+                                    <h3 className="text-2xl font-bold font-thai text-black dark:text-white leading-[1.3] mb-4 group-hover:text-[#C9A84C] transition-colors line-clamp-2">
+                                        {event.title}
+                                    </h3>
+                                    <div
+                                        className="text-gray-600 dark:text-gray-400 font-thai text-base leading-relaxed line-clamp-2 mb-6 font-light prose prose-sm dark:prose-invert max-w-none"
+                                        dangerouslySetInnerHTML={{ __html: event.excerpt }}
+                                    />
+                                </div>
+
+                                {/* Event Details Footer */}
+                                <div className="mt-auto pt-6 border-t border-gray-100 dark:border-zinc-800/50 flex flex-col gap-3 z-10">
+                                    <div className="flex items-center text-sm font-sans tracking-wide text-gray-500 font-semibold">
+                                        <Calendar className="w-4 h-4 mr-3 text-black dark:text-white" />
+                                        {event.startDate} • {event.time}
+                                    </div>
+                                    <div className="flex items-center text-sm font-thai tracking-wide text-gray-500 font-medium line-clamp-1">
+                                        <MapPin className="w-4 h-4 mr-3 text-black dark:text-white flex-shrink-0" />
+                                        <span className="truncate">{event.venue}</span>
+                                    </div>
+                                    {event.capacity > 0 && (
+                                        <div className="flex items-center justify-between text-sm font-sans font-medium mt-3">
+                                            <div className="flex items-center text-gray-500">
+                                                <Users className="w-4 h-4 mr-3 text-emerald-500" />
+                                                <span className="uppercase text-xs tracking-wider">Capacity: {event.capacity}</span>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Interactive Hover Layer */}
+                            <Link href={`/events/${event.slug}`} className="absolute inset-0 z-20" aria-label={`View details for ${event.title}`}>
+                            </Link>
                         </div>
-                    )}
+                    ))}
                 </div>
-            </section>
 
-            {/* ===== CTA SECTION ===== */}
-            <section className="w-full py-20 bg-[#1B2A4A] text-white text-center">
-                <div className="container mx-auto px-6 max-w-2xl">
-                    <h2 className="text-3xl md:text-4xl font-bold font-thai mb-4">
-                        ไม่อยากพลาดกิจกรรม?
-                    </h2>
-                    <p className="text-white/70 font-thai text-lg mb-8">
-                        ลงทะเบียนรับข่าวสารเพื่อรับการแจ้งเตือนเมื่อมีกิจกรรมใหม่เปิดรับสมัคร
-                    </p>
-                    <form className="flex flex-col sm:flex-row gap-0 justify-center w-full max-w-lg mx-auto">
-                        <input
-                            type="email"
-                            placeholder="อีเมลของคุณ"
-                            className="h-14 px-6 w-full sm:w-2/3 bg-white/10 text-white placeholder:text-white/50 focus:outline-none focus:bg-white/20 rounded-none font-sans border border-white/20 transition-colors"
-                        />
-                        <Button className="h-14 w-full sm:w-1/3 bg-[#C9A84C] text-black hover:bg-[#b8963d] rounded-none font-bold uppercase tracking-wider">
-                            แจ้งเตือน
-                        </Button>
-                    </form>
-                </div>
+                {filteredEvents.length === 0 && (
+                    <div className="py-24 text-center text-gray-500 min-h-[50vh] flex flex-col items-center justify-center">
+                        <div className="w-24 h-24 mb-6 text-gray-200 dark:text-zinc-800">
+                            <Calendar className="w-full h-full" />
+                        </div>
+                        <p className="text-xl font-thai font-semibold text-black dark:text-white mb-2">ยังไม่มีกิจกรรมในหมวดหมู่นี้</p>
+                        <p className="text-gray-500">กรุณาติดตามอัปเดตกิจกรรมใหม่ๆ ในเร็วๆ นี้</p>
+                    </div>
+                )}
             </section>
         </div>
     );

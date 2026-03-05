@@ -1,55 +1,22 @@
-"use client";
-
-import React, { use } from "react";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { ArrowLeft, Calendar, Clock, MapPin, Users, ExternalLink, Share2, Facebook, Twitter, Link2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { prisma } from "@/lib/prisma";
 
-// ===== Mock Event Detail =====
-const MOCK_EVENT = {
-    id: "evt-1",
-    title: "งานประกาศผลรางวัลนาฏราช ครั้งที่ 17",
-    excerpt: "ค่ำคืนแห่งเกียรติยศที่ยิ่งใหญ่ที่สุดของวงการวิทยุและโทรทัศน์ไทย",
-    description: `
-        <p>สมาพันธ์สมาคมวิชาชีพวิทยุกระจายเสียงและวิทยุโทรทัศน์ ขอเชิญร่วมงานประกาศผลรางวัลนาฏราช ครั้งที่ 17 ประจำปี 2026 ซึ่งจะจัดขึ้น ณ หอประชุมใหญ่ ศูนย์วัฒนธรรมแห่งประเทศไทย</p>
-        <p>งานนี้จะเป็นการรวมตัวของบุคลากรชั้นนำในวงการสื่อไทย ทั้งนักแสดง ผู้กำกับ โปรดิวเซอร์ และผู้สื่อข่าว เพื่อร่วมเฉลิมฉลองผลงานยอดเยี่ยมแห่งปี</p>
-        <h3>ไฮไลท์ของงาน</h3>
-        <ul>
-            <li>พิธีเปิดอลังการด้วยการแสดงพิเศษจากศิลปินชั้นนำ</li>
-            <li>ประกาศผลรางวัลกว่า 30 สาขา ครอบคลุมทุกประเภทรายการ</li>
-            <li>เดินพรมแดงสุดหรูหราจากเหล่าดาราและเซเลบริตี้</li>
-            <li>งานเลี้ยง After Party สำหรับผู้ได้รับเชิญ</li>
-        </ul>
-        <h3>กำหนดการ</h3>
-        <p><strong>16:00 น.</strong> — เปิดลงทะเบียน</p>
-        <p><strong>17:00 น.</strong> — เดินพรมแดง</p>
-        <p><strong>18:00 น.</strong> — พิธีเปิดงาน</p>
-        <p><strong>18:30 น.</strong> — ประกาศผลรางวัลและการแสดง</p>
-        <p><strong>22:00 น.</strong> — After Party</p>
-    `,
-    type: "AWARD_CEREMONY",
-    typeLabel: "งานประกาศรางวัล",
-    status: "OPEN_FOR_REGISTRATION" as const,
-    statusLabel: "เปิดรับลงทะเบียน",
-    startDate: "15 มิถุนายน 2026",
-    time: "18:00 - 22:00 น.",
-    venue: "หอประชุมใหญ่ ศูนย์วัฒนธรรมแห่งประเทศไทย",
-    location: "เลขที่ 14 ถนนเทียมร่วมมิตร แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพมหานคร 10310",
-    mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.5!2d100.5731!3d13.7563!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDQ1JzIyLjciTiAxMDDCsDM0JzIzLjIiRQ!5e0!3m2!1sth!2sth!4v1",
-    capacity: 2000,
-    registered: 1456,
-    registrationUrl: "https://example.com/register",
-    imageUrl: "https://images.unsplash.com/photo-1540575467063-178a50a2df87?q=80&w=2670&auto=format&fit=crop",
-    galleryImages: [
-        "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2670&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1516280440503-62f808790089?q=80&w=2670&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=2525&auto=format&fit=crop",
-    ],
-    organizer: "สมาพันธ์สมาคมวิชาชีพวิทยุกระจายเสียงและวิทยุโทรทัศน์",
-    contactEmail: "events@rtbpf.org",
-    contactPhone: "02-123-4567",
+export const revalidate = 60; // Cache duration in seconds
+
+const EVENT_TYPE_LABELS: Record<string, string> = {
+    ALL: "ทั้งหมด",
+    AWARD_CEREMONY: "งานประกาศรางวัล",
+    SEMINAR: "สัมมนา",
+    WORKSHOP: "เวิร์คช็อป",
+    SCREENING: "ฉายผลงาน",
+    PRESS_CONFERENCE: "งานแถลงข่าว",
+    OTHER: "อื่นๆ"
 };
 
 const STATUS_COLORS: Record<string, string> = {
@@ -59,12 +26,61 @@ const STATUS_COLORS: Record<string, string> = {
     SOLD_OUT: "bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20",
 };
 
-export default function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
-    const resolvedParams = use(params);
-    const id = resolvedParams.id;
-    const event = MOCK_EVENT;
+const STATUS_LABELS: Record<string, string> = {
+    UPCOMING: "เร็วๆ นี้",
+    OPEN_FOR_REGISTRATION: "เปิดรับลงทะเบียน",
+    COMPLETED: "จบแล้ว",
+    SOLD_OUT: "เต็มแล้ว",
+};
 
-    const registrationPercent = Math.min((event.registered / event.capacity) * 100, 100);
+export default async function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id: slug } = await params;
+
+    const eventData = await prisma.event.findUnique({
+        where: { slug }
+    });
+
+    if (!eventData) {
+        notFound();
+    }
+
+    const dateObj = eventData.startDate;
+    const formattedDate = new Intl.DateTimeFormat('th-TH', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    }).format(dateObj);
+
+    const timeString = new Intl.DateTimeFormat('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit'
+    }).format(dateObj) + " น.";
+
+
+    const event = {
+        title: eventData.title,
+        description: eventData.description || "รายละเอียดเพิ่มเติม...",
+        excerpt: "สมาพันธ์สมาคมวิชาชีพวิทยุกระจายเสียงและวิทยุโทรทัศน์",
+        typeLabel: EVENT_TYPE_LABELS[eventData.eventType] || eventData.eventType,
+        status: eventData.status,
+        statusLabel: STATUS_LABELS[eventData.status] || "กิจกรรม",
+        startDate: formattedDate,
+        time: timeString,
+        venue: eventData.location || "สำนักงานสมาพันธ์สมาคมวิชาชีพวิทยุกระจายเสียงและวิทยุโทรทัศน์",
+        location: eventData.location || "กรุงเทพมหานคร",
+        mapEmbedUrl: eventData.mapEmbedUrl,
+        capacity: eventData.capacity || 0,
+        registered: 0, // Not tracked in DB schema currently
+        registrationUrl: eventData.registerUrl,
+        imageUrl: eventData.imageUrl || "https://images.unsplash.com/photo-1540575467063-178a50a2df87?q=80&w=2670&auto=format&fit=crop",
+        organizer: "สมาพันธ์สมาคมวิชาชีพวิทยุกระจายเสียงและวิทยุโทรทัศน์",
+        contactEmail: "info@rtbpf.org",
+        contactPhone: "02-123-4567"
+    };
+
+    const capacity = Number(event.capacity);
+    const registered = Number(event.registered);
+    const registrationPercent = capacity > 0 ? Math.min((registered / capacity) * 100, 100) : 0;
 
     return (
         <div className="flex flex-col min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
@@ -88,7 +104,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
 
                     <div className="max-w-3xl">
                         <div className="flex items-center gap-3 mb-4">
-                            <Badge className={`rounded-none px-3 py-1 font-sans text-[10px] uppercase tracking-widest border ${STATUS_COLORS[event.status]}`}>
+                            <Badge className={`rounded-none px-3 py-1 font-sans text-[10px] uppercase tracking-widest border ${STATUS_COLORS[event.status] || STATUS_COLORS['UPCOMING']}`}>
                                 {event.statusLabel}
                             </Badge>
                             <Badge className="bg-white/20 text-white backdrop-blur-md border border-white/30 rounded-none px-3 py-1 font-sans text-[10px] uppercase tracking-widest">
@@ -114,7 +130,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
                     <div className="lg:w-2/3 order-2 lg:order-1">
 
                         {/* Quick Info Bar */}
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12 p-6 bg-gray-50 dark:bg-zinc-900/50 border border-gray-100 dark:border-zinc-800">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 p-6 bg-gray-50 dark:bg-zinc-900/50 border border-gray-100 dark:border-zinc-800">
                             <div className="flex items-start gap-3">
                                 <Calendar className="w-5 h-5 text-[#C9A84C] mt-0.5 shrink-0" />
                                 <div>
@@ -130,20 +146,16 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
                                     <p className="font-thai text-black dark:text-white font-semibold">{event.venue}</p>
                                 </div>
                             </div>
-                            <div className="flex items-start gap-3">
-                                <Users className="w-5 h-5 text-[#C9A84C] mt-0.5 shrink-0" />
-                                <div>
-                                    <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">ที่นั่ง</p>
-                                    <p className="font-thai text-black dark:text-white font-semibold">{event.registered}/{event.capacity}</p>
-                                    <div className="w-full h-1.5 bg-gray-200 dark:bg-zinc-700 rounded-full mt-2">
-                                        <div
-                                            className={`h-full rounded-full ${registrationPercent >= 100 ? "bg-red-500" : registrationPercent >= 80 ? "bg-amber-500" : "bg-[#C9A84C]"} ${[
-                                                "w-0", "w-[5%]", "w-[10%]", "w-[15%]", "w-[20%]", "w-[25%]", "w-[30%]", "w-[35%]", "w-[40%]", "w-[45%]", "w-[50%]", "w-[55%]", "w-[60%]", "w-[65%]", "w-[70%]", "w-[75%]", "w-[80%]", "w-[85%]", "w-[90%]", "w-[95%]", "w-full"
-                                            ][Math.floor(Math.min(registrationPercent, 100) / 5)] || "w-full"}`}
-                                        ></div>
+
+                            {capacity > 0 && (
+                                <div className="flex items-start gap-3 w-full lg:col-span-1 sm:col-span-2">
+                                    <Users className="w-5 h-5 text-[#C9A84C] mt-0.5 shrink-0" />
+                                    <div className="w-full">
+                                        <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">ความจุผู้เข้าร่วม</p>
+                                        <p className="font-thai text-black dark:text-white font-semibold">รับได้ {capacity} ท่าน</p>
                                     </div>
                                 </div>
-                            </div>
+                            )}
                         </div>
 
                         {/* Description */}
@@ -158,43 +170,26 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
                             />
                         </div>
 
-                        {/* Gallery */}
-                        {event.galleryImages.length > 0 && (
+                        {/* Map */}
+                        {event.mapEmbedUrl && (
                             <div className="mb-12">
-                                <h2 className="text-2xl font-bold font-thai text-black dark:text-white mb-6 uppercase tracking-wide">แกลเลอรี่</h2>
-                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                    {event.galleryImages.map((img, i) => (
-                                        <div key={i} className="relative aspect-[4/3] overflow-hidden bg-gray-100 dark:bg-zinc-900 group cursor-pointer">
-                                            <Image
-                                                src={img}
-                                                alt={`Gallery ${i + 1}`}
-                                                fill
-                                                className="object-cover group-hover:scale-110 transition-transform duration-500"
-                                            />
-                                        </div>
-                                    ))}
+                                <h2 className="text-2xl font-bold font-thai text-black dark:text-white mb-6 uppercase tracking-wide">แผนที่</h2>
+                                <div className="w-full aspect-[16/9] bg-gray-100 dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 overflow-hidden">
+                                    <iframe
+                                        src={event.mapEmbedUrl}
+                                        className="w-full h-full border-0"
+                                        allowFullScreen
+                                        loading="lazy"
+                                        referrerPolicy="no-referrer-when-downgrade"
+                                        title="Event Location Map"
+                                    ></iframe>
                                 </div>
+                                <p className="mt-3 text-sm text-gray-500 dark:text-gray-400 font-thai flex items-center gap-2">
+                                    <MapPin className="w-3.5 h-3.5" />
+                                    {event.location}
+                                </p>
                             </div>
                         )}
-
-                        {/* Map */}
-                        <div className="mb-12">
-                            <h2 className="text-2xl font-bold font-thai text-black dark:text-white mb-6 uppercase tracking-wide">แผนที่</h2>
-                            <div className="w-full aspect-[16/9] bg-gray-100 dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 overflow-hidden">
-                                <iframe
-                                    src={event.mapEmbedUrl}
-                                    className="w-full h-full border-0"
-                                    allowFullScreen
-                                    loading="lazy"
-                                    referrerPolicy="no-referrer-when-downgrade"
-                                    title="Event Location Map"
-                                ></iframe>
-                            </div>
-                            <p className="mt-3 text-sm text-gray-500 dark:text-gray-400 font-thai flex items-center gap-2">
-                                <MapPin className="w-3.5 h-3.5" />
-                                {event.location}
-                            </p>
-                        </div>
                     </div>
 
                     {/* Right: Sidebar */}
@@ -202,21 +197,22 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
                         <div className="sticky top-28 space-y-6">
 
                             {/* Registration Card */}
-                            <div className="bg-gray-50 dark:bg-zinc-900/50 border border-gray-100 dark:border-zinc-800 p-8">
-                                <h3 className="text-lg font-bold font-thai text-black dark:text-white mb-2">ลงทะเบียนเข้าร่วมงาน</h3>
-                                <p className="text-sm text-gray-500 dark:text-gray-400 font-thai mb-6">
-                                    ยังเหลือที่นั่งอีก {event.capacity - event.registered} ที่
-                                </p>
+                            {event.status === "OPEN_FOR_REGISTRATION" && event.registrationUrl && (
+                                <div className="bg-gray-50 dark:bg-zinc-900/50 border border-gray-100 dark:border-zinc-800 p-8">
+                                    <h3 className="text-lg font-bold font-thai text-black dark:text-white mb-2">ลงทะเบียนเข้าร่วมงาน</h3>
+                                    {capacity > 0 && (
+                                        <p className="text-sm text-gray-500 dark:text-gray-400 font-thai mb-6">
+                                            รับจำนวนจำกัด {capacity} ที่นั่ง
+                                        </p>
+                                    )}
 
-                                <a href={event.registrationUrl} target="_blank" rel="noreferrer">
-                                    <Button className="w-full bg-[#C9A84C] text-black hover:bg-[#b8963d] rounded-none h-14 font-bold uppercase tracking-widest text-sm transition-all duration-300 mb-3">
-                                        ลงทะเบียนเลย
-                                    </Button>
-                                </a>
-                                <p className="text-center text-xs text-gray-400 font-thai">
-                                    ฟรี ไม่มีค่าใช้จ่าย
-                                </p>
-                            </div>
+                                    <a href={event.registrationUrl} target="_blank" rel="noreferrer">
+                                        <Button className="w-full bg-[#C9A84C] text-black hover:bg-[#b8963d] rounded-none h-14 font-bold uppercase tracking-widest text-sm transition-all duration-300 mb-3">
+                                            ลงทะเบียนเลย
+                                        </Button>
+                                    </a>
+                                </div>
+                            )}
 
                             {/* Organizer Info */}
                             <div className="bg-gray-50 dark:bg-zinc-900/50 border border-gray-100 dark:border-zinc-800 p-8">
