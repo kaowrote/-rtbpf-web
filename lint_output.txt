@@ -1,0 +1,166 @@
+
+> rtbpf-web@0.1.0 lint
+> eslint
+
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/actions/auth.ts
+  21:16  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  55:16  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/admin/articles/create/page.tsx
+  59:25  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/admin/awards/create/page.tsx
+  86:25  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/admin/events/create/page.tsx
+  65:25  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/admin/login/page.tsx
+  5:8  warning  'Image' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/admin/settings/page.tsx
+   5:57  warning  'Upload' is defined but never used        @typescript-eslint/no-unused-vars
+  47:25  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/admin/users/[id]/page.tsx
+  16:5  warning  'UserCheck' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/admin/users/page.tsx
+   9:5  warning  'Plus' is defined but never used    @typescript-eslint/no-unused-vars
+  11:5  warning  'Filter' is defined but never used  @typescript-eslint/no-unused-vars
+  15:5  warning  'Shield' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/api/articles/[id]/route.ts
+   1:23  warning  'NextResponse' is defined but never used  @typescript-eslint/no-unused-vars
+  23:21  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  53:21  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  71:21  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/api/articles/route.ts
+   1:23  warning  'NextResponse' is defined but never used  @typescript-eslint/no-unused-vars
+  14:50  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  32:21  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  66:21  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/api/awards/categories/route.ts
+  14:44  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  20:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  47:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/api/awards/nominees/[id]/route.ts
+  20:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  52:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  67:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/api/awards/nominees/route.ts
+  19:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  50:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  84:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/api/awards/years/route.ts
+  36:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  63:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/api/categories/route.ts
+  19:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  45:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/api/events/[id]/route.ts
+   1:23  warning  'NextResponse' is defined but never used  @typescript-eslint/no-unused-vars
+  17:21  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  59:21  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  77:21  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/api/events/route.ts
+   1:23  warning  'NextResponse' is defined but never used  @typescript-eslint/no-unused-vars
+  15:50  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  16:49  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  25:21  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  67:21  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/api/settings/route.ts
+  25:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  54:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/api/upload/route.ts
+   97:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  133:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/api/users/[id]/approve/route.ts
+  33:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/api/users/[id]/route.ts
+  37:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  74:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  94:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/api/users/[id]/suspend/route.ts
+  38:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/api/users/route.ts
+   21:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   59:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  107:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/articles/[id]/page.tsx
+    6:21  warning  'Share2' is defined but never used        @typescript-eslint/no-unused-vars
+    6:77  warning  'PlayCircle' is defined but never used    @typescript-eslint/no-unused-vars
+  131:11  warning  'id' is assigned a value but never used   @typescript-eslint/no-unused-vars
+  391:56  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  391:73  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/articles/page.tsx
+  6:29  warning  'ChevronRight' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/awards/[id]/page.tsx
+   6:21  warning  'Share2' is defined but never used       @typescript-eslint/no-unused-vars
+  37:11  warning  'id' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/awards/page.tsx
+  5:8   warning  'Link' is defined but never used         @typescript-eslint/no-unused-vars
+  6:18  warning  'ChevronDown' is defined but never used  @typescript-eslint/no-unused-vars
+  6:31  warning  'Filter' is defined but never used       @typescript-eslint/no-unused-vars
+  6:39  warning  'Medal' is defined but never used        @typescript-eslint/no-unused-vars
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/events/[id]/page.tsx
+   6:31  warning  'Clock' is defined but never used         @typescript-eslint/no-unused-vars
+   6:53  warning  'ExternalLink' is defined but never used  @typescript-eslint/no-unused-vars
+   6:67  warning  'Share2' is defined but never used        @typescript-eslint/no-unused-vars
+  64:11  warning  'id' is assigned a value but never used   @typescript-eslint/no-unused-vars
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/app/page.tsx
+  4:10  warning  'siteConfig' is defined but never used       @typescript-eslint/no-unused-vars
+  7:10  warning  'Card' is defined but never used             @typescript-eslint/no-unused-vars
+  7:16  warning  'CardHeader' is defined but never used       @typescript-eslint/no-unused-vars
+  7:28  warning  'CardTitle' is defined but never used        @typescript-eslint/no-unused-vars
+  7:39  warning  'CardDescription' is defined but never used  @typescript-eslint/no-unused-vars
+  7:56  warning  'CardFooter' is defined but never used       @typescript-eslint/no-unused-vars
+  7:68  warning  'CardContent' is defined but never used      @typescript-eslint/no-unused-vars
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/components/admin/ImageUpload.tsx
+  61:27  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/components/admin/MultiImageUpload.tsx
+   5:10  warning  'Upload' is defined but never used        @typescript-eslint/no-unused-vars
+   5:30  warning  'ImageIcon' is defined but never used     @typescript-eslint/no-unused-vars
+   5:54  warning  'GripVertical' is defined but never used  @typescript-eslint/no-unused-vars
+  71:27  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/components/admin/RowActions.tsx
+  39:25  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/lib/api-response.ts
+   8:27  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  26:27  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/lib/auth-guard.ts
+   2:10  warning  'errorResponse' is defined but never used  @typescript-eslint/no-unused-vars
+  56:31  error    Unexpected any. Specify a different type   @typescript-eslint/no-explicit-any
+
+/Users/kaowrotesutapakdi/Documents/Anti Gravity/Nattaraj/rtbpf-web/src/types/next-auth.d.ts
+   1:8   warning  'NextAuth' is defined but never used  @typescript-eslint/no-unused-vars
+  21:10  warning  'JWT' is defined but never used       @typescript-eslint/no-unused-vars
+
+✖ 89 problems (52 errors, 37 warnings)
+
