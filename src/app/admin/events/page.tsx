@@ -10,6 +10,8 @@ import 'dayjs/locale/th';
 
 dayjs.locale('th');
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminEventsPage() {
     const events = await prisma.event.findMany({
         orderBy: { createdAt: 'desc' }
