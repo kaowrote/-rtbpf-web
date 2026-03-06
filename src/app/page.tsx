@@ -178,10 +178,10 @@ export default async function Home() {
                           <Calendar className="w-4 h-4 mr-2 text-accent" />
                           <span>{eventDate}</span>
                         </div>
-                        {event.venue && (
+                        {event.location && (
                           <div className="flex items-center text-gray-600 dark:text-gray-400 text-sm">
                             <MapPin className="w-4 h-4 mr-2 text-accent" />
-                            <span className="line-clamp-1">{event.venue}</span>
+                            <span className="line-clamp-1">{event.location}</span>
                           </div>
                         )}
                       </div>
