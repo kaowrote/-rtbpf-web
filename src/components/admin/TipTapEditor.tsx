@@ -9,7 +9,7 @@ import Youtube from '@tiptap/extension-youtube';
 import { TextStyle } from '@tiptap/extension-text-style';
 import { FontFamily } from '@tiptap/extension-font-family';
 import { FontSize } from './extensions/FontSize';
-import { Bold, Italic, Strikethrough, Heading1, Heading2, List, ListOrdered, Quote, Undo, Redo, Image as ImageIcon, Link as LinkIcon, Youtube as YoutubeIcon } from 'lucide-react';
+import { Bold, Italic, Strikethrough, Heading1, Heading2, List, ListOrdered, Quote, Undo, Redo, Image as ImageIcon, Link as LinkIcon, Youtube as YoutubeIcon, Loader2 } from 'lucide-react';
 
 const ToolbarButton = ({ onClick, isActive, disabled, children }: { onClick: () => void, isActive?: boolean, disabled?: boolean, children: React.ReactNode }) => (
     <button
@@ -29,6 +29,8 @@ interface TipTapEditorProps {
 
 export default function TipTapEditor({ value = "", onChange }: TipTapEditorProps) {
     const [mounted, setMounted] = React.useState(false);
+    const [isUploadingImage, setIsUploadingImage] = React.useState(false);
+    const fileInputRef = React.useRef<HTMLInputElement>(null);
 
     React.useEffect(() => {
         setMounted(true);
@@ -73,9 +75,37 @@ export default function TipTapEditor({ value = "", onChange }: TipTapEditorProps
     }
 
     const addImage = () => {
-        const url = window.prompt('URL องรูปภาพ:');
-        if (url) {
-            editor.chain().focus().setImage({ src: url }).run();
+        fileInputRef.current?.click();
+    };
+
+    const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        setIsUploadingImage(true);
+        try {
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("folder", "editor_uploads");
+
+            const res = await fetch("/api/upload", {
+                method: "POST",
+                body: formData,
+            });
+
+            const data = await res.json();
+
+            if (!res.ok || !data.success) {
+                throw new Error(data.error?.message || "อัพโหลดไม่สำเร็จ");
+            }
+
+            // Insert image into editor securely
+            editor.chain().focus().setImage({ src: data.data.url }).run();
+        } catch (error: any) {
+            alert(error.message || "เกิดข้อผิดพลาดในการอัพโหลด");
+        } finally {
+            setIsUploadingImage(false);
+            if (fileInputRef.current) fileInputRef.current.value = "";
         }
     };
 
@@ -190,9 +220,19 @@ export default function TipTapEditor({ value = "", onChange }: TipTapEditorProps
                 <ToolbarButton onClick={setLink} isActive={editor.isActive('link')}>
                     <LinkIcon className="w-4 h-4" />
                 </ToolbarButton>
-                <ToolbarButton onClick={addImage}>
-                    <ImageIcon className="w-4 h-4" />
+
+                <ToolbarButton onClick={addImage} disabled={isUploadingImage}>
+                    {isUploadingImage ? <Loader2 className="w-4 h-4 animate-spin" /> : <ImageIcon className="w-4 h-4" />}
                 </ToolbarButton>
+                {/* Hidden File Input for Image Uploads */}
+                <input
+                    type="file"
+                    ref={fileInputRef}
+                    className="hidden"
+                    accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml"
+                    onChange={handleImageUpload}
+                />
+
                 <ToolbarButton onClick={addYoutubeVideo}>
                     <YoutubeIcon className="w-4 h-4" />
                 </ToolbarButton>

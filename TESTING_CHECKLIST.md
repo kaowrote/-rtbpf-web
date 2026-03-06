@@ -44,14 +44,14 @@ This document tracks the status of the refactored Front-End and Back-End functio
 - **Users Settings:**
   - [x] User list and statuses available based on Role architecture (`/admin/users`)
 
-## 🟡 5. Security & Build Stability
+## 🟢 5. Security & Build Stability
 
 - [x] Full `npm run build` verified. Typescript mismatches (like events capacity parameters) mitigated.
-- [ ] Implement `force-dynamic` rendering for admin tables to prevent prerender caching issues (Prisma connection timeouts).
-- [ ] End-to-End Visual Testing - ensure TipTap images upload handles object storing via Cloudflare/S3 or preferred mechanism.
+- [x] Implement `force-dynamic` rendering for admin tables to prevent prerender caching issues (Prisma connection timeouts).
+- [x] End-to-End Visual Testing - ensure TipTap images upload handles object storing via Cloudflare/S3 or preferred mechanism.
 
 ## 📝 Next Suggested Actions for Production Setup
 
-1. **File Upload Verification:** Double check the API logic for the Tiptap file uploader to ensure pictures added through the editor are sent to Supabase Storage or an active CDN.
-2. **Setup Vercel (or Preferred Server):** Prepare `.env.production` Environment variables and link the remote DB explicitly.
-3. **SEO Tagging:** Add `next/head` metadata logic dynamically on the public `[slug]` pages (Articles/Events) so that Facebook/LINE share cards populate correctly.
+1. [x] **File Upload Verification:** Double check the API logic for the Tiptap file uploader to ensure pictures added through the editor are sent to Supabase Storage dynamically.
+2. [ ] **Setup Vercel (or Preferred Server):** Prepare `.env.production` Environment variables and link the remote DB explicitly using IPv4 Connection Pooler (Supavisor).
+3. [x] **SEO Tagging:** Add `next/head` metadata logic dynamically on the public `[slug]` pages (Articles/Events) so that Facebook/LINE share cards populate correctly.
