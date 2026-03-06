@@ -6,8 +6,42 @@ import { ArrowLeft, Share2, Facebook, Twitter, Link2, Calendar, ArrowRight } fro
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
+import type { Metadata } from "next";
 
 export const revalidate = 60; // Revalidate cache every 60 seconds
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+    const { id: slug } = await params;
+
+    const article = await prisma.article.findUnique({
+        where: { slug, status: "PUBLISHED" },
+        select: { title: true, excerpt: true, featuredImage: true }
+    });
+
+    if (!article) {
+        return { title: 'Article Not Found | RTBPF' };
+    }
+
+    const defaultImage = "https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=2670&auto=format&fit=crop";
+    const coverImage = article.featuredImage || defaultImage;
+
+    return {
+        title: `${article.title} | RTBPF`,
+        description: article.excerpt || "ข่าวสารและบทความจากสมาพันธ์สมาคมวิชาชีพวิทยุกระจายเสียงและวิทยุโทรทัศน์ (RTBPF)",
+        openGraph: {
+            title: article.title,
+            description: article.excerpt || "",
+            images: [coverImage],
+            type: "article",
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: article.title,
+            description: article.excerpt || "",
+            images: [coverImage],
+        }
+    };
+}
 
 export default async function ArticleDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id: slug } = await params;

@@ -5,8 +5,19 @@ import { Calendar, MapPin, Users, ArrowRight, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
+import type { Metadata } from "next";
 
 export const revalidate = 60;
+
+export const metadata: Metadata = {
+    title: "Events & Activities | RTBPF",
+    description: "รวมกิจกรรม งานประกาศรางวัล สัมมนา และการประชุมที่จัดโดยสมาพันธ์สมาคมวิชาชีพวิทยุกระจายเสียงและวิทยุโทรทัศน์",
+    openGraph: {
+        title: "Events & Activities | RTBPF",
+        description: "รวมกิจกรรม งานประกาศรางวัล สัมมนา และการประชุมที่จัดโดยสมาพันธ์สมาคมวิชาชีพวิทยุกระจายเสียงและวิทยุโทรทัศน์",
+        type: "website",
+    },
+};
 
 const EVENT_TYPE_LABELS: Record<string, string> = {
     ALL: "ทั้งหมด",

@@ -6,8 +6,45 @@ import { ArrowLeft, Calendar, Clock, MapPin, Users, ExternalLink, Share2, Facebo
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { prisma } from "@/lib/prisma";
+import type { Metadata } from "next";
 
 export const revalidate = 60; // Cache duration in seconds
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+    const { id: slug } = await params;
+
+    const event = await prisma.event.findUnique({
+        where: { slug },
+        select: { title: true, description: true, imageUrl: true }
+    });
+
+    if (!event) {
+        return { title: 'Event Not Found | RTBPF' };
+    }
+
+    // Since description is HTML, we might string-strip it or just use a generic subtitle here, but let's carefully provide a short version if needed.
+    const cleanDescription = (event.description || "").replace(/<[^>]*>?/gm, '').substring(0, 160);
+
+    const defaultImage = "https://images.unsplash.com/photo-1540575467063-178a50a2df87?q=80&w=2670&auto=format&fit=crop";
+    const coverImage = event.imageUrl || defaultImage;
+
+    return {
+        title: `${event.title} | RTBPF Events`,
+        description: cleanDescription || "วิทยุกระจายเสียงและวิทยุโทรทัศน์ (RTBPF)",
+        openGraph: {
+            title: event.title,
+            description: cleanDescription || "",
+            images: [coverImage],
+            type: "website",
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: event.title,
+            description: cleanDescription || "",
+            images: [coverImage],
+        }
+    };
+}
 
 const EVENT_TYPE_LABELS: Record<string, string> = {
     ALL: "ทั้งหมด",

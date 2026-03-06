@@ -5,8 +5,19 @@ import { ArrowRight, Clock, ChevronLeft, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
+import type { Metadata } from "next";
 
 export const revalidate = 60; // Revalidate cache every 60 seconds
+
+export const metadata: Metadata = {
+    title: "News & Articles | RTBPF",
+    description: "ติดตามทุกความเคลื่อนไหว บทความพิเศษ และข่าวสารสำคัญของวงการสื่อสารมวลชนไทย โดยสมาพันธ์สมาคมวิชาชีพวิทยุกระจายเสียงและวิทยุโทรทัศน์",
+    openGraph: {
+        title: "News & Articles | RTBPF",
+        description: "ติดตามทุกความเคลื่อนไหว บทความพิเศษ และข่าวสารสำคัญของวงการสื่อสารมวลชนไทย",
+        type: "website",
+    },
+};
 
 export default async function ArticlesPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
     const params = await searchParams;
