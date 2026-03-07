@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
 export const revalidate = 60; // Revalidate cache every 60 seconds
 
 export const metadata: Metadata = {

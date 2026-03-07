@@ -4,6 +4,7 @@ import { successResponse, errorResponse } from "@/lib/api-response";
 import { requireAdmin } from "@/lib/auth-guard";
 import bcrypt from "bcryptjs";
 
+export const dynamic = "force-dynamic";
 // GET /api/users — List all users
 export async function GET(request: NextRequest) {
     try {

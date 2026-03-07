@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { successResponse, errorResponse } from "@/lib/api-response";
 import { requireEditor } from "@/lib/auth-guard";
 
+export const dynamic = "force-dynamic";
 // GET /api/categories — List all categories (public)
 export async function GET() {
     try {

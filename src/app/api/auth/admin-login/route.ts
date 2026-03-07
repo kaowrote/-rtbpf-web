@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 
+export const dynamic = "force-dynamic";
 export async function POST(request: Request) {
     try {
         const { email, password } = await request.json();

@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { successResponse, errorResponse } from "@/lib/api-response";
 import { requireAdmin } from "@/lib/auth-guard";
 
+export const dynamic = "force-dynamic";
 // POST /api/users/[id]/approve — Approve a pending user
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {

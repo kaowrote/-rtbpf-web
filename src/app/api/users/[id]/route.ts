@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { successResponse, errorResponse } from "@/lib/api-response";
 import { requireAdmin } from "@/lib/auth-guard";
 
+export const dynamic = "force-dynamic";
 // GET /api/users/[id] — Get user detail
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {

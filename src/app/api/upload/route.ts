@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin, STORAGE_BUCKET, getPublicUrl } from "@/lib/supabase";
 import { requireEditor } from "@/lib/auth-guard";
 
+export const dynamic = "force-dynamic";
 // Max file size: 5MB
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
