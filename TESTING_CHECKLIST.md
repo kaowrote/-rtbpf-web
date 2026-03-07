@@ -53,5 +53,5 @@ This document tracks the status of the refactored Front-End and Back-End functio
 ## 📝 Next Suggested Actions for Production Setup
 
 1. [x] **File Upload Verification:** Double check the API logic for the Tiptap file uploader to ensure pictures added through the editor are sent to Supabase Storage dynamically.
-2. [ ] **Setup Vercel (or Preferred Server):** Prepare `.env.production` Environment variables and link the remote DB explicitly using IPv4 Connection Pooler (Supavisor).
+2. [x] **Setup Vercel (or Preferred Server):** Prepare `.env.production` Environment variables and link the remote DB explicitly using IPv4 Connection Pooler (Supavisor).
 3. [x] **SEO Tagging:** Add `next/head` metadata logic dynamically on the public `[slug]` pages (Articles/Events) so that Facebook/LINE share cards populate correctly.
