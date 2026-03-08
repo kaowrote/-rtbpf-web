@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import TipTapEditor from "@/components/admin/TipTapEditor";
 import ImageUpload from "@/components/admin/ImageUpload";
+import TranslationManager from "@/components/admin/TranslationManager";
 
 export default function ArticleEditPage({
     params,
@@ -206,6 +207,11 @@ export default function ArticleEditPage({
 
                 {/* Sidebar (Publish Settings) */}
                 <div className="col-span-1 space-y-6">
+                    {/* NEW: AI Translation Module */}
+                    <div className="bg-white dark:bg-[#0a0a0a] p-6 border border-gray-100 dark:border-zinc-800 shadow-sm rounded-xl">
+                        <TranslationManager entityId={id} entityType="ARTICLE" />
+                    </div>
+
                     <div className="bg-white dark:bg-[#0a0a0a] p-6 border border-gray-100 dark:border-zinc-800 shadow-sm rounded-xl space-y-6">
                         <h3 className="font-bold uppercase tracking-widest border-b border-gray-100 dark:border-zinc-800 pb-4 text-black dark:text-white">Publishing</h3>
 

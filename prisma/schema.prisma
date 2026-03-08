@@ -233,6 +233,45 @@ model SystemSetting {
   @@map("system_settings")
 }
 
+model Language {
+  id          String   @id @default(cuid())
+  code        String   @unique // th, en, ko, ja, zh, fr, de, es
+  name        String
+  nativeName  String
+  isDefault   Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("languages")
+}
+
+model Translation {
+  id             String            @id @default(cuid())
+  entityType     String            // ARTICLE, EVENT, AWARD, CATEGORY
+  entityId       String
+  languageCode   String            // en, ko, ja, zh, fr, de, es
+  title          String?           @db.Text
+  excerpt        String?           @db.Text
+  content        Json?             // Translated content (JSON or text)
+  status         TranslationStatus @default(PENDING)
+  confidenceScore Float?           @map("confidence_score")
+  createdAt      DateTime          @default(now()) @map("created_at")
+  updatedAt      DateTime          @updatedAt @map("updated_at")
+
+  @@unique([entityType, entityId, languageCode])
+  @@index([entityId])
+  @@index([languageCode])
+  @@map("translations")
+}
+
+enum TranslationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  AUTO_GENERATED
+}
+
 enum Role {
   SUPER_ADMIN
   ADMIN
@@ -280,3 +319,4 @@ enum EventStatus {
   COMPLETED
   CANCELLED
 }
+
