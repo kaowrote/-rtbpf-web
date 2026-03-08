@@ -17,6 +17,7 @@ export default function ArticleCreatePage() {
     const [publishDate, setPublishDate] = useState("");
     const [publishTime, setPublishTime] = useState("");
     const [viewCount, setViewCount] = useState(0);
+    const [tags, setTags] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
     const handleSave = async (status: "DRAFT" | "PUBLISHED") => {
@@ -46,6 +47,7 @@ export default function ArticleCreatePage() {
                     content, // Can parse blocks if needed, saving HTML string for now
                     featuredImage,
                     status,
+                    tags: tags.split(",").map(t => t.trim()).filter(Boolean),
                     scheduledAt: status === "PUBLISHED" ? null : (scheduledAt || null),
                     publishedAt: status === "PUBLISHED" ? (scheduledAt || new Date().toISOString()) : null,
                     viewCount,
@@ -160,6 +162,28 @@ export default function ArticleCreatePage() {
                                     />
                                 </div>
                                 <p className="text-[10px] text-gray-400 mt-1 font-thai">เพื่อตั้งเวลาเผยแพร่ข่าวล่วงหน้า</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="bg-white dark:bg-[#0a0a0a] p-6 border border-gray-100 dark:border-zinc-800 shadow-sm rounded-xl">
+                        <h3 className="font-bold uppercase tracking-widest border-b border-gray-100 dark:border-zinc-800 pb-4 text-black dark:text-white">Tags (แท็กข่าว)</h3>
+                        <div className="space-y-4 mt-4">
+                            <div>
+                                <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">ใส่แท็กคั่นด้วยเครื่องหมายจุลภาค (,)</label>
+                                <Input 
+                                    placeholder="เช่น รางวัลนาฏราช, ละครดี, 2024" 
+                                    value={tags}
+                                    onChange={(e) => setTags(e.target.value)}
+                                    className="border-gray-200 dark:border-zinc-800 focus-visible:ring-[#C9A84C] font-thai text-sm" 
+                                />
+                                <div className="flex flex-wrap gap-1 mt-3">
+                                    {tags.split(",").map((tag, i) => tag.trim() && (
+                                        <div key={i} className="px-2 py-1 bg-[#C9A84C]/10 text-[#C9A84C] text-[10px] font-bold rounded uppercase">
+                                            #{tag.trim()}
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>

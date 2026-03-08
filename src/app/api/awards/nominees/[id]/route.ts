@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { successResponse, errorResponse } from "@/lib/api-response";
 import { requireEditor } from "@/lib/auth-guard";
+import { logActivity } from "@/lib/logger";
 
 export const dynamic = "force-dynamic";
 // GET /api/awards/nominees/[id]
@@ -42,12 +43,16 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
                 isWinner: data.isWinner,
                 yearId: data.yearId,
                 categoryId: data.categoryId,
+                videoUrl: data.videoUrl,
+                gallery: data.gallery,
             },
             include: {
                 year: { select: { year: true } },
                 category: { select: { name: true } },
             },
         });
+
+        await logActivity("UPDATE_NOMINEE", "AWARD", id, { nomineeName: updated.nomineeName });
 
         return successResponse(updated, { message: "Nominee updated successfully" });
     } catch (error: any) {
@@ -62,7 +67,9 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
         if (!authResult.authorized) return authResult.response;
 
         const { id } = await params;
-        await prisma.awardNominee.delete({ where: { id } });
+        const deleted = await prisma.awardNominee.delete({ where: { id } });
+
+        await logActivity("DELETE_NOMINEE", "AWARD", id, { nomineeName: deleted.nomineeName });
 
         return successResponse(null, { message: "Nominee deleted successfully" });
     } catch (error: any) {

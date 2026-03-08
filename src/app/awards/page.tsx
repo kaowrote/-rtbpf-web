@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Search, ChevronDown, Filter, Medal, Award, Loader2 } from "lucide-react";
+import { Search, ChevronDown, Filter, Medal, Award, Loader2, Video, MoreHorizontal, Image as ImageIcon, ExternalLink, X, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -14,6 +14,12 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
 
 export default function AwardsDatabasePage() {
     const [searchQuery, setSearchQuery] = useState("");
@@ -24,6 +30,8 @@ export default function AwardsDatabasePage() {
     const [years, setYears] = useState<{ id: string; year: number }[]>([]);
     const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [selectedNominee, setSelectedNominee] = useState<any | null>(null);
+    const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -69,6 +77,26 @@ export default function AwardsDatabasePage() {
 
         return searchMatch && yearMatch && categoryMatch;
     });
+
+    const getEmbedUrl = (url?: string) => {
+        if (!url) return null;
+        if (url.includes('youtube.com') || url.includes('youtu.be')) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? `https://www.youtube.com/embed/${match[2]}` : null;
+        }
+        if (url.includes('vimeo.com')) {
+            const regExp = /vimeo\.com\/(\d+)/;
+            const match = url.match(regExp);
+            return match ? `https://player.vimeo.com/video/${match[1]}` : null;
+        }
+        return null;
+    };
+
+    const handleOpenDetails = (nominee: any) => {
+        setSelectedNominee(nominee);
+        setIsDetailsOpen(true);
+    };
 
     return (
         <div className="flex flex-col min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300 pb-20">
@@ -207,6 +235,20 @@ export default function AwardsDatabasePage() {
                                                 </Badge>
                                             )}
                                         </div>
+
+                                        {/* Multimedia Badges */}
+                                        <div className="absolute bottom-4 right-4 flex gap-2">
+                                            {nominee.videoUrl && (
+                                                <div className="bg-black/60 backdrop-blur-md text-white p-2 rounded-full border border-white/20">
+                                                    <Play className="w-3 h-3 fill-current" />
+                                                </div>
+                                            )}
+                                            {nominee.gallery && (nominee.gallery as any[]).length > 0 && (
+                                                <div className="bg-black/60 backdrop-blur-md text-white p-2 rounded-full border border-white/20">
+                                                    <ImageIcon className="w-3 h-3" />
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
 
                                     {/* Content Card */}
@@ -226,9 +268,19 @@ export default function AwardsDatabasePage() {
                                             </p>
                                         )}
 
-                                        <div className="mt-auto pt-6 border-t border-gray-100 dark:border-zinc-800/50">
-                                            <p className="text-sm font-bold font-thai text-black dark:text-white mb-1">{nominee.category?.name || "ไม่ระบุสาขา"}</p>
-                                            <p className="text-xs font-thai text-gray-500 uppercase">{nominee.broadcastingChannel || "ไม่ระบุสังกัด"}</p>
+                                        <div className="mt-auto pt-6 border-t border-gray-100 dark:border-zinc-800/50 flex items-center justify-between">
+                                            <div>
+                                                <p className="text-sm font-bold font-thai text-black dark:text-white mb-1 line-clamp-1">{nominee.category?.name || "ไม่ระบุสาขา"}</p>
+                                                <p className="text-xs font-thai text-gray-500 uppercase">{nominee.broadcastingChannel || "ไม่ระบุสังกัด"}</p>
+                                            </div>
+                                            <Button 
+                                                variant="ghost" 
+                                                size="icon" 
+                                                className="rounded-full hover:bg-accent hover:text-black transition-colors"
+                                                onClick={() => handleOpenDetails(nominee)}
+                                            >
+                                                <MoreHorizontal className="w-5 h-5" />
+                                            </Button>
                                         </div>
                                     </div>
 
@@ -243,16 +295,108 @@ export default function AwardsDatabasePage() {
                         </div>
                     )}
                 </div>
-
-                {/* Load More Pagination Placeholder */}
-                {filteredNominees.length >= 50 && (
-                    <div className="mt-16 text-center pt-8">
-                        <Button variant="outline" size="lg" className="border-black dark:border-white text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black font-bold uppercase tracking-widest text-sm rounded-none h-14 px-12 bg-transparent transition-all duration-300">
-                            Load More Results
-                        </Button>
-                    </div>
-                )}
             </section>
+
+            {/* 5. DETAILS MODAL */}
+            <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
+                <DialogContent className="max-w-5xl p-0 overflow-hidden bg-white dark:bg-[#0a0a0a] border-none shadow-2xl rounded-none md:rounded-xl">
+                    {selectedNominee && (
+                        <div className="flex flex-col md:flex-row h-full max-h-[90vh] overflow-y-auto md:overflow-hidden">
+                            {/* Left: Media Column */}
+                            <div className="w-full md:w-[60%] bg-black flex flex-col">
+                                <div className="relative aspect-video bg-zinc-900 group">
+                                    {getEmbedUrl(selectedNominee.videoUrl) ? (
+                                        <iframe
+                                            src={getEmbedUrl(selectedNominee.videoUrl)!}
+                                            title="Video highlight"
+                                            className="w-full h-full border-none"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                            allowFullScreen
+                                        />
+                                    ) : selectedNominee.imageUrl ? (
+                                        <Image
+                                            src={selectedNominee.imageUrl}
+                                            alt={selectedNominee.nomineeName}
+                                            fill
+                                            className="object-cover"
+                                        />
+                                    ) : (
+                                        <div className="w-full h-full flex flex-col items-center justify-center text-gray-500">
+                                            <ImageIcon className="w-12 h-12 mb-2 opacity-20" />
+                                            <p className="text-xs uppercase tracking-widest font-bold">No Preview Available</p>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Gallery Grid */}
+                                {selectedNominee.gallery && (selectedNominee.gallery as string[]).length > 0 && (
+                                    <div className="p-4 grid grid-cols-4 gap-2 overflow-y-auto">
+                                        {(selectedNominee.gallery as string[]).map((img, idx) => (
+                                            <div key={idx} className="relative aspect-square rounded-sm overflow-hidden border border-white/10 hover:border-accent transition-colors cursor-pointer ring-offset-black">
+                                                <Image src={img} alt={`Gallery ${idx}`} fill className="object-cover" />
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Right: Info Column */}
+                            <div className="w-full md:w-[40%] p-8 md:p-10 flex flex-col overflow-y-auto">
+                                <div className="mb-8">
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <Badge className="bg-accent/10 text-accent border-accent/20 rounded-none px-3 uppercase tracking-widest text-[10px] font-bold">
+                                            {selectedNominee.year?.year}
+                                        </Badge>
+                                        <Badge className="bg-zinc-100 dark:bg-zinc-800 text-gray-500 border-none rounded-none px-3 uppercase tracking-widest text-[10px] font-bold">
+                                            {selectedNominee.category?.type || "General"}
+                                        </Badge>
+                                    </div>
+
+                                    {selectedNominee.isWinner && (
+                                        <div className="flex items-center gap-2 text-accent mb-2">
+                                            <Medal className="w-5 h-5 fill-current" />
+                                            <span className="text-xs font-bold uppercase tracking-[0.3em]">Winner of Nataraja Award</span>
+                                        </div>
+                                    )}
+
+                                    <h2 className="text-3xl md:text-4xl font-bold font-thai text-black dark:text-white leading-tight mb-4">
+                                        {selectedNominee.nomineeName}
+                                    </h2>
+
+                                    {selectedNominee.workTitle && (
+                                        <div className="flex flex-col gap-1 mb-6">
+                                            <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Work Title</span>
+                                            <p className="text-lg font-thai text-black dark:text-white italic">
+                                                “{selectedNominee.workTitle}”
+                                            </p>
+                                        </div>
+                                    )}
+
+                                    <div className="space-y-6 pt-6 border-t border-gray-100 dark:border-zinc-800">
+                                        <div className="flex flex-col gap-1">
+                                            <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Category</span>
+                                            <p className="font-thai text-black dark:text-white font-bold">{selectedNominee.category?.name}</p>
+                                        </div>
+                                        <div className="flex flex-col gap-1">
+                                            <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Broadcasting Channel</span>
+                                            <p className="font-thai text-black dark:text-white">{selectedNominee.broadcastingChannel || "N/A"}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="mt-auto pt-8">
+                                    <Button 
+                                        className="w-full h-14 bg-black dark:bg-white text-white dark:text-black rounded-none uppercase tracking-[0.2em] font-bold text-xs hover:bg-accent dark:hover:bg-accent dark:hover:text-black transition-colors"
+                                        onClick={() => setIsDetailsOpen(false)}
+                                    >
+                                        Close Experience
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }

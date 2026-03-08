@@ -96,7 +96,7 @@ export function AdvancedColorPicker({ value, onChange, label, presets = [] }: Ad
                             <div className="flex items-center gap-4 bg-gray-50 dark:bg-zinc-900 p-4 rounded-xl border border-gray-100 dark:border-zinc-800">
                                 <div 
                                     className="w-12 h-12 rounded-lg shadow-inner border border-white/20 shrink-0"
-                                    style={{ backgroundColor: tempColor }}
+                                    style={{ backgroundColor: tempColor } as React.CSSProperties}
                                 />
                                 <div className="flex-1">
                                     <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">hex code</p>
@@ -138,7 +138,7 @@ export function AdvancedColorPicker({ value, onChange, label, presets = [] }: Ad
                             <HexColorPicker 
                                 color={tempColor} 
                                 onChange={setTempColor}
-                                style={{ width: '220px', height: '220px' }}
+                                className="!w-[220px] !h-[220px]"
                             />
                             <div 
                                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full border-2 border-white shadow-lg pointer-events-none"
@@ -159,7 +159,7 @@ export function AdvancedColorPicker({ value, onChange, label, presets = [] }: Ad
                                         "w-full aspect-square rounded-lg border-2 transition-all hover:scale-110 relative group",
                                         tempColor === preset ? "border-purple-500 ring-2 ring-purple-500/20" : "border-gray-100 dark:border-zinc-800 shadow-sm"
                                     )}
-                                    style={{ backgroundColor: preset }}
+                                    style={{ backgroundColor: preset } as React.CSSProperties}
                                     title={preset}
                                 >
                                     {tempColor === preset && (

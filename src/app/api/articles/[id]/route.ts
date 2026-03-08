@@ -47,6 +47,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
                 featuredImage: data.featuredImage,
                 status: data.status,
                 categoryId: data.categoryId,
+                tags: data.tags || [],
                 viewCount: data.viewCount !== undefined ? parseInt(data.viewCount) : undefined,
                 scheduledAt: data.scheduledAt ? new Date(data.scheduledAt) : (data.status === 'PUBLISHED' ? null : undefined),
                 publishedAt: data.publishedAt ? new Date(data.publishedAt) : (data.status === 'PUBLISHED' ? new Date() : undefined),

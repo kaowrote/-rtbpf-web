@@ -2,9 +2,11 @@
 
 import React, { useState, useRef, useCallback } from "react";
 import Image from "next/image";
-import { Upload, X, Loader2, ImageIcon, AlertCircle } from "lucide-react";
+import { Upload, X, Loader2, ImageIcon, AlertCircle, Library } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import imageCompression from 'browser-image-compression';
+import MediaLibrary from "./MediaLibrary";
 
 interface ImageUploadProps {
     /** Current image URL */
@@ -34,6 +36,7 @@ export default function ImageUpload({
 }: ImageUploadProps) {
     const [isUploading, setIsUploading] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
+    const [isLibraryOpen, setIsLibraryOpen] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -155,6 +158,15 @@ export default function ImageUpload({
                         </button>
                         <button
                             type="button"
+                            onClick={() => setIsLibraryOpen(true)}
+                            disabled={disabled || isUploading}
+                            className="p-2 bg-white/20 backdrop-blur-sm rounded-lg text-white hover:bg-white/30 transition-colors"
+                            title="Choose from Library"
+                        >
+                            <Library className="w-4 h-4" />
+                        </button>
+                        <button
+                            type="button"
                             title="Remove Image"
                             onClick={handleRemove}
                             disabled={disabled || isUploading}
@@ -207,11 +219,33 @@ export default function ImageUpload({
                                 <p className="text-xs text-gray-500 mt-1">
                                     JPEG, PNG, WebP, GIF — สูงสุด 5MB
                                 </p>
+                                <div className="mt-4 flex justify-center gap-2">
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={(e: React.MouseEvent) => {
+                                            e.stopPropagation();
+                                            setIsLibraryOpen(true);
+                                        }}
+                                        className="bg-zinc-800 border-zinc-600 text-xs h-9 hover:bg-zinc-700 text-white shadow-lg px-4"
+                                    >
+                                        <Library className="w-4 h-4 mr-2 text-[#C9A84C]" />
+                                        Choose from Library
+                                    </Button>
+                                </div>
                             </div>
                         </>
                     )}
                 </div>
             )}
+
+            <MediaLibrary 
+                isOpen={isLibraryOpen}
+                onClose={() => setIsLibraryOpen(false)}
+                onSelect={(url) => onChange(url)}
+                title={`Media Library: ${label || 'General'}`}
+            />
 
             {/* Error message */}
             {error && (

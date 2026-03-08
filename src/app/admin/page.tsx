@@ -1,5 +1,5 @@
 import React from "react";
-import { ArrowRight, FileText, Calendar, Users, Trophy, Activity, TrendingUp } from "lucide-react";
+import { ArrowRight, FileText, Calendar, Users, Trophy, Activity, TrendingUp, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
@@ -197,16 +197,24 @@ export default async function AdminDashboardPage() {
                                         <div>
                                             <h4 className="font-thai font-semibold text-black dark:text-white line-clamp-1 text-base">{article.title}</h4>
                                             <p className="text-sm text-gray-500 font-thai flex gap-2">
-                                                <span>{dayjs(article.createdAt).format('D MMMM YYYY')}</span> • 
+                                                <span>{dayjs(article.createdAt).format('D MMMM YYYY')}</span>
+                                                <span className="text-accent/60 font-sans font-bold">({dayjs(article.createdAt).format('HH:mm')} น.)</span> • 
                                                 <span className={article.status === 'PUBLISHED' ? 'text-green-600 dark:text-green-400' : 'text-amber-600 dark:text-amber-400'}>
                                                     {article.status}
                                                 </span>
                                             </p>
                                         </div>
                                     </div>
-                                    <Link href={`/admin/articles/edit/${article.id}`}>
-                                        <Button variant="ghost" size="sm" className="text-gray-500 hover:text-black dark:hover:text-white">Edit</Button>
-                                    </Link>
+                                    <div className="flex gap-2">
+                                        <Link href={`/articles/${article.id}`} target="_blank">
+                                            <Button variant="ghost" size="sm" className="text-[#C9A84C] hover:text-black dark:hover:text-white">
+                                                <ExternalLink className="w-4 h-4 mr-1" /> View
+                                            </Button>
+                                        </Link>
+                                        <Link href={`/admin/articles/edit/${article.id}`}>
+                                            <Button variant="ghost" size="sm" className="text-gray-500 hover:text-black dark:hover:text-white font-bold">Edit</Button>
+                                        </Link>
+                                    </div>
                                 </div>
                             ))
                         ) : (

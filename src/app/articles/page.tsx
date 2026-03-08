@@ -23,6 +23,7 @@ export const metadata: Metadata = {
 export default async function ArticlesPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
     const params = await searchParams;
     const page = parseInt(params.page || "1");
+    const tag = params.tag;
     const pageSize = 9; // Show 9 items per page (1 featured + 8 list on pg 1, 9 list on pg > 1)
     const skip = (page - 1) * pageSize;
 
@@ -30,7 +31,8 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
     const [articlesData, totalCount, defaultImageSetting] = await Promise.all([
         prisma.article.findMany({
             where: {
-                status: "PUBLISHED"
+                status: "PUBLISHED",
+                ...(tag ? { tags: { has: tag } } : {})
             },
             orderBy: {
                 publishedAt: "desc"
@@ -43,7 +45,8 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
         }),
         prisma.article.count({
             where: {
-                status: "PUBLISHED"
+                status: "PUBLISHED",
+                ...(tag ? { tags: { has: tag } } : {})
             }
         }),
         prisma.systemSetting.findUnique({
@@ -92,8 +95,13 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
                         News <span className="text-[#C9A84C]">&</span> Articles
                     </h1>
                     <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 font-thai max-w-2xl mx-auto">
-                        ติดตามทุกความเคลื่อนไหว บทความพิเศษ และข่าวสารสำคัญของวงการสื่อสารมวลชนไทย
+                        {tag ? `แสดงบทความที่มีข้อความกำกับ: #${tag}` : "ติดตามทุกความเคลื่อนไหว บทความพิเศษ และข่าวสารสำคัญของวงการสื่อสารมวลชนไทย"}
                     </p>
+                    {tag && (
+                        <Link href="/articles" className="inline-block mt-6 text-[#C9A84C] hover:underline font-sans text-sm font-bold uppercase tracking-widest">
+                            &times; Clear Filter
+                        </Link>
+                    )}
                 </div>
             </section>
 
@@ -140,7 +148,7 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
                     <>
                         <div className="flex items-center justify-between mb-8 pb-4 border-b border-gray-200 dark:border-white/10">
                             <h3 className="text-2xl font-bold font-thai text-black dark:text-white uppercase tracking-wider">
-                                {isFirstPage ? "Latest Updates" : `All News - Page ${page}`}
+                                {tag ? `Results for #${tag}` : (isFirstPage ? "Latest Updates" : `All News - Page ${page}`)}
                             </h3>
                         </div>
 
@@ -186,7 +194,7 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
                                     Page {page} of {totalPages}
                                 </div>
                                 <div className="flex flex-1 sm:flex-none justify-between gap-4">
-                                    <Link href={`/articles?page=${page - 1}`} className="w-1/2 sm:w-auto">
+                                    <Link href={`/articles?page=${page - 1}${tag ? `&tag=${encodeURIComponent(tag)}` : ""}`} className="w-1/2 sm:w-auto">
                                         <Button
                                             variant="outline"
                                             className="w-full border-black dark:border-white/20 text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black font-semibold uppercase tracking-widest text-sm rounded-none h-14 px-8 bg-transparent transition-all duration-300 disabled:opacity-50 disabled:pointer-events-none"
@@ -196,7 +204,7 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
                                             Prev
                                         </Button>
                                     </Link>
-                                    <Link href={`/articles?page=${page + 1}`} className="w-1/2 sm:w-auto">
+                                    <Link href={`/articles?page=${page + 1}${tag ? `&tag=${encodeURIComponent(tag)}` : ""}`} className="w-1/2 sm:w-auto">
                                         <Button
                                             variant="outline"
                                             className="w-full border-black dark:border-white/20 text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black font-semibold uppercase tracking-widest text-sm rounded-none h-14 px-8 bg-transparent transition-all duration-300 disabled:opacity-50 disabled:pointer-events-none"

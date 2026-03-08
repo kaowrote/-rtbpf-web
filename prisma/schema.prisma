@@ -27,6 +27,7 @@ model User {
   articlesAuthored  Article[]     @relation("ArticleAuthor")
   articlesPublished Article[]     @relation("ArticlePublisher")
   sessions          Session[]
+  media             Media[]
 
   @@map("users")
 }
@@ -113,6 +114,7 @@ model Article {
   authorId      String        @map("author_id")
   publisherId   String?       @map("publisher_id")
   categoryId    String?       @map("category_id")
+  tags          String[]      @default([])
   createdAt     DateTime      @default(now()) @map("created_at")
   updatedAt     DateTime      @updatedAt @map("updated_at")
   author        User          @relation("ArticleAuthor", fields: [authorId], references: [id])
@@ -122,6 +124,7 @@ model Article {
   @@index([slug])
   @@index([publishedAt])
   @@index([status])
+  @@index([tags])
   @@map("articles")
 }
 
@@ -158,6 +161,8 @@ model AwardNominee {
   broadcastingChannel String?
   imageUrl            String?       @map("image_url")
   isWinner            Boolean       @default(false) @map("is_winner")
+  videoUrl            String?       @map("video_url")
+  gallery             Json?         @map("gallery")
   category            AwardCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   year                AwardYear     @relation(fields: [yearId], references: [id], onDelete: Cascade)
 
@@ -194,6 +199,29 @@ model Event {
   @@index([slug])
   @@index([status])
   @@map("events")
+}
+
+model Media {
+  id           String   @id @default(cuid())
+  url          String   @unique
+  path         String   @unique
+  name         String
+  originalName String   @map("original_name")
+  type         String   // image/png, image/jpeg, etc.
+  size         Int
+  width        Int?
+  height       Int?
+  altText      String?  @map("alt_text")
+  folder       String   @default("general")
+  userId       String   @map("user_id")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([folder])
+  @@index([type])
+  @@map("media")
 }
 
 model SystemSetting {

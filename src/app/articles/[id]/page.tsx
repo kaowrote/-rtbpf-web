@@ -170,6 +170,24 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                             dangerouslySetInnerHTML={{ __html: article.content as string }}
                         />
 
+                        {/* Article Tags */}
+                        {article.tags && article.tags.length > 0 && (
+                            <div className="mt-16 pt-8 border-t border-gray-100 dark:border-zinc-800">
+                                <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500 mb-6">Related Tags</h3>
+                                <div className="flex flex-wrap gap-2">
+                                    {article.tags.map((tag) => (
+                                        <Link 
+                                            key={tag} 
+                                            href={`/articles?tag=${encodeURIComponent(tag)}`}
+                                            className="px-4 py-2 bg-gray-50 dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 text-gray-600 dark:text-gray-400 font-thai text-sm hover:border-[#C9A84C] hover:text-[#C9A84C] transition-all rounded-sm uppercase tracking-wider"
+                                        >
+                                            #{tag}
+                                        </Link>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
                         {/* Mobile share block */}
                         <div className="mt-16 pt-8 border-t border-gray-200 dark:border-white/10 lg:hidden flex items-center justify-between">
                             <span className="text-sm font-bold uppercase tracking-widest text-gray-400">Share:</span>

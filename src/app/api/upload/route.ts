@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin, STORAGE_BUCKET, getPublicUrl } from "@/lib/supabase";
 import { requireEditor } from "@/lib/auth-guard";
+import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 // Max file size: 5MB
@@ -84,6 +85,20 @@ export async function POST(request: NextRequest) {
         // Get the public URL
         const publicUrl = getPublicUrl(data.path);
 
+        // Save to Media Library
+        await prisma.media.create({
+            data: {
+                url: publicUrl,
+                path: data.path,
+                name: fileName,
+                originalName: file.name,
+                type: file.type,
+                size: file.size,
+                folder,
+                userId: authResult.user!.id,
+            }
+        });
+
         return NextResponse.json({
             success: true,
             data: {
@@ -128,6 +143,15 @@ export async function DELETE(request: NextRequest) {
                 { success: false, error: { code: "DELETE_FAILED", message: `ลบไฟล์ไม่สำเร็จ: ${error.message}` } },
                 { status: 500 }
             );
+        }
+
+        // Delete from Media Library database
+        try {
+            await prisma.media.deleteMany({
+                where: { path }
+            });
+        } catch (dbError) {
+            console.error("Database deletion error (ignored):", dbError);
         }
 
         return NextResponse.json({ success: true, data: { message: "ลบไฟล์สำเร็จ" } });

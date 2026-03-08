@@ -10,8 +10,9 @@ import { TextStyle } from '@tiptap/extension-text-style';
 import { FontFamily } from '@tiptap/extension-font-family';
 import TextAlign from '@tiptap/extension-text-align';
 import { FontSize } from './extensions/FontSize';
-import { Bold, Italic, Strikethrough, Heading1, Heading2, List, ListOrdered, Quote, Undo, Redo, Image as ImageIcon, Link as LinkIcon, Youtube as YoutubeIcon, Instagram as InstagramIcon, Music2 as Music2Icon, Loader2, AlignLeft, AlignCenter, AlignRight, AlignJustify, Maximize, Code } from 'lucide-react';
+import { Bold, Italic, Strikethrough, Heading1, Heading2, List, ListOrdered, Quote, Undo, Redo, Image as ImageIcon, Link as LinkIcon, Youtube as YoutubeIcon, Instagram as InstagramIcon, Music2 as Music2Icon, Loader2, AlignLeft, AlignCenter, AlignRight, AlignJustify, Maximize, Code, Library } from 'lucide-react';
 import imageCompression from 'browser-image-compression';
+import MediaLibrary from "./MediaLibrary";
 
 import { Instagram } from './extensions/Instagram';
 import { TikTok } from './extensions/TikTok';
@@ -37,6 +38,7 @@ interface TipTapEditorProps {
 export default function TipTapEditor({ value = "", onChange }: TipTapEditorProps) {
     const [mounted, setMounted] = React.useState(false);
     const [isUploadingImage, setIsUploadingImage] = React.useState(false);
+    const [isLibraryOpen, setIsLibraryOpen] = React.useState(false);
     const [isCodeView, setIsCodeView] = React.useState(false);
     const [htmlContent, setHtmlContent] = React.useState(value);
     const fileInputRef = React.useRef<HTMLInputElement>(null);
@@ -378,8 +380,12 @@ export default function TipTapEditor({ value = "", onChange }: TipTapEditorProps
                     <LinkIcon className="w-4 h-4" />
                 </ToolbarButton>
 
-                <ToolbarButton onClick={addImage} disabled={isCodeView || isUploadingImage}>
+                <ToolbarButton onClick={addImage} disabled={isCodeView || isUploadingImage} title="Upload Image">
                     {isUploadingImage ? <Loader2 className="w-4 h-4 animate-spin" /> : <ImageIcon className="w-4 h-4" />}
+                </ToolbarButton>
+
+                <ToolbarButton onClick={() => setIsLibraryOpen(true)} disabled={isCodeView} title="Choose from Library">
+                    <Library className="w-4 h-4 text-[#C9A84C]" />
                 </ToolbarButton>
                 {/* Hidden File Input for Image Uploads */}
                 <input
@@ -444,6 +450,15 @@ export default function TipTapEditor({ value = "", onChange }: TipTapEditorProps
             ) : (
                 <EditorContent editor={editor} className="bg-white dark:bg-[#0a0a0a]" />
             )}
+
+            <MediaLibrary 
+                isOpen={isLibraryOpen}
+                onClose={() => setIsLibraryOpen(false)}
+                onSelect={(url) => {
+                    editor.chain().focus().setImage({ src: url }).run();
+                }}
+                title="เลือกรูปภาพจากคลังเข้าสู่เนื้อหา"
+            />
         </div>
     );
 }

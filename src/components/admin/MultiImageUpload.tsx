@@ -2,8 +2,10 @@
 
 import React, { useState, useRef, useCallback } from "react";
 import Image from "next/image";
-import { Upload, X, Loader2, ImageIcon, AlertCircle, GripVertical, Plus } from "lucide-react";
+import { Upload, X, Loader2, ImageIcon, AlertCircle, GripVertical, Plus, Library } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import MediaLibrary from "./MediaLibrary";
 
 interface MultiImageUploadProps {
     /** Current image URLs */
@@ -32,6 +34,7 @@ export default function MultiImageUpload({
     disabled = false,
 }: MultiImageUploadProps) {
     const [isUploading, setIsUploading] = useState(false);
+    const [isLibraryOpen, setIsLibraryOpen] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -147,7 +150,32 @@ export default function MultiImageUpload({
                         )}
                     </button>
                 )}
+
+                {/* Library button */}
+                {value.length < maxImages && (
+                    <button
+                        type="button"
+                        onClick={() => setIsLibraryOpen(true)}
+                        disabled={disabled || isUploading}
+                        className={cn(
+                            "aspect-square rounded-lg border-2 border-dashed transition-all",
+                            "flex flex-col items-center justify-center gap-2",
+                            "border-zinc-700 hover:border-zinc-500 bg-zinc-900/50 hover:bg-zinc-900",
+                            disabled && "opacity-50 cursor-not-allowed"
+                        )}
+                    >
+                        <Library className="w-6 h-6 text-gray-500" />
+                        <span className="text-[10px] text-gray-500 uppercase tracking-tighter">คลังสื่อ</span>
+                    </button>
+                )}
             </div>
+
+            <MediaLibrary 
+                isOpen={isLibraryOpen}
+                onClose={() => setIsLibraryOpen(false)}
+                onSelect={(url) => onChange([...value, url])}
+                title={`Media Library: ${label || 'Gallery'}`}
+            />
 
             {/* Error */}
             {error && (

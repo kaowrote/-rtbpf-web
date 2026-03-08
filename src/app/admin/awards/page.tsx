@@ -1,9 +1,17 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, Plus, Trophy, Medal, Filter } from "lucide-react";
+import { ArrowLeft, Plus, Trophy, Medal, Filter, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import RowActions from "@/components/admin/RowActions";
 import { prisma } from "@/lib/prisma";
 import dayjs from "dayjs";
@@ -15,7 +23,21 @@ import { auth } from "@/auth";
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminAwardsPage() {
+interface PageProps {
+    searchParams: Promise<{
+        q?: string;
+        year?: string;
+        cat?: string;
+        winner?: string;
+    }>;
+}
+
+export default async function AdminAwardsPage({ searchParams }: PageProps) {
+    const params = await searchParams;
+    const q = params.q || "";
+    const yearFilter = params.year || "all";
+    const catFilter = params.cat || "all";
+    const winnerFilter = params.winner || "all";
     const session = await auth();
     const user = session?.user;
     const isJury = user?.role === 'JURY';
@@ -38,14 +60,34 @@ export default async function AdminAwardsPage() {
         totalWinners: ay.nominees.length
     }));
 
-    const recentNominees = await prisma.awardNominee.findMany({
-        orderBy: { id: 'desc' },
-        take: 50,
-        include: {
-            category: { select: { name: true } },
-            year: { select: { year: true } }
-        }
-    });
+    // Build Filter
+    const where: any = {};
+    if (q) {
+        where.OR = [
+            { nomineeName: { contains: q, mode: 'insensitive' } },
+            { workTitle: { contains: q, mode: 'insensitive' } },
+        ];
+    }
+    if (yearFilter !== "all") where.yearId = yearFilter;
+    if (catFilter !== "all") where.categoryId = catFilter;
+    if (winnerFilter === "winner") where.isWinner = true;
+    if (winnerFilter === "nominee") where.isWinner = false;
+
+    const [recentNominees, categories] = await Promise.all([
+        prisma.awardNominee.findMany({
+            where,
+            orderBy: { id: 'desc' },
+            take: 100,
+            include: {
+                category: { select: { id: true, name: true } },
+                year: { select: { id: true, year: true } }
+            }
+        }),
+        prisma.awardCategory.findMany({
+            orderBy: { order: 'asc' },
+            select: { id: true, name: true }
+        })
+    ]);
 
 
 
@@ -106,9 +148,68 @@ export default async function AdminAwardsPage() {
                     <h2 className="text-xl font-bold font-thai uppercase tracking-wide text-black dark:text-white flex items-center gap-2">
                         <Medal className="w-5 h-5 text-[#C9A84C]" /> รายชื่อผู้เข้าชิง / ผู้ชนะ
                     </h2>
-                    <Button variant="outline" className="rounded-none border-gray-200 dark:border-zinc-700 text-xs uppercase tracking-widest font-bold bg-transparent">
-                        <Filter className="w-4 h-4 mr-2" /> Filter
-                    </Button>
+                </div>
+
+                <div className="bg-white dark:bg-[#0a0a0a] p-4 border border-gray-100 dark:border-zinc-800 rounded-xl mb-6 shadow-sm">
+                    <form className="flex flex-col md:flex-row gap-4">
+                        <div className="relative flex-1">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                            <Input
+                                name="q"
+                                defaultValue={q}
+                                placeholder="ค้นหาชื่อผู้เข้าชิง หรือ ผลงาน..."
+                                className="pl-10 h-10 rounded-none border-gray-200 dark:border-zinc-800 focus-visible:ring-[#C9A84C]"
+                            />
+                        </div>
+                        <div className="grid grid-cols-2 md:flex gap-3">
+                            <Select name="year" defaultValue={yearFilter}>
+                                <SelectTrigger className="h-10 w-full md:w-[140px] rounded-none border-gray-200 dark:border-zinc-800 focus:ring-[#C9A84C]">
+                                    <SelectValue placeholder="ทุกปี" />
+                                </SelectTrigger>
+                                <SelectContent className="rounded-none">
+                                    <SelectItem value="all">ทุกปี</SelectItem>
+                                    {awardYears.map(y => (
+                                        <SelectItem key={y.id} value={y.id}>{y.year}</SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+
+                            <Select name="cat" defaultValue={catFilter}>
+                                <SelectTrigger className="h-10 w-full md:w-[200px] rounded-none border-gray-200 dark:border-zinc-800 focus:ring-[#C9A84C]">
+                                    <SelectValue placeholder="ทุกสาขา" />
+                                </SelectTrigger>
+                                <SelectContent className="rounded-none">
+                                    <SelectItem value="all">ทุกสาขา</SelectItem>
+                                    {categories.map(c => (
+                                        <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+
+                            <Select name="winner" defaultValue={winnerFilter}>
+                                <SelectTrigger className="h-10 w-full md:w-[140px] rounded-none border-gray-200 dark:border-zinc-800 focus:ring-[#C9A84C]">
+                                    <SelectValue placeholder="สถานะ" />
+                                </SelectTrigger>
+                                <SelectContent className="rounded-none">
+                                    <SelectItem value="all">ทั้งหมด</SelectItem>
+                                    <SelectItem value="winner">Winner 🏆</SelectItem>
+                                    <SelectItem value="nominee">Nominee</SelectItem>
+                                </SelectContent>
+                            </Select>
+
+                            <Button type="submit" className="h-10 bg-black text-white hover:bg-[#C9A84C] transition-colors rounded-none px-6">
+                                Apply
+                            </Button>
+                            
+                            {(q || yearFilter !== "all" || catFilter !== "all" || winnerFilter !== "all") && (
+                                <Link href="/admin/awards">
+                                    <Button type="button" variant="ghost" className="h-10 rounded-none text-gray-400 hover:text-red-500">
+                                        <X className="w-4 h-4 mr-2" /> Clear
+                                    </Button>
+                                </Link>
+                            )}
+                        </div>
+                    </form>
                 </div>
 
                 <div className="bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-zinc-800 shadow-sm rounded-xl overflow-hidden">

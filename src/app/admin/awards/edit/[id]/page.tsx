@@ -3,10 +3,11 @@
 import React, { useState, useEffect, use } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Trophy, Loader2 } from "lucide-react";
+import { ArrowLeft, Trophy, Loader2, Video, Image as ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ImageUpload from "@/components/admin/ImageUpload";
+import MultiImageUpload from "@/components/admin/MultiImageUpload";
 import {
     Select,
     SelectContent,
@@ -30,6 +31,8 @@ export default function AdminAwardsEditPage({
     const [nomineeName, setNomineeName] = useState("");
     const [workTitle, setWorkTitle] = useState("");
     const [broadcastingChannel, setBroadcastingChannel] = useState("");
+    const [videoUrl, setVideoUrl] = useState("");
+    const [gallery, setGallery] = useState<string[]>([]);
 
     const [years, setYears] = useState<{ id: string; year: number }[]>([]);
     const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
@@ -58,6 +61,8 @@ export default function AdminAwardsEditPage({
                     setBroadcastingChannel(nominee.broadcastingChannel || "");
                     setImageUrl(nominee.imageUrl || null);
                     setIsWinner(nominee.isWinner || false);
+                    setVideoUrl(nominee.videoUrl || "");
+                    setGallery(nominee.gallery as string[] || []);
                 } else {
                     throw new Error(nomineeRes?.error?.message || "Failed to fetch nominee");
                 }
@@ -95,6 +100,8 @@ export default function AdminAwardsEditPage({
                     broadcastingChannel,
                     imageUrl,
                     isWinner,
+                    videoUrl,
+                    gallery,
                 }),
             });
 
@@ -224,21 +231,54 @@ export default function AdminAwardsEditPage({
                             </div>
                             <p className="text-xs text-gray-400 mt-2">PNG, JPG, WEBP (สูงสุด 5MB) แนะนำอัตราส่วน 1:1</p>
                         </div>
+                    </div>
+                </div>
+
+                {/* Multimedia Support */}
+                <div className="bg-white dark:bg-[#0a0a0a] p-8 border border-gray-100 dark:border-zinc-800 shadow-sm rounded-xl">
+                    <h2 className="text-lg font-bold uppercase tracking-widest text-black dark:text-white mb-6 flex items-center gap-2">
+                        <ImageIcon className="w-5 h-5 text-[#C9A84C]" />
+                        Multimedia & Highlights
+                    </h2>
+                    
+                    <div className="space-y-8">
+                        <div>
+                            <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2 block flex items-center gap-2">
+                                <Video className="w-3 h-3" /> Link วิดีโอ (YouTube / Vimeo)
+                            </label>
+                            <Input
+                                value={videoUrl}
+                                onChange={(e) => setVideoUrl(e.target.value)}
+                                placeholder="เช่น https://www.youtube.com/watch?v=..."
+                                className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-sans focus-visible:ring-[#C9A84C]"
+                            />
+                            <p className="text-xs text-gray-400 mt-2">ลิงก์วิดีโอแนะนำผลงาน หรือคลิปประกาศรางวัล</p>
+                        </div>
+
+                        <div>
+                            <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4 block">คลังภาพผลงาน (Gallery)</label>
+                            <MultiImageUpload
+                                value={gallery}
+                                onChange={(urls) => setGallery(urls)}
+                                folder="awards/gallery"
+                            />
+                            <p className="text-xs text-gray-400 mt-2">เพิ่มรูปภาพบรรยากาศหรือเบื้องหลังผลงาน (สูงสุด 10 รูป)</p>
+                        </div>
 
                         {/* Winner Toggle */}
-                        <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800 rounded-lg">
+                        <div className="flex items-center justify-between p-6 bg-[#C9A84C]/5 border border-[#C9A84C]/20 rounded-xl">
                             <div>
-                                <h3 className="font-bold text-black dark:text-white font-thai">🏆 ผู้ชนะรางวัล?</h3>
-                                <p className="text-sm text-gray-500 font-thai">เปิดหากรายการนี้ได้รับรางวัล</p>
+                                <h3 className="font-bold text-black dark:text-white font-thai text-lg">🏆 ผู้ชนะรางวัล (Winner)?</h3>
+                                <p className="text-sm text-gray-500 font-thai">ทำเครื่องหมายหากผลงานนี้ได้รับรางวัลนาฏราช</p>
                             </div>
                             <button
                                 type="button"
                                 title="Toggle Winner"
                                 aria-label="Toggle Winner"
                                 onClick={() => setIsWinner(!isWinner)}
-                                className={`relative w-14 h-7 rounded-full transition-colors duration-200 ${isWinner ? "bg-[#C9A84C]" : "bg-gray-300 dark:bg-zinc-600"}`}
+                                className={`relative w-16 h-8 rounded-full transition-colors duration-200 ${isWinner ? "bg-[#C9A84C]" : "bg-gray-300 dark:bg-zinc-600"}`}
                             >
-                                <div className={`absolute top-0.5 w-6 h-6 bg-white rounded-full shadow-md transition-transform duration-200 ${isWinner ? "translate-x-7" : "translate-x-0.5"}`}></div>
+                                <div className={`absolute top-1 w-6 h-6 bg-white rounded-full shadow-md transition-transform duration-200 ${isWinner ? "translate-x-9" : "translate-x-1"}`}></div>
                             </button>
                         </div>
                     </div>

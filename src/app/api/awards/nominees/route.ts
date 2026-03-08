@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { successResponse, errorResponse } from "@/lib/api-response";
 import { requireEditor } from "@/lib/auth-guard";
+import { logActivity } from "@/lib/logger";
 
 export const dynamic = "force-dynamic";
 // GET /api/awards/nominees — List all nominees (with filters)
@@ -12,6 +13,7 @@ export async function GET(request: NextRequest) {
         const year = searchParams.get("year");
         const categoryId = searchParams.get("categoryId");
         const winnersOnly = searchParams.get("winnersOnly") === "true";
+        const search = searchParams.get("search");
         const limit = parseInt(searchParams.get("limit") || "50");
         const page = parseInt(searchParams.get("page") || "1");
         const skip = (page - 1) * limit;
@@ -23,6 +25,13 @@ export async function GET(request: NextRequest) {
         if (winnersOnly) where.isWinner = true;
         if (year) {
             where.year = { year: parseInt(year) };
+        }
+        if (search) {
+            where.OR = [
+                { nomineeName: { contains: search, mode: 'insensitive' } },
+                { workTitle: { contains: search, mode: 'insensitive' } },
+                { broadcastingChannel: { contains: search, mode: 'insensitive' } },
+            ];
         }
 
         const [nominees, total] = await Promise.all([
@@ -74,12 +83,16 @@ export async function POST(request: NextRequest) {
                 broadcastingChannel: data.broadcastingChannel,
                 imageUrl: data.imageUrl,
                 isWinner: data.isWinner || false,
+                videoUrl: data.videoUrl,
+                gallery: data.gallery,
             },
             include: {
                 year: { select: { year: true } },
                 category: { select: { name: true } },
             },
         });
+
+        await logActivity("CREATE_NOMINEE", "AWARD", newNominee.id, { nomineeName: newNominee.nomineeName });
 
         return successResponse(newNominee, { message: "Nominee created successfully" }, 201);
     } catch (error: any) {

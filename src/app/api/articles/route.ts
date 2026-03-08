@@ -10,10 +10,12 @@ export async function GET(request: NextRequest) {
         const { searchParams } = new URL(request.url);
         const limit = parseInt(searchParams.get("limit") || "10");
         const status = searchParams.get("status");
+        const tag = searchParams.get("tag");
 
         const articles = await prisma.article.findMany({
             where: {
                 ...(status ? { status: status as any } : {}),
+                ...(tag ? { tags: { has: tag } } : {}),
             },
             include: {
                 category: true,
@@ -59,6 +61,7 @@ export async function POST(request: NextRequest) {
                 authorId: data.authorId || authResult.user.id,
                 publisherId: data.status === "PUBLISHED" ? (data.publisherId || authResult.user.id) : null,
                 categoryId: data.categoryId,
+                tags: data.tags || [],
                 scheduledAt: data.scheduledAt ? new Date(data.scheduledAt) : null,
                 publishedAt: data.publishedAt ? new Date(data.publishedAt) : (data.status === "PUBLISHED" ? new Date() : null),
                 viewCount: data.viewCount !== undefined ? parseInt(data.viewCount) : 0,
