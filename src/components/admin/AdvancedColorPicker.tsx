@@ -32,6 +32,32 @@ export function AdvancedColorPicker({ value, onChange, label, presets = [] }: Ad
 
     const allPresets = Array.from(new Set([...presets, ...defaultPresets]));
 
+    const hexToRgb = (hex: string) => {
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : { r: 0, g: 0, b: 0 };
+    };
+
+    const rgbToHex = (r: number, g: number, b: number) => {
+        const clamp = (n: number) => Math.max(0, Math.min(255, n));
+        const componentToHex = (c: number) => {
+            const hex = clamp(c).toString(16);
+            return hex.length === 1 ? "0" + hex : hex;
+        };
+        return ("#" + componentToHex(r) + componentToHex(g) + componentToHex(b)).toUpperCase();
+    };
+
+    const rgb = hexToRgb(tempColor);
+
+    const handleRgbChange = (part: 'r' | 'g' | 'b', val: string) => {
+        const num = parseInt(val) || 0;
+        const newRgb = { ...rgb, [part]: num };
+        setTempColor(rgbToHex(newRgb.r, newRgb.g, newRgb.b));
+    };
+
     const handleConfirm = () => {
         onChange(tempColor);
         setIsOpen(false);
@@ -58,28 +84,52 @@ export function AdvancedColorPicker({ value, onChange, label, presets = [] }: Ad
                         </DialogTitle>
                     </div>
                     <p className="text-sm text-gray-500 font-thai">
-                        เลือกสีที่ต้องการจาก Color Wheel หรือใส่รหัส HEX ด้านล่าง
+                        เลือกสีที่ต้องการจาก Color Wheel หรือใส่รหัส HEX/RGB ด้านล่าง
                     </p>
                 </DialogHeader>
 
-                <div className="p-6 space-y-8">
+                <div className="p-6 space-y-6">
                     {/* Main UI Layout */}
                     <div className="flex flex-col items-center gap-6">
-                        {/* Selected Color Display */}
-                        <div className="w-full flex items-center gap-4 bg-gray-50 dark:bg-zinc-900 p-4 rounded-xl border border-gray-100 dark:border-zinc-800">
-                            <div 
-                                className="w-12 h-12 rounded-lg shadow-inner border border-white/20"
-                                style={{ backgroundColor: tempColor }}
-                            />
-                            <div className="flex-1">
-                                <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">hex code</p>
-                                <div className="flex items-center gap-2">
-                                <HexColorInput
-                                        color={tempColor}
-                                        onChange={(c) => setTempColor(c.toUpperCase())}
-                                        className="bg-transparent border-none p-0 font-mono text-lg font-bold text-black dark:text-white focus:outline-none w-24"
-                                    />
+                        {/* Selected Color Display & Inputs */}
+                        <div className="w-full space-y-3">
+                            <div className="flex items-center gap-4 bg-gray-50 dark:bg-zinc-900 p-4 rounded-xl border border-gray-100 dark:border-zinc-800">
+                                <div 
+                                    className="w-12 h-12 rounded-lg shadow-inner border border-white/20 shrink-0"
+                                    style={{ backgroundColor: tempColor }}
+                                />
+                                <div className="flex-1">
+                                    <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">hex code</p>
+                                    <div className="flex items-center gap-2">
+                                        <HexColorInput
+                                            color={tempColor}
+                                            onChange={(c) => setTempColor(c.toUpperCase())}
+                                            className="bg-transparent border-none p-0 font-mono text-lg font-bold text-black dark:text-white focus:outline-none w-full"
+                                        />
+                                    </div>
                                 </div>
+                            </div>
+
+                            {/* RGB Inputs Container */}
+                            <div className="grid grid-cols-3 gap-3">
+                                {[
+                                    { label: 'R', value: rgb.r, key: 'r' as const },
+                                    { label: 'G', value: rgb.g, key: 'g' as const },
+                                    { label: 'B', value: rgb.b, key: 'b' as const }
+                                ].map((item) => (
+                                    <div key={item.key} className="bg-gray-50 dark:bg-zinc-900 p-2 px-3 rounded-lg border border-gray-100 dark:border-zinc-800 flex flex-col">
+                                        <span className="text-[9px] font-bold text-gray-400 uppercase tracking-tighter mb-0.5">{item.label}</span>
+                                        <input 
+                                            type="number" 
+                                            min="0" 
+                                            max="255"
+                                            title={`RGB ${item.label}`}
+                                            value={item.value}
+                                            onChange={(e) => handleRgbChange(item.key, e.target.value)}
+                                            className="bg-transparent border-none p-0 font-mono text-sm font-bold text-black dark:text-white focus:outline-none w-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                        />
+                                    </div>
+                                ))}
                             </div>
                         </div>
 
@@ -88,10 +138,10 @@ export function AdvancedColorPicker({ value, onChange, label, presets = [] }: Ad
                             <HexColorPicker 
                                 color={tempColor} 
                                 onChange={setTempColor}
-                                style={{ width: '240px', height: '240px' }}
+                                style={{ width: '220px', height: '220px' }}
                             />
                             <div 
-                                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full border-4 border-white shadow-lg pointer-events-none"
+                                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full border-2 border-white shadow-lg pointer-events-none"
                                 style={{ backgroundColor: tempColor }}
                             />
                         </div>
@@ -99,8 +149,8 @@ export function AdvancedColorPicker({ value, onChange, label, presets = [] }: Ad
 
                     {/* Presets */}
                     <div>
-                        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-4 px-1">Presets & Suggested</p>
-                        <div className="grid grid-cols-6 gap-3">
+                        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-3 px-1">Presets & Suggested</p>
+                        <div className="grid grid-cols-6 gap-2.5">
                             {allPresets.map((preset) => (
                                 <button
                                     key={preset}
