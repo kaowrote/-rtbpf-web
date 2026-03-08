@@ -10,7 +10,6 @@ import {
     CheckCircle2,
     XCircle,
     Clock,
-    UserPlus,
     ChevronDown,
     Mail,
     Phone,
@@ -20,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { UserAvatar } from "@/components/admin/UserAvatar";
+import { InviteUserDialog } from "@/components/admin/InviteUserDialog";
 import dayjs from "dayjs";
 import 'dayjs/locale/th';
 import { toast } from "sonner";
@@ -137,9 +137,7 @@ export default function AdminUsersPage() {
                     <h1 className="text-3xl font-bold font-thai tracking-tight text-black dark:text-white uppercase">User Management</h1>
                     <p className="text-gray-500 mt-2 font-thai">จัดการสมาชิก อนุมัติผู้สมัครใหม่ และกำหนดสิทธิ์การใช้งาน</p>
                 </div>
-                <Button className="bg-[#1B2A4A] text-white hover:bg-[#C9A84C] transition-colors rounded-none font-bold uppercase tracking-widest text-xs px-6">
-                    <UserPlus className="w-4 h-4 mr-2" /> Invite User
-                </Button>
+                <InviteUserDialog onSuccess={fetchUsers} />
             </div>
 
             {/* Stats Row */}
