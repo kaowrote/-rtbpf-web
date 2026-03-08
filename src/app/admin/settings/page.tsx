@@ -2,56 +2,67 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeft, Globe, Bell, Shield, Palette, Save, Upload, Mail, Loader2 } from "lucide-react";
+import { ArrowLeft, Globe, Bell, Shield, Palette, Save, Mail, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import ImageUpload from "@/components/admin/ImageUpload";
+import { toast } from "sonner";
 
 export default function AdminSettingsPage() {
     const [activeTab, setActiveTab] = useState("general");
-    const [logoUrl, setLogoUrl] = useState<string | null>(null);
-    const [ogImageUrl, setOgImageUrl] = useState<string | null>(null);
-    const [defaultNewsImageUrl, setDefaultNewsImageUrl] = useState<string | null>(null);
-    const [defaultEventImageUrl, setDefaultEventImageUrl] = useState<string | null>(null);
-
     const [isSaving, setIsSaving] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
+    // Settings State
+    const [settings, setSettings] = useState({
+        siteTitleTh: "",
+        siteTitleEn: "",
+        siteUrl: "",
+        metaDescription: "",
+        logoUrl: "",
+        ogImageUrl: "",
+        defaultNewsImageUrl: "",
+        defaultEventImageUrl: "",
+        facebookUrl: "",
+        twitterUrl: "",
+        youtubeUrl: ""
+    });
+
     useEffect(() => {
         // Fetch current settings
-        fetch("/api/settings?keys=logoUrl,ogImageUrl,defaultNewsImageUrl,defaultEventImageUrl")
+        const keys = Object.keys(settings).join(",");
+        fetch(`/api/settings?keys=${keys}`)
             .then(res => res.json())
-            .then(data => {
-                if (data.success && data.data) {
-                    if (data.data.logoUrl) setLogoUrl(data.data.logoUrl);
-                    if (data.data.ogImageUrl) setOgImageUrl(data.data.ogImageUrl);
-                    if (data.data.defaultNewsImageUrl) setDefaultNewsImageUrl(data.data.defaultNewsImageUrl);
-                    if (data.data.defaultEventImageUrl) setDefaultEventImageUrl(data.data.defaultEventImageUrl);
+            .then(response => {
+                if (response.success && response.data) {
+                    setSettings(prev => ({
+                        ...prev,
+                        ...response.data
+                    }));
                 }
             })
-            .catch(console.error)
+            .catch(err => {
+                console.error(err);
+                toast.error("Failed to load settings");
+            })
             .finally(() => setIsLoading(false));
     }, []);
 
     const handleSaveGeneral = async () => {
         setIsSaving(true);
         try {
+            // Filter out empty settings if needed or just send all
             const response = await fetch("/api/settings", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    logoUrl,
-                    ogImageUrl,
-                    defaultNewsImageUrl,
-                    defaultEventImageUrl
-                })
+                body: JSON.stringify(settings)
             });
 
             if (!response.ok) throw new Error("Failed to save settings");
-            alert("Settings saved successfully!");
+            toast.success("บันทึกการตั้งค่าสำเร็จ");
         } catch (error: any) {
-            alert(`Error: ${error.message}`);
+            toast.error(`Error: ${error.message}`);
         } finally {
             setIsSaving(false);
         }
@@ -64,6 +75,15 @@ export default function AdminSettingsPage() {
         { id: "security", label: "Security", icon: Shield },
     ];
 
+    if (isLoading) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-[60vh]">
+                <Loader2 className="w-12 h-12 animate-spin text-[#C9A84C]" />
+                <p className="mt-4 font-thai text-sm text-gray-500 uppercase tracking-widest font-bold font-sans">Checking System Configuration...</p>
+            </div>
+        );
+    }
+
     return (
         <div className="space-y-8">
             <div className="pb-6 border-b border-gray-200 dark:border-zinc-800">
@@ -71,7 +91,7 @@ export default function AdminSettingsPage() {
                     <ArrowLeft className="w-4 h-4 mr-2" /> Back to Dashboard
                 </Link>
                 <h1 className="text-3xl font-bold font-thai tracking-tight text-black dark:text-white uppercase">Settings</h1>
-                <p className="text-gray-500 mt-2 font-thai">ตั้งค่าระบบเว็บไซต์และระบบจัดการเนื้อหา</p>
+                <p className="text-gray-500 mt-2 font-thai">ตั้งค่าระบบเว็บไซต์และระบบจัดการเนื้อหา (CMS Configuration)</p>
             </div>
 
             {/* Tabs */}
@@ -96,20 +116,26 @@ export default function AdminSettingsPage() {
                 <div className="space-y-8">
                     {/* Site Info */}
                     <div className="bg-white dark:bg-[#0a0a0a] p-8 border border-gray-100 dark:border-zinc-800 shadow-sm rounded-xl">
-                        <h2 className="text-lg font-bold uppercase tracking-widest text-black dark:text-white mb-6">Site Information</h2>
+                        <h2 className="text-lg font-bold uppercase tracking-widest text-black dark:text-white mb-6 flex items-center gap-2">
+                             Site Information
+                        </h2>
                         <div className="space-y-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2 block">ชื่อเว็บไซต์ (ภาษาไทย)</label>
                                     <Input
-                                        defaultValue="สมาพันธ์สมาคมวิชาชีพวิทยุกระจายเสียงและวิทยุโทรทัศน์"
+                                        value={settings.siteTitleTh}
+                                        onChange={(e) => setSettings({...settings, siteTitleTh: e.target.value})}
+                                        placeholder="สมาพันธ์สมาคมวิชาชีพวิทยุกระจายเสียงและวิทยุโทรทัศน์"
                                         className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-thai focus-visible:ring-[#C9A84C]"
                                     />
                                 </div>
                                 <div>
                                     <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2 block">Site Name (English)</label>
                                     <Input
-                                        defaultValue="Radio and Television Broadcasting Professional Federation"
+                                        value={settings.siteTitleEn}
+                                        onChange={(e) => setSettings({...settings, siteTitleEn: e.target.value})}
+                                        placeholder="Radio and Television Broadcasting Professional Federation"
                                         className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-sans focus-visible:ring-[#C9A84C]"
                                     />
                                 </div>
@@ -117,7 +143,9 @@ export default function AdminSettingsPage() {
                             <div>
                                 <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2 block">Website URL</label>
                                 <Input
-                                    defaultValue="https://rtbpf.org"
+                                    value={settings.siteUrl}
+                                    onChange={(e) => setSettings({...settings, siteUrl: e.target.value})}
+                                    placeholder="https://rtbpf.org"
                                     className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-sans focus-visible:ring-[#C9A84C]"
                                 />
                             </div>
@@ -125,7 +153,9 @@ export default function AdminSettingsPage() {
                                 <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2 block">Meta Description (SEO)</label>
                                 <textarea
                                     title="Meta Description"
-                                    defaultValue="ศูนย์กลางวิชาชีพสื่อวิทยุกระจายเสียงและวิทยุโทรทัศน์ ผู้จัดงานประกาศผลรางวัลนาฏราช (Nataraj Awards)"
+                                    value={settings.metaDescription}
+                                    onChange={(e) => setSettings({...settings, metaDescription: e.target.value})}
+                                    placeholder="ศูนย์กลางวิชาชีพสื่อวิทยุกระจายเสียงและวิทยุโทรทัศน์..."
                                     rows={3}
                                     className="w-full px-4 py-3 bg-gray-50 dark:bg-black border border-gray-200 dark:border-zinc-700 font-thai text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A84C] resize-none text-black dark:text-white"
                                 />
@@ -135,85 +165,89 @@ export default function AdminSettingsPage() {
 
                     {/* Logo & Branding */}
                     <div className="bg-white dark:bg-[#0a0a0a] p-8 border border-gray-100 dark:border-zinc-800 shadow-sm rounded-xl">
-                        <h2 className="text-lg font-bold uppercase tracking-widest text-black dark:text-white mb-6">Logo & Branding</h2>
+                        <h2 className="text-lg font-bold uppercase tracking-widest text-black dark:text-white mb-6">Logo & Default Images</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div>
-                                <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3 block">โลโก้หลัก</label>
+                                <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3 block">โลโก้หลัก (Master Logo)</label>
                                 <div className="max-w-[12rem]">
                                     <ImageUpload
-                                        value={logoUrl || undefined}
-                                        onChange={(url) => setLogoUrl(url)}
+                                        value={settings.logoUrl || undefined}
+                                        onChange={(url: string | null) => setSettings({...settings, logoUrl: url || ""})}
                                         folder="settings"
                                         label=""
                                         aspectRatio="aspect-square"
                                     />
                                 </div>
-                                <p className="text-xs text-gray-400 mt-2">SVG, PNG (แนะนำ 512×512)</p>
                             </div>
                             <div>
                                 <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3 block">OG Image (Social Sharing)</label>
                                 <div className="max-w-md">
                                     <ImageUpload
-                                        value={ogImageUrl || undefined}
-                                        onChange={(url) => setOgImageUrl(url)}
+                                        value={settings.ogImageUrl || undefined}
+                                        onChange={(url: string | null) => setSettings({...settings, ogImageUrl: url || ""})}
                                         folder="settings"
                                         label=""
                                         aspectRatio="aspect-[1.91/1]"
                                     />
                                 </div>
-                                <p className="text-xs text-gray-400 mt-2">JPG, PNG (แนะนำ 1200×630)</p>
                             </div>
                             <div>
-                                <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3 block">รูปภาพประกอบข่าว Default</label>
+                                <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3 block">Default News Cover</label>
                                 <div className="max-w-md">
                                     <ImageUpload
-                                        value={defaultNewsImageUrl || undefined}
-                                        onChange={(url) => setDefaultNewsImageUrl(url)}
+                                        value={settings.defaultNewsImageUrl || undefined}
+                                        onChange={(url: string | null) => setSettings({...settings, defaultNewsImageUrl: url || ""})}
                                         folder="settings"
                                         label=""
                                         aspectRatio="aspect-[16/9]"
                                     />
                                 </div>
-                                <p className="text-xs text-gray-400 mt-2">ภาพพื้นหลังเมื่อไม่ได้อัปโหลดรูปปกข่าว (แนะนำ 1920x1080)</p>
+                                <p className="text-xs text-gray-400 mt-2">ใช้กรณีไม่ได้อัปโหลดรูปปกข่าว</p>
                             </div>
                             <div>
-                                <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3 block">รูปภาพประกอบกิจกรรม Default</label>
+                                <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3 block">Default Event Cover</label>
                                 <div className="max-w-md">
                                     <ImageUpload
-                                        value={defaultEventImageUrl || undefined}
-                                        onChange={(url) => setDefaultEventImageUrl(url)}
+                                        value={settings.defaultEventImageUrl || undefined}
+                                        onChange={(url: string | null) => setSettings({...settings, defaultEventImageUrl: url || ""})}
                                         folder="settings"
                                         label=""
                                         aspectRatio="aspect-[16/9]"
                                     />
                                 </div>
-                                <p className="text-xs text-gray-400 mt-2">ภาพพื้นหลังเมื่อไม่ได้อัปโหลดรูปปกกิจกรรม (แนะนำ 1920x1080)</p>
+                                <p className="text-xs text-gray-400 mt-2">ใช้กรณีไม่ได้อัปโหลดรูปปกกิจกรรม</p>
                             </div>
                         </div>
                     </div>
 
                     {/* Social Links */}
                     <div className="bg-white dark:bg-[#0a0a0a] p-8 border border-gray-100 dark:border-zinc-800 shadow-sm rounded-xl">
-                        <h2 className="text-lg font-bold uppercase tracking-widest text-black dark:text-white mb-6">Social Media Links</h2>
+                        <h2 className="text-lg font-bold uppercase tracking-widest text-black dark:text-white mb-6">Social Media Channels</h2>
                         <div className="space-y-4">
                             <div>
-                                <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2 block">Facebook</label>
+                                <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2 block">Facebook Page URL</label>
                                 <Input
-                                    defaultValue="https://facebook.com/rtbpf"
+                                    value={settings.facebookUrl}
+                                    onChange={(e) => setSettings({...settings, facebookUrl: e.target.value})}
+                                    placeholder="https://facebook.com/..."
                                     className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-sans focus-visible:ring-[#C9A84C]"
                                 />
                             </div>
                             <div>
-                                <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2 block">X (Twitter)</label>
+                                <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2 block">X / Twitter URL</label>
                                 <Input
-                                    defaultValue="https://twitter.com/rtbpfofficial"
+                                    value={settings.twitterUrl}
+                                    onChange={(e) => setSettings({...settings, twitterUrl: e.target.value})}
+                                    placeholder="https://x.com/..."
                                     className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-sans focus-visible:ring-[#C9A84C]"
                                 />
                             </div>
                             <div>
-                                <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2 block">YouTube</label>
+                                <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2 block">YouTube Channel URL</label>
                                 <Input
-                                    defaultValue="https://youtube.com/@rtbpfofficial"
+                                    value={settings.youtubeUrl}
+                                    onChange={(e) => setSettings({...settings, youtubeUrl: e.target.value})}
+                                    placeholder="https://youtube.com/..."
                                     className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-sans focus-visible:ring-[#C9A84C]"
                                 />
                             </div>
@@ -221,13 +255,13 @@ export default function AdminSettingsPage() {
                     </div>
 
                     {/* Save Button */}
-                    <div className="flex justify-end">
+                    <div className="flex justify-end sticky bottom-8 z-10">
                         <Button
                             onClick={handleSaveGeneral}
                             disabled={isSaving || isLoading}
-                            className="bg-[#1B2A4A] text-white hover:bg-[#C9A84C] rounded-none uppercase tracking-widest text-xs font-bold px-10 h-12 transition-colors disabled:opacity-50"
+                            className="bg-[#1B2A4A] text-white hover:bg-[#C9A84C] shadow-lg rounded-none uppercase tracking-widest text-xs font-bold px-12 h-14 transition-colors disabled:opacity-50"
                         >
-                            {isSaving ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Saving...</> : <><Save className="w-4 h-4 mr-2" /> Save Changes</>}
+                            {isSaving ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Updating...</> : <><Save className="w-4 h-4 mr-2" /> Save System Settings</>}
                         </Button>
                     </div>
                 </div>

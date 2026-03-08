@@ -2,8 +2,55 @@ import React from "react";
 import { ArrowRight, FileText, Calendar, Users, Trophy } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { prisma } from "@/lib/prisma";
+import dayjs from "dayjs";
+import 'dayjs/locale/th';
 
-export default function AdminDashboardPage() {
+dayjs.locale('th');
+
+export const dynamic = "force-dynamic";
+
+export default async function AdminDashboardPage() {
+    // 1. Fetch Stats
+    const [
+        totalArticles,
+        upcomingEvents,
+        totalNominees,
+        totalUsers,
+        pendingUsersCount,
+        recentArticles
+    ] = await Promise.all([
+        prisma.article.count(),
+        prisma.event.count({
+            where: {
+                startDate: { gte: new Date() }
+            }
+        }),
+        prisma.awardNominee.count(),
+        prisma.user.count(),
+        prisma.user.count({
+            where: { status: 'PENDING' }
+        }),
+        prisma.article.findMany({
+            orderBy: { createdAt: 'desc' },
+            take: 4,
+            select: {
+                id: true,
+                title: true,
+                status: true,
+                createdAt: true,
+                featuredImage: true,
+            }
+        })
+    ]);
+
+    const stats = [
+        { label: "Total Articles", count: totalArticles.toLocaleString(), icon: FileText, color: "text-blue-500", bg: "bg-blue-50 dark:bg-blue-950/30" },
+        { label: "Upcoming Events", count: upcomingEvents.toLocaleString(), icon: Calendar, color: "text-green-500", bg: "bg-green-50 dark:bg-green-950/30" },
+        { label: "Nataraja Nominees", count: totalNominees.toLocaleString(), icon: Trophy, color: "text-amber-500", bg: "bg-amber-50 dark:bg-amber-950/30" },
+        { label: "Registered Users", count: totalUsers.toLocaleString(), icon: Users, color: "text-purple-500", bg: "bg-purple-50 dark:bg-purple-950/30" },
+    ];
+
     return (
         <div className="space-y-8">
             <div className="flex justify-between items-center">
@@ -27,12 +74,7 @@ export default function AdminDashboardPage() {
 
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {[
-                    { label: "Total Articles", count: "142", icon: FileText, color: "text-blue-500", bg: "bg-blue-50 dark:bg-blue-950/30" },
-                    { label: "Upcoming Events", count: "8", icon: Calendar, color: "text-green-500", bg: "bg-green-50 dark:bg-green-950/30" },
-                    { label: "Nataraja Nominees", count: "256", icon: Trophy, color: "text-amber-500", bg: "bg-amber-50 dark:bg-amber-950/30" },
-                    { label: "Registered Users", count: "3,892", icon: Users, color: "text-purple-500", bg: "bg-purple-50 dark:bg-purple-950/30" },
-                ].map((stat, i) => (
+                {stats.map((stat, i) => (
                     <div key={i} className="bg-white dark:bg-[#0a0a0a] p-6 border border-gray-100 dark:border-zinc-800 shadow-sm rounded-xl">
                         <div className="flex justify-between items-start">
                             <div>
@@ -57,20 +99,35 @@ export default function AdminDashboardPage() {
                         </Link>
                     </div>
                     <div className="space-y-4">
-                        {[1, 2, 3, 4].map((item) => (
-                            <div key={item} className="flex justify-between items-center p-4 bg-gray-50 dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800 rounded-lg hover:border-gray-200 dark:hover:border-zinc-700 transition-colors">
-                                <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 bg-gray-200 dark:bg-zinc-800 rounded-md overflow-hidden flex-shrink-0">
-                                        <div className="w-full h-full bg-gradient-to-tr from-gray-300 to-gray-100 dark:from-zinc-800 dark:to-zinc-700" />
+                        {recentArticles.length > 0 ? (
+                            recentArticles.map((article) => (
+                                <div key={article.id} className="flex justify-between items-center p-4 bg-gray-50 dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800 rounded-lg hover:border-gray-200 dark:hover:border-zinc-700 transition-colors">
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-12 h-12 bg-gray-200 dark:bg-zinc-800 rounded-md overflow-hidden flex-shrink-0">
+                                            {article.featuredImage ? (
+                                                <img src={article.featuredImage} alt="" className="w-full h-full object-cover" />
+                                            ) : (
+                                                <div className="w-full h-full bg-gradient-to-tr from-gray-300 to-gray-100 dark:from-zinc-800 dark:to-zinc-700" />
+                                            )}
+                                        </div>
+                                        <div>
+                                            <h4 className="font-thai font-semibold text-black dark:text-white line-clamp-1 text-base">{article.title}</h4>
+                                            <p className="text-sm text-gray-500 font-thai flex gap-2">
+                                                <span>{dayjs(article.createdAt).format('D MMMM YYYY')}</span> • 
+                                                <span className={article.status === 'PUBLISHED' ? 'text-green-600 dark:text-green-400' : 'text-amber-600 dark:text-amber-400'}>
+                                                    {article.status}
+                                                </span>
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <h4 className="font-thai font-semibold text-black dark:text-white line-clamp-1 text-base">การเสวนาผู้ทรงคุณวุฒิอุตสาหกรรมโทรทัศน์ไทย</h4>
-                                        <p className="text-sm text-gray-500 font-thai flex gap-2"><span>12 มีนาคม 2024</span> • <span className="text-green-600 dark:text-green-400">Published</span></p>
-                                    </div>
+                                    <Link href={`/admin/articles/edit/${article.id}`}>
+                                        <Button variant="ghost" size="sm" className="text-gray-500 hover:text-black dark:hover:text-white">Edit</Button>
+                                    </Link>
                                 </div>
-                                <Button variant="ghost" size="sm" className="text-gray-500 hover:text-black dark:hover:text-white">Edit</Button>
-                            </div>
-                        ))}
+                            ))
+                        ) : (
+                            <p className="text-center py-8 text-gray-500 font-thai">ยังไม่มีบทความใหม่</p>
+                        )}
                     </div>
                 </div>
 
@@ -89,18 +146,23 @@ export default function AdminDashboardPage() {
                         <div>
                             <div className="flex justify-between text-sm mb-2 font-bold uppercase tracking-wider">
                                 <span className="text-gray-600 dark:text-gray-400">Storage (Assets)</span>
-                                <span className="text-blue-500">45% Used</span>
+                                <span className="text-blue-500">Stable</span>
                             </div>
                             <div className="h-2 w-full bg-gray-100 dark:bg-zinc-800 rounded-full overflow-hidden">
-                                <div className="h-full bg-blue-500 w-[45%] rounded-full" />
+                                <div className="h-full bg-blue-500 w-full rounded-full" />
                             </div>
                         </div>
-                        <div className="p-4 bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-100 dark:border-yellow-900/30 rounded-lg mt-6">
-                            <h4 className="font-bold text-yellow-800 dark:text-yellow-500 mb-1 text-sm uppercase tracking-widest">Notice</h4>
-                            <p className="text-sm text-yellow-700 dark:text-yellow-600 font-thai">
-                                มีสมาชิกใหม่ที่รอการอนุมัติเข้าระบบจำนวน 12 ท่าน กรุณาตรวจสอบที่เมนู Users
-                            </p>
-                        </div>
+                        {pendingUsersCount > 0 && (
+                            <div className="p-4 bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-100 dark:border-yellow-900/30 rounded-lg mt-6">
+                                <h4 className="font-bold text-yellow-800 dark:text-yellow-500 mb-1 text-sm uppercase tracking-widest">Notice</h4>
+                                <p className="text-sm text-yellow-700 dark:text-yellow-600 font-thai">
+                                    มีสมาชิกใหม่ที่รอการอนุมัติเข้าระบบจำนวน {pendingUsersCount} ท่าน กรุณาตรวจสอบที่เมนู Users
+                                </p>
+                                <Link href="/admin/users" className="text-xs font-bold text-yellow-800 dark:text-yellow-500 uppercase tracking-widest mt-2 block hover:underline">
+                                    Go to User Management →
+                                </Link>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

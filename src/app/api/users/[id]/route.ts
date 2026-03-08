@@ -13,22 +13,10 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         const { id } = await params;
         const user = await prisma.user.findUnique({
             where: { id },
-            select: {
-                id: true,
-                name: true,
-                email: true,
-                image: true,
-                role: true,
-                status: true,
-                phone: true,
-                bio: true,
-                preferredLocale: true,
-                createdAt: true,
-                updatedAt: true,
-                _count: {
-                    select: {
-                        activityLogs: true,
-                    }
+            include: {
+                activityLogs: {
+                    orderBy: { createdAt: 'desc' },
+                    take: 10
                 }
             },
         });

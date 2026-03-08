@@ -1,6 +1,3 @@
-// RTBPF V2.0 — Prisma Schema
-// Phase 1: Foundation (Users, Auth, Roles)
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,29 +8,25 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-// ── 🔐 Authentication (NextAuth.js compatible) ────────────
-
 model User {
-  id              String     @id @default(cuid())
-  name            String?
-  email           String     @unique
-  emailVerified   DateTime?  @map("email_verified")
-  image           String?
-  hashedPassword  String?    @map("hashed_password")
-  role            Role       @default(MEMBER)
-  status          UserStatus @default(PENDING)
-  preferredLocale String     @default("th") @map("preferred_locale")
-  bio             String?
-  phone           String?
-  createdAt       DateTime   @default(now()) @map("created_at")
-  updatedAt       DateTime   @updatedAt @map("updated_at")
-
-  // Relations
+  id                String        @id @default(cuid())
+  name              String?
+  email             String        @unique
+  emailVerified     DateTime?     @map("email_verified")
+  image             String?
+  hashedPassword    String?       @map("hashed_password")
+  role              Role          @default(MEMBER)
+  status            UserStatus    @default(PENDING)
+  preferredLocale   String        @default("th") @map("preferred_locale")
+  bio               String?
+  phone             String?
+  createdAt         DateTime      @default(now()) @map("created_at")
+  updatedAt         DateTime      @updatedAt @map("updated_at")
   accounts          Account[]
-  sessions          Session[]
   activityLogs      ActivityLog[]
   articlesAuthored  Article[]     @relation("ArticleAuthor")
   articlesPublished Article[]     @relation("ArticlePublisher")
+  sessions          Session[]
 
   @@map("users")
 }
@@ -44,15 +37,14 @@ model Account {
   type              String
   provider          String
   providerAccountId String  @map("provider_account_id")
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@map("accounts")
@@ -63,8 +55,7 @@ model Session {
   sessionToken String   @unique @map("session_token")
   userId       String   @map("user_id")
   expires      DateTime
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("sessions")
 }
@@ -78,7 +69,141 @@ model VerificationToken {
   @@map("verification_tokens")
 }
 
-// ── 👤 Roles & Permissions ─────────────────────────────────
+model ActivityLog {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  action    String
+  entity    String
+  entityId  String?  @map("entity_id")
+  metadata  Json?
+  ipAddress String?  @map("ip_address")
+  userAgent String?  @map("user_agent")
+  createdAt DateTime @default(now()) @map("created_at")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+  @@map("activity_logs")
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  name        String
+  description String?
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  articles    Article[]
+
+  @@map("categories")
+}
+
+model Article {
+  id            String        @id @default(cuid())
+  slug          String        @unique
+  title         String
+  excerpt       String?
+  content       Json
+  featuredImage String?       @map("featured_image")
+  status        ArticleStatus @default(DRAFT)
+  publishedAt   DateTime?     @map("published_at")
+  scheduledAt   DateTime?     @map("scheduled_at")
+  viewCount     Int           @default(0) @map("view_count")
+  authorId      String        @map("author_id")
+  publisherId   String?       @map("publisher_id")
+  categoryId    String?       @map("category_id")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+  author        User          @relation("ArticleAuthor", fields: [authorId], references: [id])
+  category      Category?     @relation(fields: [categoryId], references: [id])
+  publisher     User?         @relation("ArticlePublisher", fields: [publisherId], references: [id])
+
+  @@index([slug])
+  @@index([publishedAt])
+  @@index([status])
+  @@map("articles")
+}
+
+model AwardYear {
+  id           String         @id @default(cuid())
+  year         Int            @unique
+  edition      Int?
+  theme        String?
+  ceremonyDate DateTime?      @map("ceremony_date")
+  createdAt    DateTime       @default(now()) @map("created_at")
+  updatedAt    DateTime       @updatedAt @map("updated_at")
+  nominees     AwardNominee[]
+
+  @@map("award_years")
+}
+
+model AwardCategory {
+  id          String         @id @default(cuid())
+  name        String
+  description String?
+  type        AwardType      @default(TELEVISION)
+  order       Int            @default(0)
+  nominees    AwardNominee[]
+
+  @@map("award_categories")
+}
+
+model AwardNominee {
+  id                  String        @id @default(cuid())
+  yearId              String        @map("year_id")
+  categoryId          String        @map("category_id")
+  nomineeName         String
+  workTitle           String?
+  broadcastingChannel String?
+  imageUrl            String?       @map("image_url")
+  isWinner            Boolean       @default(false) @map("is_winner")
+  category            AwardCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  year                AwardYear     @relation(fields: [yearId], references: [id], onDelete: Cascade)
+
+  @@index([yearId])
+  @@index([categoryId])
+  @@map("award_nominees")
+}
+
+model Event {
+  id                   String      @id @default(cuid())
+  slug                 String      @unique
+  title                String
+  excerpt              String?
+  description          String?
+  eventType            EventType   @default(OTHER) @map("event_type")
+  status               EventStatus @default(UPCOMING)
+  startDate            DateTime    @map("start_date")
+  endDate              DateTime?   @map("end_date")
+  location             String?
+  imageUrl             String?     @map("image_url")
+  tags                 String[]
+  capacity             String?
+  ticketPrice          String?     @map("ticket_price")
+  registrationDeadline DateTime?   @map("registration_deadline")
+  registerUrl          String?     @map("register_url")
+  mapEmbedUrl          String?     @map("map_embed_url")
+  mapDirectionUrl      String?     @map("map_direction_url")
+  agenda               Json?
+  speakers             Json?
+  resources            Json?
+  createdAt            DateTime    @default(now()) @map("created_at")
+  updatedAt            DateTime    @updatedAt @map("updated_at")
+
+  @@index([slug])
+  @@index([status])
+  @@map("events")
+}
+
+model SystemSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String?
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("system_settings")
+}
 
 enum Role {
   SUPER_ADMIN
@@ -97,92 +222,11 @@ enum UserStatus {
   DELETED
 }
 
-// ── 📋 Activity Logging ────────────────────────────────────
-
-model ActivityLog {
-  id        String   @id @default(cuid())
-  userId    String   @map("user_id")
-  action    String // login, create, update, delete, etc.
-  entity    String // article, event, user, etc.
-  entityId  String?  @map("entity_id")
-  metadata  Json? // Additional context
-  ipAddress String?  @map("ip_address")
-  userAgent String?  @map("user_agent")
-  createdAt DateTime @default(now()) @map("created_at")
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
-  @@index([action])
-  @@index([createdAt])
-  @@map("activity_logs")
-}
-
-// ── 📰 Content Management (News & Articles) ────────────────
-
-model Category {
-  id          String   @id @default(cuid())
-  slug        String   @unique
-  name        String
-  description String?
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-
-  articles Article[]
-
-  @@map("categories")
-}
-
 enum ArticleStatus {
   DRAFT
   PUBLISHED
   ARCHIVED
   SCHEDULED
-}
-
-model Article {
-  id            String        @id @default(cuid())
-  slug          String        @unique
-  title         String
-  excerpt       String?       @db.Text
-  content       Json // Array of ContentBlocks
-  featuredImage String?       @map("featured_image")
-  status        ArticleStatus @default(DRAFT)
-  publishedAt   DateTime?     @map("published_at")
-  scheduledAt   DateTime?     @map("scheduled_at") // สำหรับตั้งเวลา Publish
-  viewCount     Int           @default(0) @map("view_count")
-
-  authorId    String  @map("author_id")
-  publisherId String? @map("publisher_id")
-  categoryId  String? @map("category_id")
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  author    User      @relation("ArticleAuthor", fields: [authorId], references: [id])
-  publisher User?     @relation("ArticlePublisher", fields: [publisherId], references: [id])
-  category  Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-
-  @@index([slug])
-  @@index([publishedAt])
-  @@index([status])
-  @@map("articles")
-}
-
-// ── 🏆 Awards System (Nataraja Awards) ─────────────────────
-
-model AwardYear {
-  id           String    @id @default(cuid())
-  year         Int       @unique // e.g., 2024
-  edition      Int? // e.g., 16 (for 16th edition)
-  theme        String?
-  ceremonyDate DateTime? @map("ceremony_date")
-  createdAt    DateTime  @default(now()) @map("created_at")
-  updatedAt    DateTime  @updatedAt @map("updated_at")
-
-  nominees AwardNominee[]
-
-  @@map("award_years")
 }
 
 enum AwardType {
@@ -191,39 +235,6 @@ enum AwardType {
   DIGITAL
   SPECIAL
 }
-
-model AwardCategory {
-  id          String    @id @default(cuid())
-  name        String
-  description String?   @db.Text
-  type        AwardType @default(TELEVISION)
-  order       Int       @default(0) // For sorting display
-
-  nominees AwardNominee[]
-
-  @@map("award_categories")
-}
-
-model AwardNominee {
-  id         String @id @default(cuid())
-  yearId     String @map("year_id")
-  categoryId String @map("category_id")
-
-  nomineeName         String // Person or Entity name
-  workTitle           String? // e.g., Drama name, Song name
-  broadcastingChannel String? // e.g., ช่อง 3, One31
-  imageUrl            String? @map("image_url")
-  isWinner            Boolean @default(false) @map("is_winner")
-
-  year     AwardYear     @relation(fields: [yearId], references: [id], onDelete: Cascade)
-  category AwardCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-
-  @@index([yearId])
-  @@index([categoryId])
-  @@map("award_nominees")
-}
-
-// ── 📅 Events & Activities ─────────────────────────────────
 
 enum EventType {
   AWARD_CEREMONY
@@ -241,56 +252,3 @@ enum EventStatus {
   COMPLETED
   CANCELLED
 }
-
-model Event {
-  id          String  @id @default(cuid())
-  slug        String  @unique
-  title       String
-  excerpt     String? @db.Text
-  description String? @db.Text
-
-  eventType EventType   @default(OTHER) @map("event_type")
-  status    EventStatus @default(UPCOMING)
-
-  startDate DateTime  @map("start_date")
-  endDate   DateTime? @map("end_date")
-  location  String?
-
-  imageUrl String?  @map("image_url")
-  tags     String[] // Array of strings
-
-  // Registration & Details
-  capacity             String? // e.g., "จำกัด 200 ที่นั่ง"
-  ticketPrice          String?   @map("ticket_price")
-  registrationDeadline DateTime? @map("registration_deadline")
-  registerUrl          String?   @map("register_url")
-
-  // Maps
-  mapEmbedUrl     String? @map("map_embed_url") @db.Text
-  mapDirectionUrl String? @map("map_direction_url") @db.Text
-
-  // JSON fields for complex nested data (Agenda, Speakers, Resources)
-  // Use JSON for flexibility matching the frontend structure
-  agenda    Json? // Array of { time, session, speaker }
-  speakers  Json? // Array of { name, title, org, img }
-  resources Json? // Array of { type, title, url }
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  @@index([slug])
-  @@index([status])
-  @@map("events")
-}
-
-// ── ⚙️ System Settings ─────────────────────────────────────
-
-model SystemSetting {
-  id        String   @id @default(cuid())
-  key       String   @unique
-  value     String?  @db.Text
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  @@map("system_settings")
-}
-
