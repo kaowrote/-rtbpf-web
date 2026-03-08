@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { ArrowLeft, Clock, Eye, Plus, Calendar } from "lucide-react";
+import { ArrowLeft, Clock, Eye, Plus, Calendar, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import RowActions from "@/components/admin/RowActions";
@@ -83,7 +83,16 @@ export default async function AdminArticlesPage() {
                             {articles.map((article) => (
                                 <tr key={article.id} className="hover:bg-gray-50 dark:hover:bg-zinc-900/50 transition-colors">
                                     <td className="px-6 py-5">
-                                        <p className="font-thai font-semibold text-black dark:text-white text-base line-clamp-1">{article.title}</p>
+                                        <div className="flex items-center gap-2 group/title">
+                                            <Link 
+                                                href={`/articles/${article.slug}`} 
+                                                target="_blank"
+                                                className="font-thai font-semibold text-black dark:text-white text-base line-clamp-1 hover:text-[#C9A84C] transition-colors"
+                                            >
+                                                {article.title}
+                                            </Link>
+                                            <ExternalLink className="w-3.5 h-3.5 text-gray-400 opacity-0 group-hover/title:opacity-100 transition-opacity" />
+                                        </div>
                                         <p className="text-xs text-gray-500 mt-1">Author: {article.author.name || "Unknown"}</p>
                                     </td>
                                     <td className="px-6 py-5">
