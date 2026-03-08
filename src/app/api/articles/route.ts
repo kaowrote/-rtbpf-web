@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { successResponse, errorResponse } from "@/lib/api-response";
 import { requireEditor } from "@/lib/auth-guard";
+import { logActivity } from "@/lib/logger";
 
 export const dynamic = "force-dynamic";
 export async function GET(request: NextRequest) {
@@ -63,6 +64,8 @@ export async function POST(request: NextRequest) {
                 viewCount: data.viewCount !== undefined ? parseInt(data.viewCount) : 0,
             }
         });
+        
+        await logActivity("CREATE_ARTICLE", "ARTICLE", newArticle.id, { title: newArticle.title });
 
         return successResponse(newArticle, { message: "Article created successfully" }, 201);
     } catch (error: any) {

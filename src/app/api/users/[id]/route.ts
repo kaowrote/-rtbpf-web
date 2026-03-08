@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { successResponse, errorResponse } from "@/lib/api-response";
 import { requireAdmin } from "@/lib/auth-guard";
+import { logActivity } from "@/lib/logger";
 
 export const dynamic = "force-dynamic";
 // GET /api/users/[id] — Get user detail
@@ -59,6 +60,8 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
             },
         });
 
+        await logActivity("UPDATE_USER", "USER", id, { name: updated.name, role: updated.role });
+
         return successResponse(updated, { message: "User updated successfully" });
     } catch (error: any) {
         return errorResponse(error.message || "Failed to update user", 500);
@@ -78,6 +81,8 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
             where: { id },
             data: { status: "DELETED" },
         });
+
+        await logActivity("DELETE_USER", "USER", id);
 
         return successResponse(null, { message: "User deleted successfully" });
     } catch (error: any) {

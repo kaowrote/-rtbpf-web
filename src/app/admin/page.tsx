@@ -1,11 +1,13 @@
 import React from "react";
-import { ArrowRight, FileText, Calendar, Users, Trophy } from "lucide-react";
+import { ArrowRight, FileText, Calendar, Users, Trophy, Activity, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
 import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import 'dayjs/locale/th';
 
+dayjs.extend(relativeTime);
 dayjs.locale('th');
 
 export const dynamic = "force-dynamic";
@@ -18,7 +20,9 @@ export default async function AdminDashboardPage() {
         totalNominees,
         totalUsers,
         pendingUsersCount,
-        recentArticles
+        recentArticles,
+        topArticles,
+        recentLogs
     ] = await Promise.all([
         prisma.article.count(),
         prisma.event.count({
@@ -40,6 +44,30 @@ export default async function AdminDashboardPage() {
                 status: true,
                 createdAt: true,
                 featuredImage: true,
+            }
+        }),
+        prisma.article.findMany({
+            orderBy: { viewCount: 'desc' },
+            take: 4,
+            select: {
+                id: true,
+                title: true,
+                viewCount: true,
+                featuredImage: true,
+                category: { select: { name: true } }
+            }
+        }),
+        prisma.activityLog.findMany({
+            orderBy: { createdAt: 'desc' },
+            take: 6,
+            include: {
+                user: {
+                    select: {
+                        name: true,
+                        image: true,
+                        email: true
+                    }
+                }
             }
         })
     ]);
@@ -89,7 +117,63 @@ export default async function AdminDashboardPage() {
                 ))}
             </div>
 
-            {/* Quick Actions & Recent Activity */}
+            {/* Top Articles & Activity Log Row */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="col-span-1 lg:col-span-2 bg-white dark:bg-[#0a0a0a] p-8 border border-gray-100 dark:border-zinc-800 rounded-xl shadow-sm">
+                    <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-xl font-bold font-thai tracking-wide uppercase">Top Content by Views</h2>
+                        <Link href="/admin/articles" className="text-sm font-bold text-[#C9A84C] hover:text-black dark:hover:text-white flex items-center uppercase tracking-widest transition-colors">
+                            All Content <ArrowRight className="w-4 h-4 ml-1" />
+                        </Link>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {topArticles.map((article) => (
+                            <div key={article.id} className="p-4 bg-gray-50 dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800 rounded-lg group">
+                                <div className="flex gap-4">
+                                    <div className="w-16 h-16 bg-gray-200 dark:bg-zinc-800 rounded-md overflow-hidden shrink-0">
+                                        {article.featuredImage ? (
+                                            <img src={article.featuredImage} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                                        ) : (
+                                            <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-100 dark:from-zinc-800 dark:to-zinc-700" />
+                                        )}
+                                    </div>
+                                    <div className="min-w-0">
+                                        <p className="text-[10px] text-accent font-bold uppercase tracking-widest mb-1">{article.category?.name || "News"}</p>
+                                        <h4 className="font-thai font-bold text-black dark:text-white line-clamp-1 mb-1 group-hover:text-accent transition-colors">{article.title}</h4>
+                                        <p className="text-sm font-bold font-sans text-gray-500">
+                                            {article.viewCount.toLocaleString()} <span className="text-[10px] font-normal uppercase tracking-tighter">Views</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="col-span-1 bg-white dark:bg-[#0a0a0a] p-8 border border-gray-100 dark:border-zinc-800 rounded-xl shadow-sm">
+                    <h2 className="text-xl font-bold font-thai tracking-wide uppercase mb-6">Live Activity</h2>
+                    <div className="space-y-6">
+                        {recentLogs.map((log) => (
+                            <div key={log.id} className="relative pl-6 border-l-2 border-gray-100 dark:border-zinc-800 pb-2 last:pb-0">
+                                <div className="absolute left-[-5px] top-0 w-2 h-2 rounded-full bg-[#C9A84C]" />
+                                <p className="text-xs font-bold text-black dark:text-white uppercase tracking-wider mb-1">
+                                    {log.action.replace(/_/g, " ")}
+                                </p>
+                                <p className="text-xs text-gray-500 font-thai line-clamp-1">
+                                    <span className="font-bold text-gray-700 dark:text-gray-300">{log.user?.name || log.user?.email}</span> {log.entity.toLowerCase()} #{log.entityId?.slice(-5)}
+                                </p>
+                                <p className="text-[9px] text-gray-400 mt-1 uppercase">
+                                    {dayjs(log.createdAt).fromNow()}
+                                </p>
+                            </div>
+                        ))}
+                        {recentLogs.length === 0 && (
+                            <p className="text-center py-4 text-xs text-gray-500 uppercase tracking-widest font-bold">No activity yet</p>
+                        )}
+                    </div>
+                </div>
+            </div>
+
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="col-span-1 lg:col-span-2 bg-white dark:bg-[#0a0a0a] p-8 border border-gray-100 dark:border-zinc-800 rounded-xl shadow-sm">
                     <div className="flex justify-between items-center mb-6">

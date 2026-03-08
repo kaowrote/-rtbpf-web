@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { successResponse, errorResponse } from "@/lib/api-response";
 import { requireEditor } from "@/lib/auth-guard";
+import { logActivity } from "@/lib/logger";
 
 export const dynamic = "force-dynamic";
 // GET /api/settings — Retrieve all or specific settings
@@ -50,6 +51,8 @@ export async function POST(request: NextRequest) {
         });
 
         await Promise.all(promises);
+
+        await logActivity("UPDATE_SETTINGS", "SYSTEM", "multiple", { keys: Object.keys(data) });
 
         return successResponse({ success: true }, { message: "Settings updated successfully" }, 200);
     } catch (error: any) {

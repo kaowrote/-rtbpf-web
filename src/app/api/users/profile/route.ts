@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { successResponse, errorResponse } from "@/lib/api-response";
 import bcrypt from "bcryptjs";
+import { logActivity } from "@/lib/logger";
 
 export async function PUT(request: NextRequest) {
     try {
@@ -56,6 +57,8 @@ export async function PUT(request: NextRequest) {
             where: { id: userId },
             data: dataToUpdate
         });
+
+        await logActivity("UPDATE_PROFILE", "USER", userId);
 
         return successResponse(null, { message: "อัปเดตข้อมูลสำเร็จ" });
     } catch (error: any) {

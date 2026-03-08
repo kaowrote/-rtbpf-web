@@ -16,8 +16,10 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ThemeToggle } from "@/components/shared/ThemeToggle";
 
-export function Navbar() {
+export function Navbar({ siteName }: { siteName?: string }) {
     const [isOpen, setIsOpen] = React.useState(false);
+    
+    const displayName = siteName || siteConfig.name;
 
     return (
         <header className="sticky top-0 z-50 w-full border-b border-black/10 dark:border-white/10 bg-white/95 dark:bg-black/95 text-black dark:text-white backdrop-blur supports-backdrop-filter:bg-white/60 dark:supports-backdrop-filter:bg-black/60 transition-colors duration-300">
@@ -27,7 +29,7 @@ export function Navbar() {
                 <div className="flex items-center gap-2">
                     <Link href="/" className="flex items-center space-x-2">
                         <span className="font-bold text-2xl tracking-tighter text-accent">
-                            {siteConfig.name}
+                            {displayName}
                         </span>
                     </Link>
                 </div>
@@ -83,7 +85,7 @@ export function Navbar() {
                             className="flex items-center"
                             onOpenChange={setIsOpen}
                         >
-                            <span className="font-bold text-xl text-accent">{siteConfig.name}</span>
+                            <span className="font-bold text-xl text-accent">{displayName}</span>
                         </MobileLink>
                         <div className="my-8 flex flex-col space-y-4 pb-10 pr-6">
                             {siteConfig.mainNav.map((item) => (

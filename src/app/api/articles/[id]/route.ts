@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { successResponse, errorResponse } from "@/lib/api-response";
 import { requireEditor } from "@/lib/auth-guard";
+import { logActivity } from "@/lib/logger";
 
 export const dynamic = "force-dynamic";
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -52,6 +53,8 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
             }
         });
 
+        await logActivity("UPDATE_ARTICLE", "ARTICLE", resolvedParams.id, { title: updatedArticle.title });
+
         return successResponse(updatedArticle, { message: "Article updated successfully" });
     } catch (error: any) {
         return errorResponse(error.message || "Failed to update article", 500);
@@ -69,6 +72,8 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
                 id: resolvedParams.id
             }
         });
+
+        await logActivity("DELETE_ARTICLE", "ARTICLE", resolvedParams.id);
 
         return successResponse(null, { message: "Article deleted successfully" });
     } catch (error: any) {
