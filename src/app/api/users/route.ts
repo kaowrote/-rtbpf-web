@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { successResponse, errorResponse } from "@/lib/api-response";
 import { requireAdmin } from "@/lib/auth-guard";
 import bcrypt from "bcryptjs";
+import { sendInviteEmail } from "@/lib/mail";
 
 export const dynamic = "force-dynamic";
 // GET /api/users — List all users
@@ -103,8 +104,15 @@ export async function POST(request: NextRequest) {
                 createdAt: true,
             },
         });
+        
+        // Send invite email (Non-blocking or at least we don't fail for this)
+        try {
+            await sendInviteEmail(newUser.email, newUser.name || "", newUser.role);
+        } catch (mailError) {
+            console.error("Invite Email Failed:", mailError);
+        }
 
-        return successResponse(newUser, { message: "User created successfully" }, 201);
+        return successResponse(newUser, { message: "เชิญผู้ใช้งานเรียบร้อยแล้วและส่งอีเมลแจ้งข้อมูลแล้ว" }, 201);
     } catch (error: any) {
         return errorResponse(error.message || "Failed to create user", 500);
     }

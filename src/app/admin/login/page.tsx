@@ -2,6 +2,7 @@
 
 import React, { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
 import { Shield, Eye, EyeOff, Lock, Mail, AlertCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -120,6 +121,11 @@ export default function AdminLoginPage() {
                                 >
                                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                 </button>
+                            </div>
+                            <div className="flex justify-end mt-1">
+                                <Link href="/admin/forgot-password" className="text-[10px] text-gray-500 hover:text-[#C9A84C] transition-colors uppercase tracking-widest font-bold">
+                                    Forgot Password?
+                                </Link>
                             </div>
                         </div>
 
