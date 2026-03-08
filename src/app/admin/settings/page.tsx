@@ -12,18 +12,22 @@ export default function AdminSettingsPage() {
     const [activeTab, setActiveTab] = useState("general");
     const [logoUrl, setLogoUrl] = useState<string | null>(null);
     const [ogImageUrl, setOgImageUrl] = useState<string | null>(null);
+    const [defaultNewsImageUrl, setDefaultNewsImageUrl] = useState<string | null>(null);
+    const [defaultEventImageUrl, setDefaultEventImageUrl] = useState<string | null>(null);
 
     const [isSaving, setIsSaving] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         // Fetch current settings
-        fetch("/api/settings?keys=logoUrl,ogImageUrl")
+        fetch("/api/settings?keys=logoUrl,ogImageUrl,defaultNewsImageUrl,defaultEventImageUrl")
             .then(res => res.json())
             .then(data => {
                 if (data.success && data.data) {
                     if (data.data.logoUrl) setLogoUrl(data.data.logoUrl);
                     if (data.data.ogImageUrl) setOgImageUrl(data.data.ogImageUrl);
+                    if (data.data.defaultNewsImageUrl) setDefaultNewsImageUrl(data.data.defaultNewsImageUrl);
+                    if (data.data.defaultEventImageUrl) setDefaultEventImageUrl(data.data.defaultEventImageUrl);
                 }
             })
             .catch(console.error)
@@ -38,7 +42,9 @@ export default function AdminSettingsPage() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     logoUrl,
-                    ogImageUrl
+                    ogImageUrl,
+                    defaultNewsImageUrl,
+                    defaultEventImageUrl
                 })
             });
 
@@ -156,6 +162,32 @@ export default function AdminSettingsPage() {
                                     />
                                 </div>
                                 <p className="text-xs text-gray-400 mt-2">JPG, PNG (แนะนำ 1200×630)</p>
+                            </div>
+                            <div>
+                                <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3 block">รูปภาพประกอบข่าว Default</label>
+                                <div className="max-w-md">
+                                    <ImageUpload
+                                        value={defaultNewsImageUrl || undefined}
+                                        onChange={(url) => setDefaultNewsImageUrl(url)}
+                                        folder="settings"
+                                        label=""
+                                        aspectRatio="aspect-[16/9]"
+                                    />
+                                </div>
+                                <p className="text-xs text-gray-400 mt-2">ภาพพื้นหลังเมื่อไม่ได้อัปโหลดรูปปกข่าว (แนะนำ 1920x1080)</p>
+                            </div>
+                            <div>
+                                <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3 block">รูปภาพประกอบกิจกรรม Default</label>
+                                <div className="max-w-md">
+                                    <ImageUpload
+                                        value={defaultEventImageUrl || undefined}
+                                        onChange={(url) => setDefaultEventImageUrl(url)}
+                                        folder="settings"
+                                        label=""
+                                        aspectRatio="aspect-[16/9]"
+                                    />
+                                </div>
+                                <p className="text-xs text-gray-400 mt-2">ภาพพื้นหลังเมื่อไม่ได้อัปโหลดรูปปกกิจกรรม (แนะนำ 1920x1080)</p>
                             </div>
                         </div>
                     </div>

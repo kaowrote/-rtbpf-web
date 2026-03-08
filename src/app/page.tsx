@@ -23,11 +23,29 @@ export default async function Home() {
     take: 3
   });
 
+  const settingsData = await prisma.systemSetting.findMany({
+    where: {
+      key: {
+        in: ["defaultNewsImageUrl", "defaultEventImageUrl", "defaultHeroImageUrl"]
+      }
+    }
+  });
+
+  const settingsMap = settingsData.reduce((acc: Record<string, string | null>, s) => {
+    acc[s.key] = s.value;
+    return acc;
+  }, {});
+
+  const customDefaultNewsImageUrl = settingsMap["defaultNewsImageUrl"] || null;
+  const customDefaultEventImageUrl = settingsMap["defaultEventImageUrl"] || null;
+  const customDefaultHeroImageUrl = settingsMap["defaultHeroImageUrl"] || null;
+
   const featuredArticle = latestArticles[0];
   const sideArticles = latestArticles.slice(1, 4);
 
-  const defaultHeroImage = "https://images.unsplash.com/photo-1543807535-eceef0bc6599?q=80&w=2670&auto=format&fit=crop";
-  const defaultArticleImage = "https://images.unsplash.com/photo-1516280440502-a2fe4df5c58a?q=80&w=2670&auto=format&fit=crop";
+  const defaultHeroImage = customDefaultHeroImageUrl || "https://images.unsplash.com/photo-1543807535-eceef0bc6599?q=80&w=2670&auto=format&fit=crop";
+  const defaultArticleImage = customDefaultNewsImageUrl || "/rtbpf-default-news.png";
+  const defaultEventImage = customDefaultEventImageUrl || "/rtbpf-default-event.png";
 
   return (
     <div className="flex flex-col min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
@@ -161,7 +179,7 @@ export default async function Home() {
                   <Link href={`/events/${event.slug}`} key={event.id} className="group flex flex-col bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-zinc-800 shadow-sm transition-shadow duration-300 hover:shadow-xl xl:rounded-xl overflow-hidden">
                     <div className="relative aspect-[16/10] overflow-hidden bg-gray-100 dark:bg-zinc-800">
                       <Image
-                        src={event.imageUrl || defaultArticleImage}
+                        src={event.imageUrl || defaultEventImage}
                         alt={event.title}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"

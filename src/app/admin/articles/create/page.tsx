@@ -180,7 +180,7 @@ export default function ArticleCreatePage() {
                         <div className="space-y-4 mt-4">
                             <div>
                                 <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">Author (ผู้เขียน)</label>
-                                <Input placeholder="Select Author" readOnly value="Admin 1" className="bg-gray-50 dark:bg-zinc-900 h-10" />
+                                <Input placeholder="Auto-assigned to You" readOnly value="ระบบจะบันทึกเป็นชื่อคุณอัตโนมัติ" className="bg-gray-50 dark:bg-zinc-900 h-10 font-thai text-sm text-gray-500" />
                             </div>
                         </div>
                     </div>

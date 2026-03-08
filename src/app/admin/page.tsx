@@ -12,12 +12,16 @@ export default function AdminDashboardPage() {
                     <p className="text-gray-500 mt-2 font-thai">ยินดีต้อนรับเข้าสู่ระบบจัดการเนื้อหา RTBPF (Content Management System)</p>
                 </div>
                 <div className="flex gap-4">
-                    <Button className="bg-[#1B2A4A] text-white hover:bg-[#C9A84C] transition-colors rounded-none font-bold uppercase tracking-widest text-xs px-6">
-                        + New Article
-                    </Button>
-                    <Button className="bg-black text-white dark:bg-white dark:text-black hover:bg-[#C9A84C] dark:hover:bg-[#C9A84C] dark:hover:text-white transition-colors rounded-none font-bold uppercase tracking-widest text-xs px-6">
-                        + New Event
-                    </Button>
+                    <Link href="/admin/articles/create">
+                        <Button className="bg-[#1B2A4A] text-white hover:bg-[#C9A84C] transition-colors rounded-none font-bold uppercase tracking-widest text-xs px-6">
+                            + New Article
+                        </Button>
+                    </Link>
+                    <Link href="/admin/events/create">
+                        <Button className="bg-black text-white dark:bg-white dark:text-black hover:bg-[#C9A84C] dark:hover:bg-[#C9A84C] dark:hover:text-white transition-colors rounded-none font-bold uppercase tracking-widest text-xs px-6">
+                            + New Event
+                        </Button>
+                    </Link>
                 </div>
             </div>
 

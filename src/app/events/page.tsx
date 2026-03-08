@@ -41,12 +41,19 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
     const params = await searchParams;
     const filterType = params.type || "ALL";
 
-    // Fetch Events
-    const rawEvents = await prisma.event.findMany({
-        orderBy: {
-            startDate: "asc"
-        }
-    });
+    // Fetch Events & Settings
+    const [rawEvents, defaultImageSetting] = await Promise.all([
+        prisma.event.findMany({
+            orderBy: {
+                startDate: "asc"
+            }
+        }),
+        prisma.systemSetting.findUnique({
+            where: { key: "defaultEventImageUrl" }
+        })
+    ]);
+
+    const defaultImageUrl = defaultImageSetting?.value || "/rtbpf-default-event.png";
 
     const mappedEvents = rawEvents.map(event => {
         const dateObj = event.startDate;
@@ -72,7 +79,7 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
             time: timeString,
             venue: event.location || "สมาพันธ์สมาคมวิชาชีพฯ",
             capacity: Number(event.capacity) || 0,
-            imageUrl: event.imageUrl || "https://images.unsplash.com/photo-1540575467063-178a50a2df87?q=80&w=2670&auto=format&fit=crop",
+            imageUrl: event.imageUrl || defaultImageUrl,
         };
     }).sort((a, b) => {
         // Sort by status

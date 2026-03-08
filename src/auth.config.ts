@@ -25,11 +25,24 @@ export const authConfig = {
                     return false; // Redirects to signIn page (/admin/login)
                 }
 
-                // Check role — only SUPER_ADMIN, ADMIN, EDITOR, AUTHOR allowed
-                const allowedRoles = ["SUPER_ADMIN", "ADMIN", "EDITOR", "AUTHOR", "TRANSLATOR", "JURY"];
                 const userRole = auth?.user?.role;
+                
+                // 1. Specific protection for high-privilege routes
+                const isAdminOnlyRoute = nextUrl.pathname.startsWith("/admin/users") || 
+                                       nextUrl.pathname.startsWith("/admin/settings");
+                
+                if (isAdminOnlyRoute) {
+                    const hasAdminPrivilege = userRole === "SUPER_ADMIN" || userRole === "ADMIN";
+                    if (!hasAdminPrivilege) {
+                        return Response.redirect(new URL("/admin", nextUrl));
+                    }
+                    return true;
+                }
+
+                // 2. General protection for any admin access
+                const allowedRoles = ["SUPER_ADMIN", "ADMIN", "EDITOR", "AUTHOR", "TRANSLATOR", "JURY"];
                 if (userRole && !allowedRoles.includes(userRole)) {
-                    // Members cannot access admin
+                    // Members cannot access any admin area
                     return Response.redirect(new URL("/", nextUrl));
                 }
 

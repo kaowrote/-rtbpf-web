@@ -6,21 +6,34 @@ import { usePathname, useRouter } from "next/navigation";
 import { LayoutDashboard, FileText, Calendar as CalendarIcon, Trophy, Settings, Users, LogOut, ChevronRight, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const NAV_ITEMS = [
+interface NavItem {
+    label: string;
+    href: string;
+    icon: any;
+    exact?: boolean;
+    allowedRoles?: string[];
+}
+
+interface NavSection {
+    section: string;
+    items: NavItem[];
+}
+
+const NAV_ITEMS: NavSection[] = [
     {
         section: "Content",
         items: [
-            { label: "Dashboard", href: "/admin", icon: LayoutDashboard, exact: true },
-            { label: "Articles & News", href: "/admin/articles", icon: FileText },
-            { label: "Events", href: "/admin/events", icon: CalendarIcon },
-            { label: "Awards", href: "/admin/awards", icon: Trophy },
+            { label: "Dashboard", href: "/admin", icon: LayoutDashboard, exact: true, allowedRoles: ["SUPER_ADMIN", "ADMIN", "EDITOR", "AUTHOR", "TRANSLATOR", "JURY"] },
+            { label: "Articles & News", href: "/admin/articles", icon: FileText, allowedRoles: ["SUPER_ADMIN", "ADMIN", "EDITOR", "AUTHOR", "TRANSLATOR"] },
+            { label: "Events", href: "/admin/events", icon: CalendarIcon, allowedRoles: ["SUPER_ADMIN", "ADMIN", "EDITOR"] },
+            { label: "Awards", href: "/admin/awards", icon: Trophy, allowedRoles: ["SUPER_ADMIN", "ADMIN", "EDITOR", "JURY"] },
         ],
     },
     {
         section: "System",
         items: [
-            { label: "Users", href: "/admin/users", icon: Users },
-            { label: "Settings", href: "/admin/settings", icon: Settings },
+            { label: "Users", href: "/admin/users", icon: Users, allowedRoles: ["SUPER_ADMIN", "ADMIN"] },
+            { label: "Settings", href: "/admin/settings", icon: Settings, allowedRoles: ["SUPER_ADMIN", "ADMIN"] },
         ],
     },
 ];
@@ -106,39 +119,48 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </div>
 
                 <nav className="flex-1 p-4 space-y-6 overflow-y-auto">
-                    {NAV_ITEMS.map((section) => (
-                        <div key={section.section}>
-                            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500 px-4 mb-2">
-                                {section.section}
-                            </p>
-                            <div className="space-y-1">
-                                {section.items.map((item) => {
-                                    const active = isActive(item.href, item.exact);
-                                    return (
-                                        <Link
-                                            key={item.href}
-                                            href={item.href}
-                                            className={cn(
-                                                "flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all duration-150 group relative",
-                                                active
-                                                    ? "bg-[#1B2A4A] text-white shadow-md"
-                                                    : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-800 hover:text-black dark:hover:text-white"
-                                            )}
-                                        >
-                                            {active && (
-                                                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-[#C9A84C] rounded-r-full" />
-                                            )}
-                                            <item.icon className={cn("w-5 h-5", active ? "text-[#C9A84C]" : "")} />
-                                            <span className="flex-1 text-sm">{item.label}</span>
-                                            {active && (
-                                                <ChevronRight className="w-4 h-4 text-white/50" />
-                                            )}
-                                        </Link>
-                                    );
-                                })}
+                    {NAV_ITEMS.map((section) => {
+                        const filteredItems = section.items.filter(item => {
+                            if (!item.allowedRoles) return true;
+                            return user?.role && item.allowedRoles.includes(user.role);
+                        });
+
+                        if (filteredItems.length === 0) return null;
+
+                        return (
+                            <div key={section.section}>
+                                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500 px-4 mb-2">
+                                    {section.section}
+                                </p>
+                                <div className="space-y-1">
+                                    {filteredItems.map((item) => {
+                                        const active = isActive(item.href, item.exact);
+                                        return (
+                                            <Link
+                                                key={item.href}
+                                                href={item.href}
+                                                className={cn(
+                                                    "flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all duration-150 group relative",
+                                                    active
+                                                        ? "bg-[#1B2A4A] text-white shadow-md"
+                                                        : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-800 hover:text-black dark:hover:text-white"
+                                                )}
+                                            >
+                                                {active && (
+                                                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-[#C9A84C] rounded-r-full" />
+                                                )}
+                                                <item.icon className={cn("w-5 h-5", active ? "text-[#C9A84C]" : "")} />
+                                                <span className="flex-1 text-sm">{item.label}</span>
+                                                {active && (
+                                                    <ChevronRight className="w-4 h-4 text-white/50" />
+                                                )}
+                                            </Link>
+                                        );
+                                    })}
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </nav>
 
                 {/* Bottom User Area */}

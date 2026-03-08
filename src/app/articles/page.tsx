@@ -27,7 +27,7 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
     const skip = (page - 1) * pageSize;
 
     // Fetch published articles
-    const [articlesData, totalCount] = await Promise.all([
+    const [articlesData, totalCount, defaultImageSetting] = await Promise.all([
         prisma.article.findMany({
             where: {
                 status: "PUBLISHED"
@@ -45,8 +45,13 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
             where: {
                 status: "PUBLISHED"
             }
+        }),
+        prisma.systemSetting.findUnique({
+            where: { key: "defaultNewsImageUrl" }
         })
     ]);
+
+    const defaultImageUrl = defaultImageSetting?.value || "/rtbpf-default-news.png";
 
     const articles = articlesData.map(article => {
         // Handle generic fallback formatting
@@ -64,7 +69,7 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
             excerpt: article.excerpt || "อ่านรายละเอียดเพิ่มเติม...",
             category: article.category?.name || "News",
             date: formattedDate,
-            imageUrl: article.featuredImage || "https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=2670&auto=format&fit=crop",
+            imageUrl: article.featuredImage || defaultImageUrl,
         };
     });
 

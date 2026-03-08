@@ -1,0 +1,15 @@
+{
+  "Navbar": {
+    "home": "Startseite",
+    "about": "Über uns",
+    "awards": "Nataraj Awards",
+    "articles": "News",
+    "events": "Veranstaltungen",
+    "contact": "Kontakt"
+  },
+  "General": {
+    "siteName": "RTBPF",
+    "fullName": "Radio und Fernsehen Berufsverband",
+    "description": "Zentrum für Rundfunkmedien, Organisator der Nataraj Awards."
+  }
+}

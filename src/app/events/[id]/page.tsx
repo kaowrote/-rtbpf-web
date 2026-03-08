@@ -14,10 +14,15 @@ export const revalidate = 60; // Cache duration in seconds
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
     const { id: slug } = await params;
 
-    const event = await prisma.event.findUnique({
-        where: { slug },
-        select: { title: true, description: true, imageUrl: true }
-    });
+    const [event, defaultImageSetting] = await Promise.all([
+        prisma.event.findUnique({
+            where: { slug },
+            select: { title: true, description: true, imageUrl: true }
+        }),
+        prisma.systemSetting.findUnique({
+            where: { key: "defaultEventImageUrl" }
+        })
+    ]);
 
     if (!event) {
         return { title: 'Event Not Found | RTBPF' };
@@ -26,7 +31,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     // Since description is HTML, we might string-strip it or just use a generic subtitle here, but let's carefully provide a short version if needed.
     const cleanDescription = (event.description || "").replace(/<[^>]*>?/gm, '').substring(0, 160);
 
-    const defaultImage = "https://images.unsplash.com/photo-1540575467063-178a50a2df87?q=80&w=2670&auto=format&fit=crop";
+    const defaultImage = defaultImageSetting?.value || "/rtbpf-default-event.png";
     const coverImage = event.imageUrl || defaultImage;
 
     return {
@@ -74,13 +79,20 @@ const STATUS_LABELS: Record<string, string> = {
 export default async function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id: slug } = await params;
 
-    const eventData = await prisma.event.findUnique({
-        where: { slug }
-    });
+    const [eventData, defaultImageSetting] = await Promise.all([
+        prisma.event.findUnique({
+            where: { slug }
+        }),
+        prisma.systemSetting.findUnique({
+            where: { key: "defaultEventImageUrl" }
+        })
+    ]);
 
     if (!eventData) {
         notFound();
     }
+
+    const defaultImageUrl = defaultImageSetting?.value || "/rtbpf-default-event.png";
 
     const dateObj = eventData.startDate;
     const formattedDate = new Intl.DateTimeFormat('th-TH', {
@@ -110,7 +122,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
         capacity: eventData.capacity || 0,
         registered: 0, // Not tracked in DB schema currently
         registrationUrl: eventData.registerUrl,
-        imageUrl: eventData.imageUrl || "https://images.unsplash.com/photo-1540575467063-178a50a2df87?q=80&w=2670&auto=format&fit=crop",
+        imageUrl: eventData.imageUrl || defaultImageUrl,
         organizer: "สมาพันธ์สมาคมวิชาชีพวิทยุกระจายเสียงและวิทยุโทรทัศน์",
         contactEmail: "info@rtbpf.org",
         contactPhone: "02-123-4567"

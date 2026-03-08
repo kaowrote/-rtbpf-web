@@ -11,9 +11,16 @@ import 'dayjs/locale/th';
 
 dayjs.locale('th');
 
+import { auth } from "@/auth";
+
 export const dynamic = "force-dynamic";
 
 export default async function AdminAwardsPage() {
+    const session = await auth();
+    const user = session?.user;
+    const isJury = user?.role === 'JURY';
+    const canManageAll = user?.role === 'SUPER_ADMIN' || user?.role === 'ADMIN' || user?.role === 'EDITOR';
+
     const rawAwardYears = await prisma.awardYear.findMany({
         orderBy: { year: 'desc' },
         include: {
@@ -52,13 +59,15 @@ export default async function AdminAwardsPage() {
                     <h1 className="text-3xl font-bold font-thai tracking-tight text-black dark:text-white uppercase">Nataraja Awards Database</h1>
                     <p className="text-gray-500 mt-2 font-thai">จัดการข้อมูลผู้เข้าชิง ผู้ชนะ และสาขารางวัลนาฏราชทั้งหมด</p>
                 </div>
-                <div className="flex gap-3">
-                    <Link href="/admin/awards/create">
-                        <Button className="bg-[#1B2A4A] text-white hover:bg-[#C9A84C] transition-colors rounded-none font-bold uppercase tracking-widest text-xs px-6">
-                            <Plus className="w-4 h-4 mr-2" /> Add Nominee
-                        </Button>
-                    </Link>
-                </div>
+                {!isJury && (
+                    <div className="flex gap-3">
+                        <Link href="/admin/awards/create">
+                            <Button className="bg-[#1B2A4A] text-white hover:bg-[#C9A84C] transition-colors rounded-none font-bold uppercase tracking-widest text-xs px-6">
+                                <Plus className="w-4 h-4 mr-2" /> Add Nominee
+                            </Button>
+                        </Link>
+                    </div>
+                )}
             </div>
 
             {/* Award Years Summary Cards */}
@@ -165,6 +174,8 @@ export default async function AdminAwardsPage() {
                                             <RowActions
                                                 editUrl={`/admin/awards/edit/${nominee.id}`}
                                                 deleteApiUrl={`/api/awards/nominees/${nominee.id}`}
+                                                showEdit={!isJury}
+                                                showDelete={!isJury}
                                             />
                                         </td>
                                     </tr>

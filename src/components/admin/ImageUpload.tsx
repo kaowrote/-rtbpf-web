@@ -4,6 +4,7 @@ import React, { useState, useRef, useCallback } from "react";
 import Image from "next/image";
 import { Upload, X, Loader2, ImageIcon, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import imageCompression from 'browser-image-compression';
 
 interface ImageUploadProps {
     /** Current image URL */
@@ -37,11 +38,32 @@ export default function ImageUpload({
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleUpload = useCallback(
-        async (file: File) => {
+        async (originalFile: File) => {
             setError(null);
             setIsUploading(true);
 
             try {
+                let file = originalFile;
+
+                // Compress image if it's larger than 1MB
+                if (file.size > 1024 * 1024) {
+                    try {
+                        const options = {
+                            maxSizeMB: 3,
+                            maxWidthOrHeight: 1920,
+                            useWebWorker: true,
+                        };
+                        file = await imageCompression(originalFile, options);
+                    } catch (error) {
+                        console.error('Error compressing image:', error);
+                        // Fallback to original file if compression fails
+                    }
+                }
+
+                if (file.size > 4.5 * 1024 * 1024) {
+                    throw new Error("ไฟล์ภาพยังมีขนาดใหญ่เกิน 4.5MB แม้ผ่านการบีบอัดแล้ว กรุณาเลือกไฟล์ใหม่");
+                }
+
                 const formData = new FormData();
                 formData.append("file", file);
                 formData.append("folder", folder);
@@ -51,7 +73,13 @@ export default function ImageUpload({
                     body: formData,
                 });
 
-                const data = await res.json();
+                let data;
+                try {
+                    data = await res.json();
+                } catch (e) {
+                    // Handles 413 Request Entity Too Large returning HTML/Text
+                    throw new Error("ไฟล์ภาพอาจมีขนาดใหญ่เกินไป หรือเซิร์ฟเวอร์ไม่พร้อมให้บริการ");
+                }
 
                 if (!res.ok || !data.success) {
                     throw new Error(data.error?.message || "อัพโหลดไม่สำเร็จ");

@@ -14,16 +14,21 @@ export const revalidate = 60; // Revalidate cache every 60 seconds
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
     const { id: slug } = await params;
 
-    const article = await prisma.article.findUnique({
-        where: { slug, status: "PUBLISHED" },
-        select: { title: true, excerpt: true, featuredImage: true }
-    });
+    const [article, defaultImageSetting] = await Promise.all([
+        prisma.article.findUnique({
+            where: { slug, status: "PUBLISHED" },
+            select: { title: true, excerpt: true, featuredImage: true }
+        }),
+        prisma.systemSetting.findUnique({
+            where: { key: "defaultNewsImageUrl" }
+        })
+    ]);
 
     if (!article) {
         return { title: 'Article Not Found | RTBPF' };
     }
 
-    const defaultImage = "https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=2670&auto=format&fit=crop";
+    const defaultImage = defaultImageSetting?.value || "/rtbpf-default-news.png";
     const coverImage = article.featuredImage || defaultImage;
 
     return {
@@ -67,33 +72,36 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
     }).format(dateObj);
 
     // Fetch related articles
-    const relatedArticles = await prisma.article.findMany({
-        where: {
-            status: "PUBLISHED",
-            id: { not: article.id },
-            ...(article.categoryId ? { categoryId: article.categoryId } : {})
-        },
-        orderBy: { publishedAt: "desc" },
-        take: 2,
-        include: { category: true }
-    });
+    const [relatedArticles, defaultImageSetting] = await Promise.all([
+        prisma.article.findMany({
+            where: {
+                status: "PUBLISHED",
+                id: { not: article.id },
+                ...(article.categoryId ? { categoryId: article.categoryId } : {})
+            },
+            orderBy: { publishedAt: "desc" },
+            take: 2,
+            include: { category: true }
+        }),
+        prisma.systemSetting.findUnique({
+            where: { key: "defaultNewsImageUrl" }
+        })
+    ]);
+
+    const defaultImageUrl = defaultImageSetting?.value || "/rtbpf-default-news.png";
 
     return (
         <div className="flex flex-col min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
 
             {/* 1. HERO IMAGE */}
             <section className="relative w-full h-[60vh] md:h-[75vh] flex items-end">
-                {article.featuredImage ? (
-                    <Image
-                        src={article.featuredImage}
-                        alt={article.title}
-                        fill
-                        className="object-cover"
-                        priority
-                    />
-                ) : (
-                    <div className="absolute inset-0 bg-gray-900 border-b border-gray-800" />
-                )}
+                <Image
+                    src={article.featuredImage || defaultImageUrl}
+                    alt={article.title}
+                    fill
+                    className="object-cover"
+                    priority
+                />
                 <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-tr from-black/90 via-black/40 to-transparent"></div>
 
                 {/* Title Overlay */}

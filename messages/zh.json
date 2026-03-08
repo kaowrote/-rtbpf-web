@@ -1,0 +1,15 @@
+{
+    "Navbar": {
+        "home": "首页",
+        "about": "关于我们",
+        "awards": "娜塔拉奖",
+        "articles": "新闻资讯",
+        "events": "活动",
+        "contact": "联系我们"
+    },
+    "General": {
+        "siteName": "RTBPF",
+        "fullName": "泰国广播电视职业联合会",
+        "description": "广播媒体中心，娜塔拉奖组织者。"
+    }
+}

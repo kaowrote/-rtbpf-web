@@ -10,16 +10,36 @@ import 'dayjs/locale/th';
 
 dayjs.locale('th');
 
+import { auth } from "@/auth";
+
 export const dynamic = "force-dynamic";
 
 export default async function AdminArticlesPage() {
+    const session = await auth();
+    const user = session?.user;
+    const isAuthor = user?.role === 'AUTHOR';
+    const canManageAll = user?.role === 'SUPER_ADMIN' || user?.role === 'ADMIN' || user?.role === 'EDITOR';
+
     const articles = await prisma.article.findMany({
+        where: isAuthor ? { authorId: user?.id } : {},
         orderBy: { createdAt: 'desc' },
         include: {
-            author: { select: { name: true } },
+            author: { select: { id: true, name: true } },
             publisher: { select: { name: true } }
         }
     });
+
+    const canDelete = (article: any) => {
+        if (user?.role === 'SUPER_ADMIN' || user?.role === 'ADMIN') return true;
+        if (article.authorId === user?.id) return true;
+        return false;
+    };
+
+    const canEdit = (article: any) => {
+        if (user?.role === 'SUPER_ADMIN' || user?.role === 'ADMIN' || user?.role === 'EDITOR') return true;
+        if (article.authorId === user?.id) return true;
+        return false;
+    };
 
     const getStatusTheme = (status: string) => {
         if (status === 'PUBLISHED') return 'bg-green-100 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800';
@@ -97,6 +117,8 @@ export default async function AdminArticlesPage() {
                                         <RowActions
                                             editUrl={`/admin/articles/edit/${article.id}`}
                                             deleteApiUrl={`/api/articles/${article.id}`}
+                                            showEdit={canEdit(article)}
+                                            showDelete={canDelete(article)}
                                         />
                                     </td>
                                 </tr>

@@ -16,10 +16,14 @@ export default function RowActions({
     editUrl,
     deleteApiUrl,
     onDeleted,
+    showEdit = true,
+    showDelete = true,
 }: {
     editUrl: string;
     deleteApiUrl: string;
     onDeleted?: () => void;
+    showEdit?: boolean;
+    showDelete?: boolean;
 }) {
     const router = useRouter();
     const [isDeleting, setIsDeleting] = useState(false);
@@ -43,6 +47,9 @@ export default function RowActions({
         }
     };
 
+    // If nothing to show, don't show the menu at all
+    if (!showEdit && !showDelete) return null;
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -51,16 +58,20 @@ export default function RowActions({
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px] rounded-sm font-sans">
-                <DropdownMenuItem asChild className="cursor-pointer">
-                    <Link href={editUrl}>
-                        <Edit className="w-4 h-4 mr-2" />
-                        Edit
-                    </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleDelete} className="cursor-pointer text-red-600 focus:bg-red-50 focus:text-red-700 dark:text-red-400 dark:focus:bg-red-950/30">
-                    <Trash className="w-4 h-4 mr-2" />
-                    Delete
-                </DropdownMenuItem>
+                {showEdit && (
+                    <DropdownMenuItem asChild className="cursor-pointer">
+                        <Link href={editUrl}>
+                            <Edit className="w-4 h-4 mr-2" />
+                            Edit
+                        </Link>
+                    </DropdownMenuItem>
+                )}
+                {showDelete && (
+                    <DropdownMenuItem onClick={handleDelete} className="cursor-pointer text-red-600 focus:bg-red-50 focus:text-red-700 dark:text-red-400 dark:focus:bg-red-950/30">
+                        <Trash className="w-4 h-4 mr-2" />
+                        Delete
+                    </DropdownMenuItem>
+                )}
             </DropdownMenuContent>
         </DropdownMenu>
     );
