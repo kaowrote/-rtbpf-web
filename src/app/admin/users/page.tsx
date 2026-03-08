@@ -19,6 +19,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { UserAvatar } from "@/components/admin/UserAvatar";
 import dayjs from "dayjs";
 import 'dayjs/locale/th';
 import { toast } from "sonner";
@@ -177,9 +178,7 @@ export default function AdminUsersPage() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                         {pendingUsers.map((user) => (
                             <div key={user.id} className="flex items-center gap-3 bg-white dark:bg-[#0a0a0a] p-4 rounded-lg border border-amber-100 dark:border-amber-900/20">
-                                <div className="w-10 h-10 overflow-hidden rounded-full bg-gray-100 dark:bg-zinc-800 shrink-0">
-                                    <Image src={user.image || "/rtbpf-default-profile.png"} alt={user.name || "User"} width={40} height={40} className="object-cover w-full h-full" />
-                                </div>
+                                <UserAvatar name={user.name} email={user.email} image={user.image} size="default" />
                                 <div className="flex-1 min-w-0">
                                     <p className="font-thai font-semibold text-sm text-black dark:text-white truncate">{user.name || user.email.split('@')[0]}</p>
                                     <p className="text-xs text-gray-500 truncate">{user.email}</p>
@@ -281,9 +280,7 @@ export default function AdminUsersPage() {
                                         <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-zinc-900/50 transition-colors">
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center gap-3">
-                                                    <div className="w-10 h-10 overflow-hidden rounded-full bg-gray-100 dark:bg-zinc-800 shrink-0 ring-2 ring-offset-2 ring-offset-white dark:ring-offset-[#0a0a0a] ring-gray-200 dark:ring-zinc-700">
-                                                        <Image src={user.image || "/rtbpf-default-profile.png"} alt={user.name || "User"} width={40} height={40} className="object-cover w-full h-full" />
-                                                    </div>
+                                                    <UserAvatar name={user.name} email={user.email} image={user.image} size="default" />
                                                     <div>
                                                         <p className="font-thai font-semibold text-black dark:text-white line-clamp-1">{user.name || "Unnamed User"}</p>
                                                         <p className="text-xs text-gray-500">{user.id}</p>

@@ -53,18 +53,19 @@ export const authConfig = {
         },
         jwt({ token, user }) {
             if (user) {
+                token.id = user.id;
                 token.role = user.role;
                 token.status = user.status;
+                token.image = user.image;
             }
             return token;
         },
         session({ session, token }) {
             if (session.user) {
-                if (token.sub) {
-                    session.user.id = token.sub;
-                }
+                session.user.id = token.id as string;
                 session.user.role = token.role as string;
                 session.user.status = token.status as string;
+                session.user.image = token.image as string;
             }
             return session;
         },

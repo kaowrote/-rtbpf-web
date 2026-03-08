@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { LayoutDashboard, FileText, Calendar as CalendarIcon, Trophy, Settings, Users, LogOut, ChevronRight, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { UserAvatar } from "@/components/admin/UserAvatar";
 
 interface NavItem {
     label: string;
@@ -42,6 +43,7 @@ interface SessionUser {
     name?: string | null;
     email?: string | null;
     role?: string;
+    image?: string | null;
 }
 
 const ROLE_LABELS: Record<string, string> = {
@@ -166,9 +168,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 {/* Bottom User Area */}
                 <div className="p-4 border-t border-gray-100 dark:border-zinc-800">
                     <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-gray-50 dark:bg-zinc-900">
-                        <div className="w-8 h-8 rounded-full bg-[#C9A84C] flex items-center justify-center text-xs font-bold text-white shrink-0">
-                            {initials}
-                        </div>
+                        <UserAvatar 
+                            name={user?.name} 
+                            email={user?.email || undefined} 
+                            image={user?.image} 
+                            size="sm" 
+                            className="ring-0" 
+                        />
                         <div className="flex-1 min-w-0">
                             <p className="text-sm font-bold text-black dark:text-white truncate">{displayName}</p>
                             <p className="text-[10px] text-gray-500 uppercase tracking-widest">{displayRole}</p>

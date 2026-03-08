@@ -24,6 +24,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { UserAvatar } from "@/components/admin/UserAvatar";
 import dayjs from "dayjs";
 import 'dayjs/locale/th';
 import { toast } from "sonner";
@@ -194,9 +195,13 @@ export default function AdminUserDetailPage() {
                 </Link>
                 <div className="flex items-start justify-between">
                     <div className="flex items-center gap-5">
-                        <div className="w-20 h-20 overflow-hidden rounded-full bg-gray-100 dark:bg-zinc-800 ring-4 ring-offset-2 ring-offset-white dark:ring-offset-[#050505] ring-[#C9A84C]/30">
-                            <Image src={user.image || "/rtbpf-default-profile.png"} alt={user.name || "User"} width={80} height={80} className="object-cover w-full h-full" />
-                        </div>
+                        <UserAvatar 
+                            name={user.name} 
+                            email={user.email} 
+                            image={user.image} 
+                            size="xl" 
+                            className="ring-4 ring-[#C9A84C]/30"
+                        />
                         <div>
                             <h1 className="text-2xl font-bold font-thai text-black dark:text-white">{user.name || "Unnamed Member"}</h1>
                             <div className="flex items-center gap-3 mt-2">
