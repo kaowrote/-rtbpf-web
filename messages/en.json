@@ -1,6 +1,18 @@
 {
   "Index": {
-    "title": "Home"
+    "title": "Home",
+    "readMore": "Read Full Story",
+    "latestNews": "Latest News",
+    "viewAllNews": "View All News",
+    "upcomingEvents": "Upcoming Events",
+    "viewAllEvents": "View All Events",
+    "awardsDatabase": "Nataraja Awards Database",
+    "awardsDesc": "Explore high-quality works and prestigious award winners from the first edition to the present.",
+    "awardsByYear": "Awards by Year",
+    "browseFullDatabase": "Browse Full Database",
+    "stayConnected": "Stay Connected",
+    "newsletterDesc": "Subscribe to receive news, special articles, and updates on the Nataraj Awards before anyone else.",
+    "subscribe": "Subscribe"
   },
   "Navbar": {
     "home": "Home",
@@ -8,11 +20,18 @@
     "awards": "Nataraj Awards",
     "articles": "News & Articles",
     "events": "Events",
-    "contact": "Contact Us"
+    "contact": "Contact Us",
+    "search": "Search"
   },
   "Articles": {
     "latest": "Latest News",
     "readMore": "Read More",
-    "related": "Related Stories"
+    "related": "Related Stories",
+    "backToNews": "Back to News",
+    "shareStory": "Share Story",
+    "relatedTags": "Related Tags",
+    "share": "Share:",
+    "viewAll": "View All",
+    "readNow": "Read Now"
   }
 }

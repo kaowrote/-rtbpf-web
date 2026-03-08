@@ -105,7 +105,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             <div className="pt-6">
               <Link href={featuredArticle ? `/articles/${featuredArticle.slug}` : "/articles"}>
                 <Button size="lg" className="bg-accent text-black hover:bg-white hover:text-black font-thai text-lg h-12 rounded-none px-8 font-semibold transition-all duration-300">
-                  อ่านเรื่องราวฉบับเต็ม
+                  {t("readMore")}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
@@ -119,10 +119,10 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         <div className="container px-6 mx-auto relative z-10">
           <div className="flex justify-between items-end mb-10 border-b-2 border-black dark:border-zinc-800 pb-4">
             <h2 className="text-3xl md:text-5xl font-bold font-thai tracking-tight text-black dark:text-white uppercase">
-              Latest News
+              {t("latestNews")}
             </h2>
             <Link href="/articles" className="hidden sm:flex items-center text-sm font-bold uppercase tracking-wider text-black dark:text-white hover:text-accent dark:hover:text-accent transition-colors">
-              View All News <ChevronRight className="ml-1 h-4 w-4" />
+              {t("viewAllNews")} <ChevronRight className="ml-1 h-4 w-4" />
             </Link>
           </div>
 
@@ -192,10 +192,10 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           <div className="container px-6 mx-auto">
             <div className="flex justify-between items-end mb-10 border-b-2 border-black dark:border-zinc-800 pb-4">
               <h2 className="text-3xl md:text-5xl font-bold font-thai tracking-tight text-black dark:text-white uppercase">
-                Upcoming Events
+                {t("upcomingEvents")}
               </h2>
               <Link href="/events" className="hidden sm:flex items-center text-sm font-bold uppercase tracking-wider text-black dark:text-white hover:text-accent dark:hover:text-accent transition-colors">
-                All Events <ChevronRight className="ml-1 h-4 w-4" />
+                {t("viewAllEvents")} <ChevronRight className="ml-1 h-4 w-4" />
               </Link>
             </div>
 
@@ -245,10 +245,10 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         <div className="container px-6 mx-auto">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-4xl md:text-5xl font-bold font-thai tracking-tight mb-4 text-accent">
-              Nataraja Awards Database
+              {t("awardsDatabase")}
             </h2>
             <p className="text-gray-400 font-thai text-lg">
-              สำรวจผลงานคุณภาพและผู้ที่ได้รับรางวัลอันทรงเกียรติตั้งแต่ครั้งแรกจนถึงปัจจุบัน
+              {t("awardsDesc")}
             </p>
           </div>
 
@@ -275,7 +275,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           <div className="mt-12 text-center">
             <Link href="/awards">
               <Button variant="outline" size="lg" className="border-accent text-accent hover:bg-accent hover:text-black font-semibold uppercase tracking-widest text-sm rounded-none h-14 px-8 border-2 bg-transparent transition-all duration-300">
-                Browse Full Database
+                {t("browseFullDatabase")}
               </Button>
             </Link>
           </div>
@@ -335,9 +335,9 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       <section className="w-full py-24 bg-accent text-black text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-white/20 dark:bg-black/20 mix-blend-overlay"></div>
         <div className="container px-6 mx-auto max-w-2xl relative z-10">
-          <h2 className="text-3xl md:text-5xl font-bold uppercase tracking-widest mb-4 font-serif">Stay Connected</h2>
+          <h2 className="text-3xl md:text-5xl font-bold uppercase tracking-widest mb-4 font-serif">{t("stayConnected")}</h2>
           <p className="text-black/80 font-thai text-lg mb-8 font-medium">
-            ลงทะเบียนเพื่อรับข่าวสาร บทความพิเศษ และอัปเดตงานประกาศรางวัลนาฏราชก่อนใคร
+            {t("newsletterDesc")}
           </p>
           <form className="flex flex-col sm:flex-row gap-0 justify-center w-full max-w-lg mx-auto shadow-2xl xl:rounded-xl overflow-hidden">
             <input
@@ -346,7 +346,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
               className="h-14 px-6 w-full sm:w-2/3 bg-white dark:bg-[#0a0a0a] text-black dark:text-white focus:outline-none rounded-none font-sans border-0"
             />
             <Button className="h-14 w-full sm:w-1/3 bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200 rounded-none font-bold uppercase tracking-wider transition-colors">
-              Subscribe
+              {t("subscribe")}
             </Button>
           </form>
         </div>

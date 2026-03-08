@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
@@ -18,6 +19,7 @@ import { ThemeToggle } from "@/components/shared/ThemeToggle";
 import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
 
 export function Navbar({ siteName }: { siteName?: string }) {
+    const t = useTranslations("Navbar");
     const [isOpen, setIsOpen] = React.useState(false);
     
     const displayName = siteName || siteConfig.name;
@@ -49,7 +51,12 @@ export function Navbar({ siteName }: { siteName?: string }) {
                                                 "font-thai bg-transparent text-black/80 dark:text-white/80 hover:bg-transparent hover:text-accent focus:bg-transparent focus:text-accent text-sm md:text-base tracking-wide uppercase font-semibold transition-colors dark:hover:text-accent dark:focus:text-accent"
                                             )}
                                         >
-                                            {item.title}
+                                            {item.href === "/" ? t("home") : 
+                                             item.href === "/about" ? t("about") :
+                                             item.href === "/awards" ? t("awards") :
+                                             item.href === "/articles" ? t("articles") :
+                                             item.href === "/events" ? t("events") :
+                                             item.href === "/contact" ? t("contact") : item.title}
                                         </Link>
                                     </NavigationMenuLink>
                                 </NavigationMenuItem>
@@ -97,7 +104,12 @@ export function Navbar({ siteName }: { siteName?: string }) {
                                     onOpenChange={setIsOpen}
                                     className="font-thai text-lg text-black/80 dark:text-white/80 hover:text-accent dark:hover:text-accent transition-colors"
                                 >
-                                    {item.title}
+                                    {item.href === "/" ? t("home") : 
+                                     item.href === "/about" ? t("about") :
+                                     item.href === "/awards" ? t("awards") :
+                                     item.href === "/articles" ? t("articles") :
+                                     item.href === "/events" ? t("events") :
+                                     item.href === "/contact" ? t("contact") : item.title}
                                 </MobileLink>
                             ))}
                             <div className="pt-6 mt-6 border-t border-black/10 dark:border-white/10 flex flex-col gap-4">

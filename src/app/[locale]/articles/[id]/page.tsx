@@ -137,7 +137,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                 <div className="container relative z-10 px-6 mx-auto pb-12 md:pb-24">
                     <Link href="/articles" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-[#C9A84C] hover:text-white transition-colors mb-6 group">
                         <ArrowLeft className="mr-2 h-4 w-4 transform group-hover:-translate-x-1 transition-transform" />
-                        {t("backToNews") || "Back to News"}
+                        {t("backToNews")}
                     </Link>
 
                     <div className="max-w-4xl">
@@ -171,7 +171,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                     {/* Left Column: Social Share & Side Elements */}
                     <aside className="lg:w-1/4 pt-2 order-2 lg:order-1 hidden lg:block">
                         <div className="sticky top-32">
-                            <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-4">Share Story</h3>
+                            <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-4">{t("shareStory")}</h3>
                             <div className="flex lg:flex-col gap-4">
                                 <Button variant="outline" size="icon" className="rounded-full border-gray-200 dark:border-zinc-800 hover:text-[#C9A84C] hover:border-[#C9A84C] dark:hover:border-[#C9A84C] text-black dark:text-white bg-transparent">
                                     <Facebook className="h-4 w-4" />
@@ -202,7 +202,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                         {/* Article Tags */}
                         {article.tags && article.tags.length > 0 && (
                             <div className="mt-16 pt-8 border-t border-gray-100 dark:border-zinc-800">
-                                <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500 mb-6">Related Tags</h3>
+                                <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500 mb-6">{t("relatedTags")}</h3>
                                 <div className="flex flex-wrap gap-2">
                                     {article.tags.map((tag) => (
                                         <Link 
@@ -219,7 +219,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
 
                         {/* Mobile share block */}
                         <div className="mt-16 pt-8 border-t border-gray-200 dark:border-white/10 lg:hidden flex items-center justify-between">
-                            <span className="text-sm font-bold uppercase tracking-widest text-gray-400">Share:</span>
+                            <span className="text-sm font-bold uppercase tracking-widest text-gray-400">{t("share")}</span>
                             <div className="flex gap-4">
                                 <Button variant="ghost" size="icon" className="rounded-full hover:text-[#C9A84C]"><Facebook className="h-5 w-5" /></Button>
                                 <Button variant="ghost" size="icon" className="rounded-full hover:text-[#C9A84C]"><Twitter className="h-5 w-5" /></Button>
@@ -237,10 +237,10 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                     <div className="container mx-auto px-6 lg:px-8">
                         <div className="flex items-center justify-between mb-12 border-b border-gray-200 dark:border-zinc-800 pb-6">
                             <h2 className="text-2xl md:text-4xl font-bold font-thai text-black dark:text-white uppercase tracking-wide">
-                                {t("related") || "Related Stories"}
+                                {t("related")}
                             </h2>
                             <Link href="/articles" className="inline-flex items-center text-sm font-bold uppercase tracking-widest text-[#1B2A4A] dark:text-white hover:text-[#C9A84C] dark:hover:text-[#C9A84C] transition-colors">
-                                View All <ArrowRight className="ml-2 w-4 h-4" />
+                                {t("viewAll")} <ArrowRight className="ml-2 w-4 h-4" />
                             </Link>
                         </div>
 
@@ -277,7 +277,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                                                 {related.title}
                                             </h3>
                                             <span className="text-xs uppercase tracking-widest font-bold text-gray-500 group-hover:text-black dark:group-hover:text-white transition-colors">
-                                                Read Now &rarr;
+                                                {t("readNow")} &rarr;
                                             </span>
                                         </div>
                                     </Link>
