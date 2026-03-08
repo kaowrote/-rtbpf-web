@@ -1,0 +1,13 @@
+{
+  "Index": {
+    "title": "Home"
+  },
+  "Navbar": {
+    "home": "Home",
+    "about": "About Us",
+    "awards": "Nataraj Awards",
+    "articles": "News & Articles",
+    "events": "Events",
+    "contact": "Contact Us"
+  }
+}
