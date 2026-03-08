@@ -157,7 +157,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                                 {formattedDate}
                             </span>
                             <span className="flex items-center">
-                                By {(article as any).author?.name || "RTBPF"}
+                                {t("by")} {(article as any).author?.name || "RTBPF"}
                             </span>
                         </div>
                     </div>

@@ -90,8 +90,7 @@ export function Footer() {
                 {/* Bottom Bar */}
                 <div className="border-t border-white/20 pt-8 mt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/50">
                     <p>
-                        &copy; {new Date().getFullYear()} {siteConfig.fullName}. All rights
-                        reserved.
+                        &copy; {new Date().getFullYear()} {siteConfig.fullName}. {t("rightsReserved")}
                     </p>
                     <div className="flex gap-6">
                         <Link href="/privacy" className="hover:text-white transition-colors">

@@ -342,7 +342,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           <form className="flex flex-col sm:flex-row gap-0 justify-center w-full max-w-lg mx-auto shadow-2xl xl:rounded-xl overflow-hidden">
             <input
               type="email"
-              placeholder="Enter your email address"
+              placeholder={t("emailPlaceholder")}
               className="h-14 px-6 w-full sm:w-2/3 bg-white dark:bg-[#0a0a0a] text-black dark:text-white focus:outline-none rounded-none font-sans border-0"
             />
             <Button className="h-14 w-full sm:w-1/3 bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200 rounded-none font-bold uppercase tracking-wider transition-colors">

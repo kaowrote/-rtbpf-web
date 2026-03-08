@@ -12,7 +12,9 @@
     "browseFullDatabase": "Browse Full Database",
     "stayConnected": "Stay Connected",
     "newsletterDesc": "Subscribe to receive news, special articles, and updates on the Nataraj Awards before anyone else.",
-    "subscribe": "Subscribe"
+    "subscribe": "Subscribe",
+    "emailPlaceholder": "Enter your email address",
+    "rightsReserved": "All rights reserved."
   },
   "Navbar": {
     "home": "Home",
@@ -21,7 +23,8 @@
     "articles": "News & Articles",
     "events": "Events",
     "contact": "Contact Us",
-    "search": "Search"
+    "search": "Search",
+    "toggleMenu": "Toggle Menu"
   },
   "Articles": {
     "latest": "Latest News",
@@ -32,7 +35,8 @@
     "relatedTags": "Related Tags",
     "share": "Share:",
     "viewAll": "View All",
-    "readNow": "Read Now"
+    "readNow": "Read Now",
+    "by": "By"
   },
   "Footer": {
     "quickLinks": "Quick Links",

@@ -69,7 +69,7 @@ export function Navbar({ siteName }: { siteName?: string }) {
                 <div className="flex items-center space-x-1 md:space-x-4 ml-auto md:ml-0">
                     <Button variant="ghost" size="icon" className="text-black dark:text-white hover:text-accent dark:hover:text-accent hover:bg-transparent hidden sm:flex transition-colors">
                         <Search className="h-5 w-5" />
-                        <span className="sr-only">Search</span>
+                        <span className="sr-only">{t("search")}</span>
                     </Button>
                     <LanguageSwitcher />
                     <ThemeToggle />
@@ -85,7 +85,7 @@ export function Navbar({ siteName }: { siteName?: string }) {
                             className="px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden text-black dark:text-white transition-colors"
                         >
                             <Menu className="h-6 w-6" />
-                            <span className="sr-only">Toggle Menu</span>
+                            <span className="sr-only">{t("toggleMenu")}</span>
                         </Button>
                     </SheetTrigger>
                     <SheetContent side="left" className="pr-0 bg-white dark:bg-black text-black dark:text-white border-r border-black/10 dark:border-white/10">

@@ -1,18 +1,20 @@
 {
   "Index": {
-    "title": "Home",
-    "readMore": "Read Full Story",
-    "latestNews": "Latest News",
-    "viewAllNews": "View All News",
-    "upcomingEvents": "Upcoming Events",
-    "viewAllEvents": "View All Events",
-    "awardsDatabase": "Nataraja Awards Database",
-    "awardsDesc": "Explore high-quality works and prestigious award winners from the first edition to the present.",
-    "awardsByYear": "Awards by Year",
-    "browseFullDatabase": "Browse Full Database",
-    "stayConnected": "Stay Connected",
-    "newsletterDesc": "Subscribe to receive news, special articles, and updates on the Nataraj Awards before anyone else.",
-    "subscribe": "Subscribe"
+    "title": "ホーム",
+    "readMore": "全文を読む",
+    "latestNews": "最新ニュース",
+    "viewAllNews": "すべてのニュースを見る",
+    "upcomingEvents": "今後のイベント",
+    "viewAllEvents": "すべてのイベントを見る",
+    "awardsDatabase": "ナタラジャ賞データベース",
+    "awardsDesc": "初回から現在までの高品質な作品と名誉ある受賞者を探索してください。",
+    "awardsByYear": "年ごとの受賞作",
+    "browseFullDatabase": "データベース全体を閲覧",
+    "stayConnected": "つながりを保つ",
+    "newsletterDesc": "ニュース、特別記事、ナタラジャ賞の最新情報を誰よりも早くお受け取りください。",
+    "subscribe": "購読する",
+    "emailPlaceholder": "メールアドレスを入力してください",
+    "rightsReserved": "全著作権所有。"
   },
   "Navbar": {
     "home": "ホーム",
@@ -21,28 +23,30 @@
     "articles": "ニュース＆記事",
     "events": "イベント",
     "contact": "お問い合わせ",
-    "search": "検索"
+    "search": "検索",
+    "toggleMenu": "メニュー表示切替"
   },
   "Articles": {
-    "latest": "Latest News",
-    "readMore": "Read More",
-    "related": "Related Stories",
-    "backToNews": "Back to News",
-    "shareStory": "Share Story",
-    "relatedTags": "Related Tags",
-    "share": "Share:",
-    "viewAll": "View All",
-    "readNow": "Read Now"
+    "latest": "最新ニュース",
+    "readMore": "詳細を読む",
+    "related": "関連ストーリー",
+    "backToNews": "ニュースに戻る",
+    "shareStory": "ストーリーを共有",
+    "relatedTags": "関連タグ",
+    "share": "共有：",
+    "viewAll": "すべて見る",
+    "readNow": "今すぐ読む",
+    "by": "著者："
   },
   "Footer": {
-    "quickLinks": "Quick Links",
-    "home": "Home",
-    "about": "About Organization",
-    "awards": "Nataraj Awards",
-    "articles": "News & Articles",
-    "contactUs": "Contact Us",
-    "address": "Maleenont Tower (M3) 11th floor\nRama 4 Road, Khlong Tan\nKhlong Toei, Bangkok 10110",
-    "privacy": "Privacy Policy",
-    "terms": "Terms of Use"
+    "quickLinks": "クイックリンク",
+    "home": "ホーム",
+    "about": "組織について",
+    "awards": "ナタラジャ賞",
+    "articles": "ニュース＆記事",
+    "contactUs": "お問い合わせ",
+    "address": "Maleenont Tower (M3) 11階\nRama 4 Road, Khlong Tan\nKhlong Toei, Bangkok 10110",
+    "privacy": "プライバシーポリシー",
+    "terms": "利用規約"
   }
 }

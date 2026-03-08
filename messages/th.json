@@ -12,7 +12,9 @@
     "browseFullDatabase": "ดูฐานข้อมูลทั้งหมด",
     "stayConnected": "ติดตามเรา",
     "newsletterDesc": "ลงทะเบียนเพื่อรับข่าวสาร บทความพิเศษ และอัปเดตงานประกาศรางวัลนาฏราชก่อนใคร",
-    "subscribe": "ติดตาม"
+    "subscribe": "ติดตาม",
+    "emailPlaceholder": "ใส่อีเมลของคุณ",
+    "rightsReserved": "สงวนลิขสิทธิ์ทั้งหมด"
   },
   "Navbar": {
     "home": "หน้าแรก",
@@ -21,7 +23,8 @@
     "articles": "ข่าวสาร/บทความ",
     "events": "กิจกรรม",
     "contact": "ติดต่อเรา",
-    "search": "ค้นหา"
+    "search": "ค้นหา",
+    "toggleMenu": "เปิดแผงเมนู"
   },
   "Articles": {
     "latest": "ข่าวสารล่าสุด",
@@ -32,7 +35,8 @@
     "relatedTags": "แท็กที่เกี่ยวข้อง",
     "share": "แชร์:",
     "viewAll": "ดูทั้งหมด",
-    "readNow": "อ่านต่อ"
+    "readNow": "อ่านต่อ",
+    "by": "โดย"
   },
   "Footer": {
     "quickLinks": "ลิงก์ด่วน",
