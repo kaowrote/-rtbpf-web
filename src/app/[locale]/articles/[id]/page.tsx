@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Share2, Facebook, Twitter, Link2, Calendar, ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -8,21 +7,27 @@ import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
 import type { Metadata } from "next";
 
+import { Link } from "@/i18n/routing";
+import { getTranslations } from "next-intl/server";
+
 export const dynamic = "force-dynamic";
 export const revalidate = 60; // Revalidate cache every 60 seconds
 
-export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
-    const { id: slug } = await params;
+export async function generateMetadata({ params }: { params: Promise<{ id: string, locale: string }> }): Promise<Metadata> {
+    const { id: slug, locale } = await params;
 
-    const [article, defaultImageSetting] = await Promise.all([
-        prisma.article.findUnique({
-            where: { slug, status: "PUBLISHED" },
-            select: { title: true, excerpt: true, featuredImage: true }
-        }),
-        prisma.systemSetting.findUnique({
-            where: { key: "defaultNewsImageUrl" }
-        })
-    ]);
+    const article = await prisma.article.findUnique({
+        where: { slug, status: "PUBLISHED" },
+        include: {
+            translations: {
+                where: { languageCode: locale }
+            }
+        } as any
+    });
+
+    const defaultImageSetting = await prisma.systemSetting.findUnique({
+        where: { key: "defaultNewsImageUrl" }
+    });
 
     if (!article) {
         return { title: 'Article Not Found | RTBPF' };
@@ -31,26 +36,31 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     const defaultImage = defaultImageSetting?.value || "/rtbpf-default-news.png";
     const coverImage = article.featuredImage || defaultImage;
 
+    const articleAny = article as any;
+    const title = articleAny.translations?.[0]?.title || article.title;
+    const description = articleAny.translations?.[0]?.excerpt || article.excerpt || "ข่าวสารและบทความจากสมาพันธ์สมาคมวิชาชีพวิทยุกระจายเสียงและวิทยุโทรทัศน์ (RTBPF)";
+
     return {
-        title: `${article.title} | RTBPF`,
-        description: article.excerpt || "ข่าวสารและบทความจากสมาพันธ์สมาคมวิชาชีพวิทยุกระจายเสียงและวิทยุโทรทัศน์ (RTBPF)",
+        title: `${title} | RTBPF`,
+        description,
         openGraph: {
-            title: article.title,
-            description: article.excerpt || "",
+            title,
+            description,
             images: [coverImage],
             type: "article",
         },
         twitter: {
             card: "summary_large_image",
-            title: article.title,
-            description: article.excerpt || "",
+            title,
+            description,
             images: [coverImage],
         }
     };
 }
 
-export default async function ArticleDetailPage({ params }: { params: Promise<{ id: string }> }) {
-    const { id: slug } = await params;
+export default async function ArticleDetailPage({ params }: { params: Promise<{ id: string, locale: string }> }) {
+    const { id: slug, locale } = await params;
+    const t = await getTranslations("Articles");
 
     // Fetch and increment view count
     const article = await prisma.article.update({
@@ -58,16 +68,22 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
         data: { viewCount: { increment: 1 } },
         include: {
             category: true,
-            author: true
-        }
+            author: true,
+            translations: {
+                where: { languageCode: locale }
+            }
+        } as any
     }).catch(async (e) => {
         // Fallback to just find if update fails (e.g. not published yet but previewing)
         return await prisma.article.findUnique({
             where: { slug },
             include: {
                 category: true,
-                author: true
-            }
+                author: true,
+                translations: {
+                    where: { languageCode: locale }
+                }
+            } as any
         });
     });
 
@@ -82,9 +98,13 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
         year: 'numeric'
     }).format(dateObj);
 
+    const defaultImageSetting = await prisma.systemSetting.findUnique({
+        where: { key: "defaultNewsImageUrl" }
+    });
+    const defaultImageUrl = defaultImageSetting?.value || "/rtbpf-default-news.png";
+
     // Fetch related articles
-    const [relatedArticles, defaultImageSetting] = await Promise.all([
-        prisma.article.findMany({
+    const relatedArticles = await prisma.article.findMany({
             where: {
                 status: "PUBLISHED",
                 id: { not: article.id },
@@ -93,13 +113,11 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
             orderBy: { publishedAt: "desc" },
             take: 2,
             include: { category: true }
-        }),
-        prisma.systemSetting.findUnique({
-            where: { key: "defaultNewsImageUrl" }
-        })
-    ]);
+        });
 
-    const defaultImageUrl = defaultImageSetting?.value || "/rtbpf-default-news.png";
+    const displayTitle = (article as any).translations?.[0]?.title || article.title;
+    const displayExcerpt = (article as any).translations?.[0]?.excerpt || article.excerpt;
+    const displayContent = (article as any).translations?.[0]?.content ? ((article as any).translations[0].content as string) : (article.content as string);
 
     return (
         <div className="flex flex-col min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
@@ -108,7 +126,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
             <section className="relative w-full h-[60vh] md:h-[75vh] flex items-end">
                 <Image
                     src={article.featuredImage || defaultImageUrl}
-                    alt={article.title}
+                    alt={displayTitle}
                     fill
                     className="object-cover"
                     priority
@@ -119,17 +137,17 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                 <div className="container relative z-10 px-6 mx-auto pb-12 md:pb-24">
                     <Link href="/articles" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-[#C9A84C] hover:text-white transition-colors mb-6 group">
                         <ArrowLeft className="mr-2 h-4 w-4 transform group-hover:-translate-x-1 transition-transform" />
-                        Back to News
+                        {t("backToNews") || "Back to News"}
                     </Link>
 
                     <div className="max-w-4xl">
                         {article.category && (
                             <Badge className="bg-white/20 hover:bg-white/30 text-white backdrop-blur-md border border-white/30 rounded-none px-3 py-1 font-sans text-xs uppercase tracking-widest mb-4">
-                                {article.category.name}
+                                {(article.category as any).name}
                             </Badge>
                         )}
                         <h1 className="text-3xl md:text-5xl lg:text-7xl font-bold font-thai text-white leading-[1.15] mb-6">
-                            {article.title}
+                            {displayTitle}
                         </h1>
 
                         {/* Meta details */}
@@ -139,7 +157,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                                 {formattedDate}
                             </span>
                             <span className="flex items-center">
-                                By {article.author?.name || "RTBPF"}
+                                By {(article as any).author?.name || "RTBPF"}
                             </span>
                         </div>
                     </div>
@@ -170,15 +188,15 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
 
                     {/* Right/Center Column: Main Text */}
                     <article className="lg:w-3/4 order-1 lg:order-2">
-                        {article.excerpt && (
+                        {displayExcerpt && (
                             <p className="text-xl md:text-2xl lg:text-3xl font-thai font-semibold text-[#C9A84C] leading-snug mb-16 border-l-4 border-[#C9A84C] pl-6 md:pl-8 italic">
-                                &quot;{article.excerpt}&quot;
+                                &quot;{displayExcerpt}&quot;
                             </p>
                         )}
 
                         <div
                             className="prose prose-lg md:prose-xl dark:prose-invert max-w-none font-thai text-gray-800 dark:text-gray-200 leading-relaxed font-light tiptap"
-                            dangerouslySetInnerHTML={{ __html: article.content as string }}
+                            dangerouslySetInnerHTML={{ __html: displayContent }}
                         />
 
                         {/* Article Tags */}
@@ -219,7 +237,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                     <div className="container mx-auto px-6 lg:px-8">
                         <div className="flex items-center justify-between mb-12 border-b border-gray-200 dark:border-zinc-800 pb-6">
                             <h2 className="text-2xl md:text-4xl font-bold font-thai text-black dark:text-white uppercase tracking-wide">
-                                Related Stories
+                                {t("related") || "Related Stories"}
                             </h2>
                             <Link href="/articles" className="inline-flex items-center text-sm font-bold uppercase tracking-widest text-[#1B2A4A] dark:text-white hover:text-[#C9A84C] dark:hover:text-[#C9A84C] transition-colors">
                                 View All <ArrowRight className="ml-2 w-4 h-4" />

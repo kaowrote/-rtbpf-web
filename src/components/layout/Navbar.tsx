@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ThemeToggle } from "@/components/shared/ThemeToggle";
+import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
 
 export function Navbar({ siteName }: { siteName?: string }) {
     const [isOpen, setIsOpen] = React.useState(false);
@@ -63,6 +64,7 @@ export function Navbar({ siteName }: { siteName?: string }) {
                         <Search className="h-5 w-5" />
                         <span className="sr-only">Search</span>
                     </Button>
+                    <LanguageSwitcher />
                     <ThemeToggle />
 
                     {/* Minimal Action (No Member logic here) */}

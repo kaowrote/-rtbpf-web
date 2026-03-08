@@ -1,27 +1,54 @@
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import Image from "next/image";
 import { ArrowRight, ChevronRight, PlayCircle, Calendar, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { prisma } from "@/lib/prisma";
 
+import { getTranslations } from "next-intl/server";
+
 export const dynamic = "force-dynamic";
 export const revalidate = 60; // Cache 60 seconds
 
-export default async function Home() {
+export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const t = await getTranslations("Index");
   // Fetch real data from the database
-  const latestArticles = await prisma.article.findMany({
+  const latestArticlesRaw = await prisma.article.findMany({
     where: { status: "PUBLISHED" },
     orderBy: { createdAt: "desc" },
     take: 4,
-    include: { category: true }
+    include: { 
+      category: true,
+      translations: {
+        where: { languageCode: locale }
+      }
+    } as any
   });
 
-  const upcomingEvents = await prisma.event.findMany({
+  const latestArticles = latestArticlesRaw.map((a: any) => ({
+    ...a,
+    title: a.translations[0]?.title || a.title,
+    excerpt: a.translations[0]?.excerpt || a.excerpt,
+    categoryName: a.category?.name || "News"
+  }));
+
+  const upcomingEventsRaw = await prisma.event.findMany({
     where: { status: "UPCOMING" },
     orderBy: { startDate: "asc" },
-    take: 3
-  });
+    take: 3,
+    include: {
+      translations: {
+        where: { languageCode: locale }
+      }
+    } as any
+  }) as any;
+
+  const upcomingEvents = upcomingEventsRaw.map((e: any) => ({
+    ...e,
+    title: e.translations[0]?.title || e.title,
+    excerpt: e.translations[0]?.excerpt || e.excerpt,
+  }));
 
   const settingsData = await prisma.systemSetting.findMany({
     where: {
@@ -73,7 +100,7 @@ export default async function Home() {
               {featuredArticle?.title || "ประกาศผลรางวัลนาฏราช ครั้งที่ 16: รางวัลแห่งความภาคภูมิใจ"}
             </h1>
             <p className="text-lg md:text-xl text-gray-200 mt-4 max-w-2xl font-thai leading-relaxed line-clamp-2">
-              {featuredArticle?.excerpt || "ร่วมชื่นชมและแสดงความยินดีกับผลงานยอดเยี่ยมแห่งปี ในงานประกาศผลรางวัลที่ยิ่งใหญ่ที่สุดของวงการวิทยุและโทรทัศน์ไทย"}
+              {(featuredArticle as any)?.excerpt || "ร่วมชื่นชมและแสดงความยินดีกับผลงานยอดเยี่ยมแห่งปี ในงานประกาศผลรางวัลที่ยิ่งใหญ่ที่สุดของวงการวิทยุและโทรทัศน์ไทย"}
             </p>
             <div className="pt-6">
               <Link href={featuredArticle ? `/articles/${featuredArticle.slug}` : "/articles"}>
@@ -113,7 +140,7 @@ export default async function Home() {
                     />
                   </div>
                   <p className="text-accent font-bold uppercase tracking-widest text-xs mb-2">
-                    {sideArticles[0].category?.name || "News"}
+                    {(sideArticles[0] as any).categoryName || "News"}
                   </p>
                   <h3 className="text-3xl font-bold font-thai text-black dark:text-white group-hover:text-accent dark:group-hover:text-accent transition-colors leading-tight mb-3">
                     {sideArticles[0].title}
@@ -141,7 +168,7 @@ export default async function Home() {
                       </div>
                     )}
                     <p className="text-accent font-bold uppercase tracking-widest text-[10px] mb-1">
-                      {article.category?.name || "News"}
+                      {(article as any).categoryName || "News"}
                     </p>
                     <h4 className="text-xl font-bold font-thai text-black dark:text-white group-hover:text-accent transition-colors leading-snug">
                       {article.title}
@@ -173,7 +200,7 @@ export default async function Home() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {upcomingEvents.map((event) => {
+              {upcomingEvents.map((event: any) => {
                 const eventDate = new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).format(event.startDate);
                 return (
                   <Link href={`/events/${event.slug}`} key={event.id} className="group flex flex-col bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-zinc-800 shadow-sm transition-shadow duration-300 hover:shadow-xl xl:rounded-xl overflow-hidden">

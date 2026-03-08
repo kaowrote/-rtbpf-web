@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
                 const translated = await translateWithAI(sourceFields, langCode);
 
                 // Save or Update Translation table
-                const translation = await prisma.translation.upsert({
+                const translation = await (prisma as any).translation.upsert({
                     where: {
                         entityType_entityId_languageCode: {
                             entityType,
@@ -54,6 +54,8 @@ export async function POST(request: NextRequest) {
                         content: translated.content,
                         status: "AUTO_GENERATED",
                         confidenceScore: translated.confidenceScore || 0.9,
+                        articleId: entityType === "ARTICLE" ? entityId : undefined,
+                        eventId: entityType === "EVENT" ? entityId : undefined,
                     },
                     create: {
                         entityType,
@@ -64,6 +66,8 @@ export async function POST(request: NextRequest) {
                         content: translated.content,
                         status: "AUTO_GENERATED",
                         confidenceScore: translated.confidenceScore || 0.9,
+                        articleId: entityType === "ARTICLE" ? entityId : undefined,
+                        eventId: entityType === "EVENT" ? entityId : undefined,
                     },
                 });
 
@@ -97,7 +101,7 @@ export async function GET(request: NextRequest) {
             return errorResponse("Missing entityId or entityType", 400);
         }
 
-        const translations = await prisma.translation.findMany({
+        const translations = await (prisma as any).translation.findMany({
             where: { entityId, entityType },
             orderBy: { languageCode: "asc" }
         });
