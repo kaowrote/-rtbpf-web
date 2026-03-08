@@ -146,6 +146,13 @@ export function InviteUserDialog({ onSuccess }: InviteUserDialogProps) {
                         </div>
                     </div>
 
+                    <div className="pt-2 bg-blue-50 dark:bg-blue-950/20 p-3 border border-blue-100 dark:border-blue-900/30 rounded">
+                        <p className="text-[10px] text-blue-600 dark:text-blue-400 font-thai flex items-start gap-1.5 uppercase tracking-wider font-bold">
+                            <span className="shrink-0 mt-0.5">⚠️</span> 
+                            <span>รหัสผ่านเริ่มต้นคือ: <strong>rtbpf2024</strong> (โปรดแจ้งให้ผู้ใช้อัปเดตรหัสผ่านภายหลัง)</span>
+                        </p>
+                    </div>
+
                     <DialogFooter className="p-6 bg-gray-50/50 dark:bg-zinc-900/50 border-t border-gray-100 dark:border-zinc-800 flex items-center justify-end">
                         <div className="flex gap-2">
                             <Button 

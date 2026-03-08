@@ -167,30 +167,41 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
                 {/* Bottom User Area */}
                 <div className="p-4 border-t border-gray-100 dark:border-zinc-800">
-                    <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-gray-50 dark:bg-zinc-900">
-                        <UserAvatar 
-                            name={user?.name} 
-                            email={user?.email || undefined} 
-                            image={user?.image} 
-                            size="sm" 
-                            className="ring-0" 
-                        />
-                        <div className="flex-1 min-w-0">
-                            <p className="text-sm font-bold text-black dark:text-white truncate">{displayName}</p>
-                            <p className="text-[10px] text-gray-500 uppercase tracking-widest">{displayRole}</p>
+                    <div className="flex items-center gap-2 px-4 py-3 rounded-lg bg-gray-50 dark:bg-zinc-900/50 border border-gray-100 dark:border-zinc-800/50 shadow-sm">
+                        <Link href="/admin/profile" className="flex items-center gap-3 flex-1 min-w-0 transition-opacity hover:opacity-75 group overflow-hidden">
+                            <UserAvatar 
+                                name={user?.name} 
+                                email={user?.email || undefined} 
+                                image={user?.image} 
+                                size="sm" 
+                                className="ring-0 group-hover:ring-2 ring-[#C9A84C]/50 transition-all shrink-0" 
+                            />
+                            <div className="flex-1 min-w-0">
+                                <p className="text-[13px] font-bold text-black dark:text-white truncate">{displayName}</p>
+                                <p className="text-[9px] text-gray-500 uppercase tracking-widest truncate">{displayRole}</p>
+                            </div>
+                        </Link>
+                        <div className="flex items-center gap-0.5 shrink-0">
+                             <Link 
+                                href="/admin/profile" 
+                                className="p-1.5 text-gray-400 hover:text-[#C9A84C] transition-colors"
+                                title="Profile Settings"
+                             >
+                                <Settings className="w-4 h-4" />
+                             </Link>
+                             <button
+                                onClick={handleLogout}
+                                disabled={isLoggingOut}
+                                className="p-1.5 text-gray-400 hover:text-red-500 transition-colors disabled:opacity-50"
+                                title="Logout"
+                             >
+                                {isLoggingOut ? (
+                                    <Loader2 className="w-4 h-4 animate-spin text-[#C9A84C]" />
+                                ) : (
+                                    <LogOut className="w-4 h-4" />
+                                )}
+                             </button>
                         </div>
-                        <button
-                            onClick={handleLogout}
-                            disabled={isLoggingOut}
-                            className="text-gray-400 hover:text-red-500 transition-colors disabled:opacity-50"
-                            title="Logout"
-                        >
-                            {isLoggingOut ? (
-                                <Loader2 className="w-4 h-4 animate-spin" />
-                            ) : (
-                                <LogOut className="w-4 h-4" />
-                            )}
-                        </button>
                     </div>
                 </div>
             </aside>

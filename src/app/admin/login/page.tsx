@@ -122,11 +122,6 @@ export default function AdminLoginPage() {
                                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                 </button>
                             </div>
-                            <div className="flex justify-end mt-1">
-                                <Link href="/admin/forgot-password" className="text-[10px] text-gray-500 hover:text-[#C9A84C] transition-colors uppercase tracking-widest font-bold">
-                                    Forgot Password?
-                                </Link>
-                            </div>
                         </div>
 
                         <Button
