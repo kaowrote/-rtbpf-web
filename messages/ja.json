@@ -14,7 +14,18 @@
     "newsletterDesc": "ニュース、特別記事、ナタラジャ賞の最新情報を誰よりも早くお受け取りください。",
     "subscribe": "購読する",
     "emailPlaceholder": "メールアドレスを入力してください",
-    "rightsReserved": "全著作権所有。"
+    "rightsReserved": "全著作権所有。",
+    "featureStory": "特集記事",
+    "news": "ニュース",
+    "academyTitle": "アカデミー",
+    "academyDesc": "ラジオ・テレビ放送専門職連盟。クリエイティブメディア業界の質の高いプロフェッショナルの拠点です。",
+    "academyBtn": "私たちについて",
+    "natarajaTitle": "ナタラジャ",
+    "natarajaDesc": "タイのメディア業界における作品や人材の質の証となる、最高の栄誉です。",
+    "natarajaBtn": "アワード",
+    "eventsTitle": "イベント",
+    "eventsDesc": "メディア専門家の可能性を広げるために設計されたイベント、トレーニングプログラム、セミナーに参加し、最新情報を入手してください。",
+    "eventsBtn": "すべてのイベント"
   },
   "Navbar": {
     "home": "ホーム",
@@ -48,5 +59,12 @@
     "address": "Maleenont Tower (M3) 11階\nRama 4 Road, Khlong Tan\nKhlong Toei, Bangkok 10110",
     "privacy": "プライバシーポリシー",
     "terms": "利用規約"
+  },
+  "Categories": {
+    "News": "ニュース",
+    "Awards": "アワード",
+    "Feature": "特集",
+    "Events": "イベント",
+    "featured": "特集記事"
   }
 }

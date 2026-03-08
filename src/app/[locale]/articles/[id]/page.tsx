@@ -61,6 +61,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 export default async function ArticleDetailPage({ params }: { params: Promise<{ id: string, locale: string }> }) {
     const { id: slug, locale } = await params;
     const t = await getTranslations("Articles");
+    const tCat = await getTranslations("Categories");
 
     // Fetch and increment view count
     const article = await prisma.article.update({
@@ -112,7 +113,12 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
             },
             orderBy: { publishedAt: "desc" },
             take: 2,
-            include: { category: true }
+            include: { 
+                category: true,
+                translations: {
+                    where: { languageCode: locale }
+                }
+            } as any
         });
 
     const displayTitle = (article as any).translations?.[0]?.title || article.title;
@@ -141,9 +147,9 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                     </Link>
 
                     <div className="max-w-4xl">
-                        {article.category && (
+                        { (article as any).category && (
                             <Badge className="bg-white/20 hover:bg-white/30 text-white backdrop-blur-md border border-white/30 rounded-none px-3 py-1 font-sans text-xs uppercase tracking-widest mb-4">
-                                {(article.category as any).name}
+                                { tCat.has((article as any).category.name) ? tCat((article as any).category.name) : (article as any).category.name }
                             </Badge>
                         )}
                         <h1 className="text-3xl md:text-5xl lg:text-7xl font-bold font-thai text-white leading-[1.15] mb-6">
@@ -268,13 +274,13 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                                             )}
                                         </div>
                                         <div className="w-full md:w-7/12 py-6 flex flex-col justify-center">
-                                            {related.category && (
+                                            { (related as any).category && (
                                                 <Badge className="bg-black/5 dark:bg-white/10 text-black dark:text-white hover:bg-black/10 rounded-sm px-2 py-1 font-sans text-[10px] uppercase tracking-widest mb-3 w-fit border-none shadow-none">
-                                                    {related.category.name}
+                                                    { (related as any).category && (tCat.has((related as any).category.name) ? tCat((related as any).category.name) : (related as any).category.name) }
                                                 </Badge>
                                             )}
                                             <h3 className="text-xl font-bold font-thai text-black dark:text-white group-hover:text-[#C9A84C] transition-colors leading-snug mb-4">
-                                                {related.title}
+                                                {(related as any).translations?.[0]?.title || related.title}
                                             </h3>
                                             <span className="text-xs uppercase tracking-widest font-bold text-gray-500 group-hover:text-black dark:group-hover:text-white transition-colors">
                                                 {t("readNow")} &rarr;

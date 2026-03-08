@@ -13,6 +13,7 @@ export const revalidate = 60; // Cache 60 seconds
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const t = await getTranslations("Index");
+  const tCat = await getTranslations("Categories");
   // Fetch real data from the database
   const latestArticlesRaw = await prisma.article.findMany({
     where: { status: "PUBLISHED" },
@@ -26,12 +27,16 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     } as any
   });
 
-  const latestArticles = latestArticlesRaw.map((a: any) => ({
-    ...a,
-    title: a.translations[0]?.title || a.title,
-    excerpt: a.translations[0]?.excerpt || a.excerpt,
-    categoryName: a.category?.name || "News"
-  }));
+  const latestArticles = latestArticlesRaw.map((a: any) => {
+    const rawCatName = a.category?.name || "News";
+    const localizedCatName = tCat.has(rawCatName) ? tCat(rawCatName) : rawCatName;
+    return {
+      ...a,
+      title: a.translations[0]?.title || a.title,
+      excerpt: a.translations[0]?.excerpt || a.excerpt,
+      categoryName: localizedCatName
+    };
+  });
 
   const upcomingEventsRaw = await prisma.event.findMany({
     where: { status: "UPCOMING" },
@@ -94,7 +99,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         <div className="container relative z-10 px-6 mx-auto">
           <div className="max-w-4xl space-y-4">
             <Badge className="bg-accent text-black hover:bg-accent/90 uppercase tracking-widest font-sans font-bold px-3 py-1 rounded-none text-xs">
-              {featuredArticle?.category?.name || "Feature Story"}
+              {featuredArticle?.categoryName || tCat("featured")}
             </Badge>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold font-thai text-white leading-[1.1] tracking-tight hover:text-accent transition-colors duration-300">
               {featuredArticle?.title || "ประกาศผลรางวัลนาฏราช ครั้งที่ 16: รางวัลแห่งความภาคภูมิใจ"}
@@ -140,7 +145,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                     />
                   </div>
                   <p className="text-accent font-bold uppercase tracking-widest text-xs mb-2">
-                    {(sideArticles[0] as any).categoryName || "News"}
+                    {sideArticles[0].category?.translations[0]?.name || sideArticles[0].category?.name || t("news")}
                   </p>
                   <h3 className="text-3xl font-bold font-thai text-black dark:text-white group-hover:text-accent dark:group-hover:text-accent transition-colors leading-tight mb-3">
                     {sideArticles[0].title}
@@ -168,7 +173,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                       </div>
                     )}
                     <p className="text-accent font-bold uppercase tracking-widest text-[10px] mb-1">
-                      {(article as any).categoryName || "News"}
+                      {article.category?.translations[0]?.name || article.category?.name || t("news")}
                     </p>
                     <h4 className="text-xl font-bold font-thai text-black dark:text-white group-hover:text-accent transition-colors leading-snug">
                       {article.title}
@@ -291,12 +296,12 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
               <div className="w-12 h-12 bg-black dark:bg-white text-white dark:text-black flex items-center justify-center mb-8 rounded-full">
                 <span className="font-bold text-xl font-serif">A</span>
               </div>
-              <h3 className="text-2xl font-bold uppercase tracking-wide text-black dark:text-white mb-4">The Academy</h3>
+              <h3 className="text-2xl font-bold uppercase tracking-wide text-black dark:text-white mb-4">{t("academyTitle")}</h3>
               <p className="text-gray-600 dark:text-gray-400 font-thai mb-8 leading-relaxed">
-                สมาพันธ์สมาคมวิชาชีพวิทยุกระจายเสียงและวิทยุโทรทัศน์ แหล่งศูนย์รวมของบุคลากรคุณภาพในแวดวงสื่อสร้างสรรค์
+                {t("academyDesc")}
               </p>
               <Link href="/about" className="inline-flex items-center text-accent font-bold hover:text-black dark:hover:text-white transition-colors uppercase text-sm tracking-wider">
-                About Us <ArrowRight className="ml-2 h-4 w-4" />
+                {t("academyBtn")} <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </div>
 
@@ -305,12 +310,12 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
               <div className="w-12 h-12 bg-accent text-black flex items-center justify-center mb-8 rounded-full">
                 <span className="font-bold text-xl font-serif">N</span>
               </div>
-              <h3 className="text-2xl font-bold uppercase tracking-wide text-black dark:text-white mb-4">Nataraja</h3>
+              <h3 className="text-2xl font-bold uppercase tracking-wide text-black dark:text-white mb-4">{t("natarajaTitle")}</h3>
               <p className="text-gray-600 dark:text-gray-400 font-thai mb-8 leading-relaxed">
-                รางวัลเชิดชูเกียรติสูงสุด ที่เปรียบเสมือนเครื่องหมายการันตีคุณภาพของผลงานและบุคลากรในวงการสื่อไทย
+                {t("natarajaDesc")}
               </p>
               <Link href="/awards" className="inline-flex items-center text-accent font-bold hover:text-black dark:hover:text-white transition-colors uppercase text-sm tracking-wider">
-                The Awards <ArrowRight className="ml-2 h-4 w-4" />
+                {t("natarajaBtn")} <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </div>
 
@@ -319,12 +324,12 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
               <div className="w-12 h-12 bg-[#1B2A4A] dark:bg-[#1f2b46] text-white flex items-center justify-center mb-8 rounded-full">
                 <span className="font-bold text-xl font-serif">E</span>
               </div>
-              <h3 className="text-2xl font-bold uppercase tracking-wide text-black dark:text-white mb-4">Events</h3>
+              <h3 className="text-2xl font-bold uppercase tracking-wide text-black dark:text-white mb-4">{t("eventsTitle")}</h3>
               <p className="text-gray-600 dark:text-gray-400 font-thai mb-8 leading-relaxed">
-                ติดตามข่าวสารและเข้าร่วมกิจกรรม โครงการอบรม สัมมนา ที่จัดขึ้นเพื่อพัฒนาศักยภาพผู้ปฏิบัติงานในวงการสื่อ
+                {t("eventsDesc")}
               </p>
               <Link href="/events" className="inline-flex items-center text-accent font-bold hover:text-black dark:hover:text-white transition-colors uppercase text-sm tracking-wider">
-                All Events <ArrowRight className="ml-2 h-4 w-4" />
+                {t("eventsBtn")} <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </div>
           </div>

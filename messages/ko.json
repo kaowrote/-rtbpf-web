@@ -14,7 +14,18 @@
     "newsletterDesc": "뉴스, 특별 기사, 나타라자 어워드 업데이트를 가장 먼저 받아보세요.",
     "subscribe": "구독하기",
     "emailPlaceholder": "이메일 주소를 입력하세요",
-    "rightsReserved": "모든 권리 보유."
+    "rightsReserved": "모든 권리 보유.",
+    "featureStory": "특집 기사",
+    "news": "뉴스",
+    "academyTitle": "아카데미",
+    "academyDesc": "라디오 및 텔레비전 방송 전문가 연맹. 창의적인 미디어 산업의 우수한 전문가들을 위한 허브입니다.",
+    "academyBtn": "회사 소개",
+    "natarajaTitle": "나타라자",
+    "natarajaDesc": "태국 미디어 산업의 작품과 인력에 대한 품질의 보증 마크 역할을 하는 최고의 영예입니다.",
+    "natarajaBtn": "어워드",
+    "eventsTitle": "이벤트",
+    "eventsDesc": "미디어 전문가의 잠재력을 개발하기 위해 고안된 이벤트, 교육 프로그램 및 세미나에 참여하고 정보를 얻으십시오.",
+    "eventsBtn": "모든 이벤트"
   },
   "Navbar": {
     "home": "홈",
@@ -48,5 +59,12 @@
     "address": "Maleenont Tower (M3) 11층\nRama 4 Road, Khlong Tan\nKhlong Toei, Bangkok 10110",
     "privacy": "개인정보 보호정책",
     "terms": "이용 약관"
+  },
+  "Categories": {
+    "News": "뉴스",
+    "Awards": "어워드",
+    "Feature": "특집",
+    "Events": "이벤트",
+    "featured": "특집 기사"
   }
 }
