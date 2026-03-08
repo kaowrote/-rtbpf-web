@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import ImageUpload from "@/components/admin/ImageUpload";
+import { AdvancedColorPicker } from "@/components/admin/AdvancedColorPicker";
 import { toast } from "sonner";
 
 export default function AdminSettingsPage() {
@@ -292,27 +293,18 @@ export default function AdminSettingsPage() {
                                             title={opt.name}
                                         />
                                     ))}
-                                    {/* Custom Color Picker for Accent */}
-                                    <div className="relative group">
-                                        <button
-                                            onClick={() => document.getElementById('accent-picker')?.click()}
-                                            className={`w-10 h-10 rounded-full border-2 transition-transform hover:scale-110 flex items-center justify-center overflow-hidden bg-gradient-to-tr from-red-500 via-green-500 to-blue-500 ${![ "#C9A84C", "#3B82F6", "#10B981", "#8B5CF6", "#F59E0B", "#EF4444"].includes(settings.primaryAccentColor) ? "border-black dark:border-white ring-2 ring-offset-2 ring-[#C9A84C]" : "border-transparent"}`}
-                                            title="Custom Color"
-                                        >
-                                            <div className="w-full h-full opacity-0 group-hover:opacity-20 bg-white transition-opacity" />
-                                        </button>
-                                        <input
-                                            id="accent-picker"
-                                            type="color"
-                                            title="Choose custom accent color"
-                                            placeholder="#000000"
-                                            value={settings.primaryAccentColor}
-                                            onChange={(e) => setSettings({...settings, primaryAccentColor: e.target.value.toUpperCase()})}
-                                            className="absolute inset-0 w-0 h-0 opacity-0 pointer-events-none"
-                                        />
-                                    </div>
+                                    {/* Advanced Color Picker for Accent */}
+                                    <AdvancedColorPicker 
+                                        value={settings.primaryAccentColor}
+                                        onChange={(c) => setSettings({...settings, primaryAccentColor: c})}
+                                        label="Primary Accent"
+                                        presets={["#C9A84C", "#3B82F6", "#10B981", "#8B5CF6", "#F59E0B", "#EF4444"]}
+                                    />
                                 </div>
-                                <p className="text-[10px] text-gray-400 mt-2 font-mono uppercase tracking-wider">Active: {settings.primaryAccentColor}</p>
+                                <div className="mt-2 flex items-center gap-2">
+                                     <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+                                     <p className="text-[10px] text-gray-400 font-mono uppercase tracking-wider">Active: {settings.primaryAccentColor}</p>
+                                </div>
                             </div>
                             <div>
                                 <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3 block">Primary Navy Color</label>
@@ -330,27 +322,18 @@ export default function AdminSettingsPage() {
                                             title={opt.name}
                                         />
                                     ))}
-                                    {/* Custom Color Picker for Navy */}
-                                    <div className="relative group">
-                                        <button
-                                            onClick={() => document.getElementById('navy-picker')?.click()}
-                                            className={`w-10 h-10 rounded-full border-2 transition-transform hover:scale-110 flex items-center justify-center overflow-hidden bg-gradient-to-tr from-gray-700 via-slate-800 to-black ${![ "#1B2A4A", "#111827", "#1E293B", "#0F172A"].includes(settings.primaryNavyColor) ? "border-[#C9A84C] ring-2 ring-offset-2 ring-[#C9A84C]" : "border-gray-300 dark:border-zinc-600"}`}
-                                            title="Custom Navy Color"
-                                        >
-                                            <div className="w-full h-full opacity-0 group-hover:opacity-20 bg-white transition-opacity" />
-                                        </button>
-                                        <input
-                                            id="navy-picker"
-                                            type="color"
-                                            title="Choose custom navy color"
-                                            placeholder="#000000"
-                                            value={settings.primaryNavyColor}
-                                            onChange={(e) => setSettings({...settings, primaryNavyColor: e.target.value.toUpperCase()})}
-                                            className="absolute inset-0 w-0 h-0 opacity-0 pointer-events-none"
-                                        />
-                                    </div>
+                                    {/* Advanced Color Picker for Navy */}
+                                    <AdvancedColorPicker 
+                                        value={settings.primaryNavyColor}
+                                        onChange={(c) => setSettings({...settings, primaryNavyColor: c})}
+                                        label="Primary Navy"
+                                        presets={["#1B2A4A", "#111827", "#1E293B", "#0F172A"]}
+                                    />
                                 </div>
-                                <p className="text-[10px] text-gray-400 mt-2 font-mono uppercase tracking-wider">Active: {settings.primaryNavyColor}</p>
+                                <div className="mt-2 flex items-center gap-2">
+                                     <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+                                     <p className="text-[10px] text-gray-400 font-mono uppercase tracking-wider">Active: {settings.primaryNavyColor}</p>
+                                </div>
                             </div>
                             <div>
                                 <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3 block">Homepage Hero Section</label>
