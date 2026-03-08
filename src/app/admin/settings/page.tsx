@@ -26,7 +26,9 @@ export default function AdminSettingsPage() {
         defaultEventImageUrl: "",
         facebookUrl: "",
         twitterUrl: "",
-        youtubeUrl: ""
+        youtubeUrl: "",
+        primaryAccentColor: "#C9A84C",
+        primaryNavyColor: "#1B2A4A"
     });
 
     useEffect(() => {
@@ -277,36 +279,78 @@ export default function AdminSettingsPage() {
                                 <div className="flex gap-3">
                                     {[
                                         { bg: "bg-[#C9A84C]", id: "#C9A84C", name: "Gold (Default)" },
-                                        { bg: "bg-blue-500", id: "#3B82F6", name: "Blue" },
-                                        { bg: "bg-emerald-500", id: "#10B981", name: "Emerald" },
-                                        { bg: "bg-purple-500", id: "#8B5CF6", name: "Purple" },
-                                        { bg: "bg-amber-500", id: "#F59E0B", name: "Amber" },
-                                        { bg: "bg-red-500", id: "#EF4444", name: "Red" },
+                                        { bg: "bg-[#3B82F6]", id: "#3B82F6", name: "Blue" },
+                                        { bg: "bg-[#10B981]", id: "#10B981", name: "Emerald" },
+                                        { bg: "bg-[#8B5CF6]", id: "#8B5CF6", name: "Purple" },
+                                        { bg: "bg-[#F59E0B]", id: "#F59E0B", name: "Amber" },
+                                        { bg: "bg-[#EF4444]", id: "#EF4444", name: "Red" },
                                     ].map((opt) => (
                                         <button
                                             key={opt.id}
-                                            className={`w-10 h-10 rounded-full border-2 transition-transform hover:scale-110 ${opt.bg} ${opt.id === "#C9A84C" ? "border-black dark:border-white ring-2 ring-offset-2 ring-[#C9A84C]" : "border-transparent"}`}
+                                            onClick={() => setSettings({...settings, primaryAccentColor: opt.id})}
+                                            className={`w-10 h-10 rounded-full border-2 transition-transform hover:scale-110 ${opt.bg} ${settings.primaryAccentColor === opt.id ? "border-black dark:border-white ring-2 ring-offset-2 ring-[#C9A84C]" : "border-transparent"}`}
                                             title={opt.name}
                                         />
                                     ))}
+                                    {/* Custom Color Picker for Accent */}
+                                    <div className="relative group">
+                                        <button
+                                            onClick={() => document.getElementById('accent-picker')?.click()}
+                                            className={`w-10 h-10 rounded-full border-2 transition-transform hover:scale-110 flex items-center justify-center overflow-hidden bg-gradient-to-tr from-red-500 via-green-500 to-blue-500 ${![ "#C9A84C", "#3B82F6", "#10B981", "#8B5CF6", "#F59E0B", "#EF4444"].includes(settings.primaryAccentColor) ? "border-black dark:border-white ring-2 ring-offset-2 ring-[#C9A84C]" : "border-transparent"}`}
+                                            title="Custom Color"
+                                        >
+                                            <div className="w-full h-full opacity-0 group-hover:opacity-20 bg-white transition-opacity" />
+                                        </button>
+                                        <input
+                                            id="accent-picker"
+                                            type="color"
+                                            title="Choose custom accent color"
+                                            placeholder="#000000"
+                                            value={settings.primaryAccentColor}
+                                            onChange={(e) => setSettings({...settings, primaryAccentColor: e.target.value.toUpperCase()})}
+                                            className="absolute inset-0 w-0 h-0 opacity-0 pointer-events-none"
+                                        />
+                                    </div>
                                 </div>
+                                <p className="text-[10px] text-gray-400 mt-2 font-mono uppercase tracking-wider">Active: {settings.primaryAccentColor}</p>
                             </div>
                             <div>
                                 <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3 block">Primary Navy Color</label>
                                 <div className="flex gap-3">
                                     {[
                                         { bg: "bg-[#1B2A4A]", id: "#1B2A4A", name: "Navy (Default)" },
-                                        { bg: "bg-slate-900", id: "#111827", name: "Slate" },
-                                        { bg: "bg-slate-800", id: "#1E293B", name: "Dark Slate" },
-                                        { bg: "bg-slate-950", id: "#0F172A", name: "Deep Blue" },
+                                        { bg: "bg-[#111827]", id: "#111827", name: "Slate" },
+                                        { bg: "bg-[#1E293B]", id: "#1E293B", name: "Dark Slate" },
+                                        { bg: "bg-[#0F172A]", id: "#0F172A", name: "Deep Blue" },
                                     ].map((opt) => (
                                         <button
                                             key={opt.id}
-                                            className={`w-10 h-10 rounded-full border-2 transition-transform hover:scale-110 ${opt.bg} ${opt.id === "#1B2A4A" ? "border-[#C9A84C] ring-2 ring-offset-2 ring-[#C9A84C]" : "border-gray-300 dark:border-zinc-600"}`}
+                                            onClick={() => setSettings({...settings, primaryNavyColor: opt.id})}
+                                            className={`w-10 h-10 rounded-full border-2 transition-transform hover:scale-110 ${opt.bg} ${settings.primaryNavyColor === opt.id ? "border-[#C9A84C] ring-2 ring-offset-2 ring-[#C9A84C]" : "border-gray-300 dark:border-zinc-600"}`}
                                             title={opt.name}
                                         />
                                     ))}
+                                    {/* Custom Color Picker for Navy */}
+                                    <div className="relative group">
+                                        <button
+                                            onClick={() => document.getElementById('navy-picker')?.click()}
+                                            className={`w-10 h-10 rounded-full border-2 transition-transform hover:scale-110 flex items-center justify-center overflow-hidden bg-gradient-to-tr from-gray-700 via-slate-800 to-black ${![ "#1B2A4A", "#111827", "#1E293B", "#0F172A"].includes(settings.primaryNavyColor) ? "border-[#C9A84C] ring-2 ring-offset-2 ring-[#C9A84C]" : "border-gray-300 dark:border-zinc-600"}`}
+                                            title="Custom Navy Color"
+                                        >
+                                            <div className="w-full h-full opacity-0 group-hover:opacity-20 bg-white transition-opacity" />
+                                        </button>
+                                        <input
+                                            id="navy-picker"
+                                            type="color"
+                                            title="Choose custom navy color"
+                                            placeholder="#000000"
+                                            value={settings.primaryNavyColor}
+                                            onChange={(e) => setSettings({...settings, primaryNavyColor: e.target.value.toUpperCase()})}
+                                            className="absolute inset-0 w-0 h-0 opacity-0 pointer-events-none"
+                                        />
+                                    </div>
                                 </div>
+                                <p className="text-[10px] text-gray-400 mt-2 font-mono uppercase tracking-wider">Active: {settings.primaryNavyColor}</p>
                             </div>
                             <div>
                                 <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3 block">Homepage Hero Section</label>
