@@ -33,5 +33,16 @@
     "share": "Share:",
     "viewAll": "View All",
     "readNow": "Read Now"
+  },
+  "Footer": {
+    "quickLinks": "Quick Links",
+    "home": "Home",
+    "about": "About Organization",
+    "awards": "Nataraj Awards",
+    "articles": "News & Articles",
+    "contactUs": "Contact Us",
+    "address": "Maleenont Tower (M3) 11th floor\nRama 4 Road, Khlong Tan\nKhlong Toei, Bangkok 10110",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use"
   }
 }

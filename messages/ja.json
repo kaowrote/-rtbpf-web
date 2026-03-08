@@ -1,13 +1,48 @@
 {
   "Index": {
-    "title": "Home"
+    "title": "Home",
+    "readMore": "Read Full Story",
+    "latestNews": "Latest News",
+    "viewAllNews": "View All News",
+    "upcomingEvents": "Upcoming Events",
+    "viewAllEvents": "View All Events",
+    "awardsDatabase": "Nataraja Awards Database",
+    "awardsDesc": "Explore high-quality works and prestigious award winners from the first edition to the present.",
+    "awardsByYear": "Awards by Year",
+    "browseFullDatabase": "Browse Full Database",
+    "stayConnected": "Stay Connected",
+    "newsletterDesc": "Subscribe to receive news, special articles, and updates on the Nataraj Awards before anyone else.",
+    "subscribe": "Subscribe"
   },
   "Navbar": {
+    "home": "ホーム",
+    "about": "私たちについて",
+    "awards": "ナタラジャ賞",
+    "articles": "ニュース＆記事",
+    "events": "イベント",
+    "contact": "お問い合わせ",
+    "search": "検索"
+  },
+  "Articles": {
+    "latest": "Latest News",
+    "readMore": "Read More",
+    "related": "Related Stories",
+    "backToNews": "Back to News",
+    "shareStory": "Share Story",
+    "relatedTags": "Related Tags",
+    "share": "Share:",
+    "viewAll": "View All",
+    "readNow": "Read Now"
+  },
+  "Footer": {
+    "quickLinks": "Quick Links",
     "home": "Home",
-    "about": "About Us",
+    "about": "About Organization",
     "awards": "Nataraj Awards",
     "articles": "News & Articles",
-    "events": "Events",
-    "contact": "Contact Us"
+    "contactUs": "Contact Us",
+    "address": "Maleenont Tower (M3) 11th floor\nRama 4 Road, Khlong Tan\nKhlong Toei, Bangkok 10110",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use"
   }
 }

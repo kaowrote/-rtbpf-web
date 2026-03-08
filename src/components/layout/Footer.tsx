@@ -1,8 +1,10 @@
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
 import { siteConfig } from "@/config/site";
 import { Facebook, Twitter, Youtube, Mail, Phone, MapPin } from "lucide-react";
 
 export function Footer() {
+    const t = useTranslations("Footer");
     return (
         <footer className="w-full bg-[#1B2A4A] dark:bg-black text-white pt-16 pb-8 font-thai border-t border-transparent dark:border-white/10 transition-colors duration-300">
             <div className="container mx-auto px-4 md:px-8">
@@ -48,30 +50,28 @@ export function Footer() {
 
                     {/* Column 2: Quick Links */}
                     <div className="flex flex-col gap-3">
-                        <h3 className="font-semibold text-lg text-accent mb-2">ลิงก์ด่วน</h3>
+                        <h3 className="font-semibold text-lg text-accent mb-2">{t("quickLinks")}</h3>
                         <Link href="/" className="text-white/70 hover:text-white transition-colors">
-                            หน้าแรก
+                            {t("home")}
                         </Link>
                         <Link href="/about" className="text-white/70 hover:text-white transition-colors">
-                            เกี่ยวกับองค์กร
+                            {t("about")}
                         </Link>
                         <Link href="/awards" className="text-white/70 hover:text-white transition-colors">
-                            รางวัลนาฏราช
+                            {t("awards")}
                         </Link>
                         <Link href="/articles" className="text-white/70 hover:text-white transition-colors">
-                            ข่าวสาร/บทความ
+                            {t("articles")}
                         </Link>
                     </div>
 
                     {/* Column 3: Contact Info */}
                     <div className="flex flex-col gap-4">
-                        <h3 className="font-semibold text-lg text-accent mb-2">ติดต่อเรา</h3>
+                        <h3 className="font-semibold text-lg text-accent mb-2">{t("contactUs")}</h3>
                         <div className="flex items-start gap-3 text-white/70">
                             <MapPin className="h-5 w-5 mt-0.5 shrink-0 text-accent/80" />
-                            <p className="text-sm">
-                                อาคารมาลีนนท์ ทาวเวอร์ (M3) ชั้น 11<br />
-                                ถนนพระราม 4 แขวงคลองตัน<br />
-                                เขตคลองเตย กรุงเทพฯ 10110
+                            <p className="text-sm whitespace-pre-line">
+                                {t("address")}
                             </p>
                         </div>
                         <div className="flex items-center gap-3 text-white/70">
@@ -95,10 +95,10 @@ export function Footer() {
                     </p>
                     <div className="flex gap-6">
                         <Link href="/privacy" className="hover:text-white transition-colors">
-                            นโยบายความเป็นส่วนตัว
+                            {t("privacy")}
                         </Link>
                         <Link href="/terms" className="hover:text-white transition-colors">
-                            ข้อกำหนดการใช้งาน
+                            {t("terms")}
                         </Link>
                     </div>
                 </div>

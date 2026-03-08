@@ -1,15 +1,48 @@
 {
-    "Navbar": {
-        "home": "首页",
-        "about": "关于我们",
-        "awards": "娜塔拉奖",
-        "articles": "新闻资讯",
-        "events": "活动",
-        "contact": "联系我们"
-    },
-    "General": {
-        "siteName": "RTBPF",
-        "fullName": "泰国广播电视职业联合会",
-        "description": "广播媒体中心，娜塔拉奖组织者。"
-    }
+  "Index": {
+    "title": "Home",
+    "readMore": "Read Full Story",
+    "latestNews": "Latest News",
+    "viewAllNews": "View All News",
+    "upcomingEvents": "Upcoming Events",
+    "viewAllEvents": "View All Events",
+    "awardsDatabase": "Nataraja Awards Database",
+    "awardsDesc": "Explore high-quality works and prestigious award winners from the first edition to the present.",
+    "awardsByYear": "Awards by Year",
+    "browseFullDatabase": "Browse Full Database",
+    "stayConnected": "Stay Connected",
+    "newsletterDesc": "Subscribe to receive news, special articles, and updates on the Nataraj Awards before anyone else.",
+    "subscribe": "Subscribe"
+  },
+  "Navbar": {
+    "home": "首页",
+    "about": "关于我们",
+    "awards": "纳塔拉者奖",
+    "articles": "新闻与文章",
+    "events": "活动",
+    "contact": "联系我们",
+    "search": "搜索"
+  },
+  "Articles": {
+    "latest": "Latest News",
+    "readMore": "Read More",
+    "related": "Related Stories",
+    "backToNews": "Back to News",
+    "shareStory": "Share Story",
+    "relatedTags": "Related Tags",
+    "share": "Share:",
+    "viewAll": "View All",
+    "readNow": "Read Now"
+  },
+  "Footer": {
+    "quickLinks": "Quick Links",
+    "home": "Home",
+    "about": "About Organization",
+    "awards": "Nataraj Awards",
+    "articles": "News & Articles",
+    "contactUs": "Contact Us",
+    "address": "Maleenont Tower (M3) 11th floor\nRama 4 Road, Khlong Tan\nKhlong Toei, Bangkok 10110",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use"
+  }
 }
