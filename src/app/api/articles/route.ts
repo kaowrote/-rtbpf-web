@@ -59,7 +59,8 @@ export async function POST(request: NextRequest) {
                 publisherId: data.status === "PUBLISHED" ? (data.publisherId || authResult.user.id) : null,
                 categoryId: data.categoryId,
                 scheduledAt: data.scheduledAt ? new Date(data.scheduledAt) : null,
-                publishedAt: data.status === "PUBLISHED" ? new Date() : null,
+                publishedAt: data.publishedAt ? new Date(data.publishedAt) : (data.status === "PUBLISHED" ? new Date() : null),
+                viewCount: data.viewCount !== undefined ? parseInt(data.viewCount) : 0,
             }
         });
 

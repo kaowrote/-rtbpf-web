@@ -98,7 +98,7 @@ export default async function AdminArticlesPage() {
                                             </div>
                                         ) : article.status === 'PUBLISHED' && article.publishedAt ? (
                                             <div className="flex items-center text-gray-600 dark:text-gray-400">
-                                                <Calendar className="w-4 h-4 mr-2" /> {dayjs(article.publishedAt).format('D MMMM YYYY')}
+                                                <Calendar className="w-4 h-4 mr-2" /> {dayjs(article.publishedAt).format('D MMMM YYYY, HH:mm')}
                                             </div>
                                         ) : (
                                             <span className="text-gray-400">-</span>
@@ -108,9 +108,9 @@ export default async function AdminArticlesPage() {
                                         {article.publisher?.name || '-'}
                                     </td>
                                     <td className="px-6 py-5">
-                                        <div className="flex items-center justify-end text-gray-600 dark:text-gray-400 space-x-2">
-                                            <span>{article.viewCount.toLocaleString()}</span>
-                                            <Eye className="w-4 h-4" />
+                                        <div className="flex items-center justify-end text-gray-600 dark:text-gray-400 gap-2">
+                                            <Eye className="w-4 h-4 text-blue-500/70" />
+                                            <span className="font-bold text-black dark:text-white">{article.viewCount.toLocaleString()}</span>
                                         </div>
                                     </td>
                                     <td className="px-6 py-5 text-right">

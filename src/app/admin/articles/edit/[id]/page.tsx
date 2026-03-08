@@ -3,7 +3,7 @@
 import React, { useState, useEffect, use } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Save, Calendar, Clock, Loader2, RefreshCw } from "lucide-react";
+import { ArrowLeft, Save, Calendar, Clock, Loader2, RefreshCw, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import TipTapEditor from "@/components/admin/TipTapEditor";
@@ -23,6 +23,7 @@ export default function ArticleEditPage({
     const [featuredImage, setFeaturedImage] = useState<string | null>(null);
     const [publishDate, setPublishDate] = useState("");
     const [publishTime, setPublishTime] = useState("");
+    const [viewCount, setViewCount] = useState(0);
     const [authorName, setAuthorName] = useState("Unknown");
 
     const [isFetchingData, setIsFetchingData] = useState(true);
@@ -59,6 +60,8 @@ export default function ArticleEditPage({
                 if (article.author?.name) {
                     setAuthorName(article.author.name);
                 }
+
+                setViewCount(article.viewCount || 0);
 
                 if (article.scheduledAt) {
                     const dateObj = new Date(article.scheduledAt);
@@ -108,7 +111,9 @@ export default function ArticleEditPage({
                     content, // Can parse blocks if needed, saving HTML string for now
                     featuredImage,
                     status,
-                    scheduledAt,
+                    scheduledAt: status === "SCHEDULED" ? scheduledAt : null,
+                    publishedAt: status === "PUBLISHED" ? scheduledAt : undefined, // Using the same date/time logic for published vs scheduled
+                    viewCount,
                 }),
             });
 
@@ -254,6 +259,28 @@ export default function ArticleEditPage({
                                 label=""
                                 aspectRatio="aspect-[4/3]"
                             />
+                        </div>
+                    </div>
+
+                    <div className="bg-white dark:bg-[#0a0a0a] p-6 border border-gray-100 dark:border-zinc-800 shadow-sm rounded-xl">
+                        <h3 className="font-bold uppercase tracking-widest border-b border-gray-100 dark:border-zinc-800 pb-4 text-black dark:text-white">Statistics</h3>
+                        <div className="space-y-4 mt-4">
+                            <div>
+                                <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">Manual View Count</label>
+                                <div className="flex bg-gray-50 dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded overflow-hidden">
+                                     <div className="px-3 flex items-center justify-center bg-gray-100 dark:bg-zinc-800 border-r border-gray-200 dark:border-zinc-800">
+                                         <Eye className="w-4 h-4 text-gray-500" />
+                                     </div>
+                                     <Input 
+                                         type="number" 
+                                         value={viewCount} 
+                                         onChange={(e) => setViewCount(parseInt(e.target.value) || 0)} 
+                                         className="border-0 shadow-none font-sans text-sm h-10 bg-transparent" 
+                                         title="View Count"
+                                     />
+                                </div>
+                                <p className="text-[10px] text-gray-400 mt-1 font-thai">ปรับเปลี่ยนยอดผู้ชมบทความได้ที่นี่</p>
+                            </div>
                         </div>
                     </div>
 
