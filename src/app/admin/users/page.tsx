@@ -313,7 +313,7 @@ export default function AdminUsersPage() {
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4 font-thai text-sm text-gray-500">
-                                                {dayjs(user.createdAt).format('D MMM YYYY')}
+                                                {dayjs(user.createdAt).format('D MMM YYYY, HH:mm')}
                                             </td>
                                             <td className="px-6 py-4 text-right">
                                                 <div className="flex items-center justify-end gap-1">
