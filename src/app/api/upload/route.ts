@@ -86,6 +86,16 @@ export async function POST(request: NextRequest) {
         const publicUrl = getPublicUrl(data.path);
 
         // Save to Media Library
+        const userId = authResult.user?.id;
+        if (!userId) {
+             console.error("Media Library Error: userId is missing from auth session!", authResult.user);
+             // Fail early if we can't associate the upload with a user
+             return NextResponse.json(
+                 { success: false, error: { code: "UNAUTHORIZED", message: "ไม่พบรหัสผู้ใช้ในเซสชัน กรุณานพยายามเข้าสู่ระบบใหม่อีกครั้ง" } },
+                 { status: 401 }
+             );
+        }
+
         await prisma.media.create({
             data: {
                 url: publicUrl,
@@ -95,7 +105,7 @@ export async function POST(request: NextRequest) {
                 type: file.type,
                 size: file.size,
                 folder,
-                userId: authResult.user!.id,
+                userId: userId,
             }
         });
 
@@ -111,9 +121,15 @@ export async function POST(request: NextRequest) {
             },
         });
     } catch (error: any) {
-        console.error("Upload error:", error);
+        console.error("Upload error detail:", error);
         return NextResponse.json(
-            { success: false, error: { code: "INTERNAL_ERROR", message: "เกิดข้อผิดพลาดในการอัพโหลด" } },
+            { 
+                success: false, 
+                error: { 
+                    code: "INTERNAL_ERROR", 
+                    message: `เกิดข้อผิดพลาดในการอัปโหลด: ${error.message || 'Unknown error'}` 
+                } 
+            },
             { status: 500 }
         );
     }

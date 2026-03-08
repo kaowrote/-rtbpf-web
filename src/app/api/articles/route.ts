@@ -50,21 +50,26 @@ export async function POST(request: NextRequest) {
             return errorResponse("Title and slug are required", 400);
         }
 
+        const userId = authResult.user?.id;
+        if (!userId) {
+            return errorResponse("User ID is missing from session. Please re-login.", 401);
+        }
+
         const newArticle = await prisma.article.create({
             data: {
                 title: data.title,
                 slug: data.slug,
-                excerpt: data.excerpt,
-                content: data.content || [],
-                featuredImage: data.featuredImage,
-                status: data.status || "DRAFT",
-                authorId: data.authorId || authResult.user.id,
-                publisherId: data.status === "PUBLISHED" ? (data.publisherId || authResult.user.id) : null,
-                categoryId: data.categoryId,
+                excerpt: data.excerpt ?? null,
+                content: data.content || "",
+                featuredImage: data.featuredImage ?? null,
+                status: (data.status as any) || "DRAFT",
+                authorId: data.authorId || userId,
+                publisherId: data.status === "PUBLISHED" ? (data.publisherId || userId) : null,
+                categoryId: data.categoryId ?? null,
                 tags: data.tags || [],
                 scheduledAt: data.scheduledAt ? new Date(data.scheduledAt) : null,
                 publishedAt: data.publishedAt ? new Date(data.publishedAt) : (data.status === "PUBLISHED" ? new Date() : null),
-                viewCount: data.viewCount !== undefined ? parseInt(data.viewCount) : 0,
+                viewCount: data.viewCount !== undefined ? parseInt(String(data.viewCount)) : 0,
             }
         });
         

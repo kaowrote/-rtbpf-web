@@ -51,18 +51,23 @@ export const authConfig = {
 
             return true;
         },
-        jwt({ token, user }) {
+        jwt({ token, user }: { token: any; user?: any }) {
+            // When user logs in, populate the token
             if (user) {
                 token.id = user.id;
                 token.role = user.role;
                 token.status = user.status;
                 token.image = user.image;
+            } else if (token.sub && !token.id) {
+                // For JWT sessions, token.sub is often the user ID
+                token.id = token.sub;
             }
             return token;
         },
-        session({ session, token }) {
+        session({ session, token }: { session: any; token: any }) {
             if (session.user) {
-                session.user.id = token.id as string;
+                // Pass extra fields from token into session user
+                session.user.id = token.id || token.sub;
                 session.user.role = token.role as string;
                 session.user.status = token.status as string;
                 session.user.image = token.image as string;

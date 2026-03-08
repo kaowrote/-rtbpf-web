@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     },
 };
 
-export default async function ArticlesPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
+export default async function ArticlesPage({ searchParams }: { searchParams: Promise<{ page?: string; tag?: string }> }) {
     const params = await searchParams;
     const page = parseInt(params.page || "1");
     const tag = params.tag;
