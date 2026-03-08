@@ -52,12 +52,23 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 export default async function ArticleDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id: slug } = await params;
 
-    const article = await prisma.article.findUnique({
+    // Fetch and increment view count
+    const article = await prisma.article.update({
         where: { slug, status: "PUBLISHED" },
+        data: { viewCount: { increment: 1 } },
         include: {
             category: true,
             author: true
         }
+    }).catch(async (e) => {
+        // Fallback to just find if update fails (e.g. not published yet but previewing)
+        return await prisma.article.findUnique({
+            where: { slug },
+            include: {
+                category: true,
+                author: true
+            }
+        });
     });
 
     if (!article) {
