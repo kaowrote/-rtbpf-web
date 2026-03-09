@@ -25,7 +25,9 @@
     "natarajaBtn": "어워드",
     "eventsTitle": "이벤트",
     "eventsDesc": "미디어 전문가의 잠재력을 개발하기 위해 고안된 이벤트, 교육 프로그램 및 세미나에 참여하고 정보를 얻으십시오.",
-    "eventsBtn": "모든 이벤트"
+    "eventsBtn": "모든 이벤트",
+    "heroTitleDefault": "제16회 나타라자 어워드: 탁월함의 정점",
+    "heroDescDefault": "태국 라디오 및 텔레비전 업계에서 가장 권위 있는 시상식에서 올해의 최고를 축하하는 자리에 함께해 주세요."
   },
   "Navbar": {
     "home": "홈",
@@ -47,7 +49,8 @@
     "share": "공유:",
     "viewAll": "모두 보기",
     "readNow": "지금 읽기",
-    "by": "저자:"
+    "by": "저자:",
+    "metaDescriptionDefault": "태국 라디오 및 텔레비전 방송 전문가 연맹(RTBPF)의 뉴스 및 기사"
   },
   "Footer": {
     "quickLinks": "퀵 링크",
@@ -58,7 +61,10 @@
     "contactUs": "문의하기",
     "address": "Maleenont Tower (M3) 11층\nRama 4 Road, Khlong Tan\nKhlong Toei, Bangkok 10110",
     "privacy": "개인정보 보호정책",
-    "terms": "이용 약관"
+    "terms": "이용 약관",
+    "fullName": "태국 라디오 및 텔레비전 방송 전문가 연맹",
+    "englishName": "RTBPF",
+    "rightsReserved": "모든 권리 보유."
   },
   "Categories": {
     "News": "뉴스",

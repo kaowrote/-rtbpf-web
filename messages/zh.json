@@ -25,7 +25,9 @@
     "natarajaBtn": "奖项",
     "eventsTitle": "活动",
     "eventsDesc": "了解并参加旨在开发媒体专业人员潜力的活动、培训计划和研讨会。",
-    "eventsBtn": "所有活动"
+    "eventsBtn": "所有活动",
+    "heroTitleDefault": "第16届纳塔拉贾奖：卓越的巅峰",
+    "heroDescDefault": "与我们共同庆祝泰国广播电视界最负盛名的奖项中的年度最佳作品。"
   },
   "Navbar": {
     "home": "首页",
@@ -47,7 +49,8 @@
     "share": "分享：",
     "viewAll": "查看全部",
     "readNow": "立即阅读",
-    "by": "作者："
+    "by": "作者：",
+    "metaDescriptionDefault": "来自泰国广播电视专业人士联合会 (RTBPF) 的新闻和文章"
   },
   "Footer": {
     "quickLinks": "快捷链接",
@@ -58,7 +61,10 @@
     "contactUs": "联系我们",
     "address": "Maleenont Tower (M3) 11楼\nRama 4 Road, Khlong Tan\nKhlong Toei, Bangkok 10110",
     "privacy": "隐私政策",
-    "terms": "使用条款"
+    "terms": "使用条款",
+    "fullName": "泰国广播电视专业联盟",
+    "englishName": "RTBPF",
+    "rightsReserved": "保留所有权利。"
   },
   "Categories": {
     "News": "新闻",

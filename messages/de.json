@@ -25,7 +25,9 @@
     "natarajaBtn": "The Awards",
     "eventsTitle": "Events",
     "eventsDesc": "Stay informed and participate in events, training programs, and seminars designed to develop the potential of media professionals.",
-    "eventsBtn": "All Events"
+    "eventsBtn": "All Events",
+    "heroTitleDefault": "16th Nataraja Awards: The Pinnacle of Achievement",
+    "heroDescDefault": "Join us in celebrating the best of the year at the most prestigious awards in the Thai radio and television industry."
   },
   "Navbar": {
     "home": "Home",
@@ -47,7 +49,8 @@
     "share": "Share:",
     "viewAll": "View All",
     "readNow": "Read Now",
-    "by": "By"
+    "by": "By",
+    "metaDescriptionDefault": "News and articles from the Radio and Television Broadcasting Professional Federation (RTBPF)"
   },
   "Footer": {
     "quickLinks": "Quick Links",
@@ -58,7 +61,10 @@
     "contactUs": "Contact Us",
     "address": "Maleenont Tower (M3) 11th floor\nRama 4 Road, Khlong Tan\nKhlong Toei, Bangkok 10110",
     "privacy": "Privacy Policy",
-    "terms": "Terms of Use"
+    "terms": "Terms of Use",
+    "fullName": "Radio and Television Broadcasting Professional Federation",
+    "englishName": "RTBPF",
+    "rightsReserved": "All rights reserved."
   },
   "Categories": {
     "News": "News",

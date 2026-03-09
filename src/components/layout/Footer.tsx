@@ -15,9 +15,9 @@ export function Footer() {
                             {siteConfig.name}
                         </h2>
                         <p className="text-white/80 leading-relaxed mb-6 max-w-md">
-                            {siteConfig.fullName} <br />
+                            {t("fullName")} <br />
                             <span className="text-sm font-sans mt-2 block opacity-70 border-t border-white/20 pt-2">
-                                {siteConfig.englishName}
+                                {t("englishName")}
                             </span>
                         </p>
                         <div className="flex space-x-4">
@@ -90,7 +90,7 @@ export function Footer() {
                 {/* Bottom Bar */}
                 <div className="border-t border-white/20 pt-8 mt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/50">
                     <p>
-                        &copy; {new Date().getFullYear()} {siteConfig.fullName}. {t("rightsReserved")}
+                        &copy; {new Date().getFullYear()} {t("fullName")}. {t("rightsReserved")}
                     </p>
                     <div className="flex gap-6">
                         <Link href="/privacy" className="hover:text-white transition-colors">

@@ -15,6 +15,7 @@ export const revalidate = 60; // Revalidate cache every 60 seconds
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string, locale: string }> }): Promise<Metadata> {
     const { id: slug, locale } = await params;
+    const t = await getTranslations("Articles");
 
     const article = await prisma.article.findUnique({
         where: { slug, status: "PUBLISHED" },
@@ -38,7 +39,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
     const articleAny = article as any;
     const title = articleAny.translations?.[0]?.title || article.title;
-    const description = articleAny.translations?.[0]?.excerpt || article.excerpt || "ข่าวสารและบทความจากสมาพันธ์สมาคมวิชาชีพวิทยุกระจายเสียงและวิทยุโทรทัศน์ (RTBPF)";
+    const description = articleAny.translations?.[0]?.excerpt || article.excerpt || t("metaDescriptionDefault");
 
     return {
         title: `${title} | RTBPF`,

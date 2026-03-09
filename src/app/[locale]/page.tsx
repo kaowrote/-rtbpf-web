@@ -99,13 +99,13 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         <div className="container relative z-10 px-6 mx-auto">
           <div className="max-w-4xl space-y-4">
             <Badge className="bg-accent text-black hover:bg-accent/90 uppercase tracking-widest font-sans font-bold px-3 py-1 rounded-none text-xs">
-              {featuredArticle?.categoryName || tCat("featured")}
+              {t("featureStory")}
             </Badge>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold font-thai text-white leading-[1.1] tracking-tight hover:text-accent transition-colors duration-300">
-              {featuredArticle?.title || "ประกาศผลรางวัลนาฏราช ครั้งที่ 16: รางวัลแห่งความภาคภูมิใจ"}
+              {featuredArticle?.title || t("heroTitleDefault")}
             </h1>
             <p className="text-lg md:text-xl text-gray-200 mt-4 max-w-2xl font-thai leading-relaxed line-clamp-2">
-              {(featuredArticle as any)?.excerpt || "ร่วมชื่นชมและแสดงความยินดีกับผลงานยอดเยี่ยมแห่งปี ในงานประกาศผลรางวัลที่ยิ่งใหญ่ที่สุดของวงการวิทยุและโทรทัศน์ไทย"}
+              {(featuredArticle as any)?.excerpt || t("heroDescDefault")}
             </p>
             <div className="pt-6">
               <Link href={featuredArticle ? `/articles/${featuredArticle.slug}` : "/articles"}>
