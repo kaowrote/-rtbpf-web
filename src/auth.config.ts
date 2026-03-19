@@ -9,9 +9,10 @@ export const authConfig = {
             const isLoggedIn = !!auth?.user;
             const isAdminRoute = nextUrl.pathname.startsWith("/admin");
             const isAdminLogin = nextUrl.pathname === "/admin/login";
+            const isAdminVerifyEmail = nextUrl.pathname === "/admin/verify-email";
 
-            // Allow access to the admin login page without auth
-            if (isAdminLogin) {
+            // Allow access to the admin login and verify-email pages without auth
+            if (isAdminLogin || isAdminVerifyEmail) {
                 // If already logged in, redirect to admin dashboard
                 if (isLoggedIn) {
                     return Response.redirect(new URL("/admin", nextUrl));

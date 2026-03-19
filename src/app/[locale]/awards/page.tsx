@@ -20,6 +20,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
+import { AwardsTimeline } from "@/components/awards/AwardsTimeline";
 
 export default function AwardsDatabasePage() {
     const [searchQuery, setSearchQuery] = useState("");
@@ -27,20 +28,20 @@ export default function AwardsDatabasePage() {
     const [selectedCategory, setSelectedCategory] = useState("ทั้งหมด");
 
     const [nominees, setNominees] = useState<any[]>([]);
-    const [years, setYears] = useState<{ id: string; year: number }[]>([]);
+    const [years, setYears] = useState<{ id: string; year: number; theme?: string; ceremonyDate?: string }[]>([]);
     const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [selectedNominee, setSelectedNominee] = useState<any | null>(null);
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+    const [showTimeline, setShowTimeline] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Fetch years and categories to populate filters
                 const [yearsRes, catRes, nomineesRes] = await Promise.all([
                     fetch("/api/awards/years").then(res => res.json()),
                     fetch("/api/awards/categories").then(res => res.json()),
-                    fetch("/api/awards/nominees?limit=500").then(res => res.json()) // Fetch a large batch for client-side filtering
+                    fetch("/api/awards/nominees?limit=500").then(res => res.json())
                 ]);
 
                 if (yearsRes.success) {
@@ -62,11 +63,9 @@ export default function AwardsDatabasePage() {
         fetchData();
     }, []);
 
-    // Derived unique years and categories from the raw fetched data to build select options
     const yearOptions = ["ทั้งหมด", ...years.map(y => y.year.toString()).sort((a, b) => parseInt(b) - parseInt(a))];
     const categoryOptions = ["ทั้งหมด", ...categories.map(c => c.name)];
 
-    // Filtering logic
     const filteredNominees = nominees.filter((nominee) => {
         const searchMatch = nominee.nomineeName.toLowerCase().includes(searchQuery.toLowerCase()) ||
             (nominee.workTitle && nominee.workTitle.toLowerCase().includes(searchQuery.toLowerCase())) ||
@@ -81,7 +80,7 @@ export default function AwardsDatabasePage() {
     const getEmbedUrl = (url?: string) => {
         if (!url) return null;
         if (url.includes('youtube.com') || url.includes('youtu.be')) {
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\\&v=)([^#\\&\\?]*).*/;
             const match = url.match(regExp);
             return (match && match[2].length === 11) ? `https://www.youtube.com/embed/${match[2]}` : null;
         }
@@ -101,7 +100,7 @@ export default function AwardsDatabasePage() {
     return (
         <div className="flex flex-col min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300 pb-20">
 
-            {/* 1. HERO SECTION */}
+            {/* HERO SECTION */}
             <section className="relative w-full h-[50vh] md:h-[60vh] bg-black overflow-hidden flex items-center justify-center">
                 <div className="absolute inset-0 z-0">
                     <Image
@@ -121,11 +120,25 @@ export default function AwardsDatabasePage() {
                     <h1 className="text-5xl md:text-7xl font-bold font-thai text-white uppercase tracking-wider mb-4">
                         Nataraja <span className="text-accent font-serif">&</span> Nominees
                     </h1>
-                    <p className="text-xl md:text-2xl text-gray-300 font-thai max-w-2xl mx-auto font-light">
+                    <p className="text-xl md:text-2xl text-gray-300 font-thai max-w-2xl mx-auto font-light mb-6">
                         ฐานข้อมูลผู้เข้าชิงและผู้ชนะรางวัลนาฏราชทั้งหมด ตั้งแต่อดีตจนถึงปัจจุบัน
                     </p>
+                    <Button
+                        variant="outline"
+                        className="border-white/30 text-white hover:bg-white hover:text-black rounded-none uppercase tracking-widest text-xs font-bold px-6 h-12 transition-all"
+                        onClick={() => setShowTimeline(!showTimeline)}
+                    >
+                        {showTimeline ? "Hide Timeline" : "View Ceremony Timeline"}
+                    </Button>
                 </div>
             </section>
+
+            {/* AWARDS TIMELINE (toggled) */}
+            {showTimeline && years.length > 0 && (
+                <section className="container px-6 mx-auto py-12 md:py-16 max-w-4xl">
+                    <AwardsTimeline years={years} />
+                </section>
+            )}
 
             {/* 2. SEARCH AND FILTER SECTION */}
             <section className="w-full relative z-20 -mt-10 mb-12">

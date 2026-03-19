@@ -84,3 +84,39 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
         return { success: false, error: e };
     }
 };
+
+export const sendVerificationEmail = async (email: string, token: string) => {
+    const verifyLink = `${process.env.NEXT_PUBLIC_APP_URL}/admin/verify-email?token=${token}`;
+
+    try {
+        const { data, error } = await getResend().emails.send({
+            from: 'RTBPF CMS <noreply@rtbpf.org>',
+            to: email,
+            subject: 'ยืนยันอีเมล: Verify Your Email — RTBPF CMS',
+            html: `
+                <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
+                    <h2 style="color: #000000;">ยืนยันอีเมลของคุณ</h2>
+                    <p>ขอบคุณสำหรับการลงทะเบียนกับ <strong>RTBPF CMS</strong> กรุณายืนยันอีเมลของคุณเพื่อเปิดใช้งานบัญชี</p>
+                    <div style="text-align: center; margin: 30px 0;">
+                        <a href="${verifyLink}" style="display: inline-block; padding: 12px 24px; background-color: #cfb659; color: #fff; text-decoration: none; border-radius: 5px; font-weight: bold;">ยืนยันอีเมล</a>
+                    </div>
+                    <p style="color: #666; font-size: 14px;"><strong>ลิงก์นี้จะมีอายุการใช้งาน 24 ชั่วโมง</strong></p>
+                    <p style="color: #888; font-size: 12px;">หากคุณไม่ได้ลงทะเบียน กรุณาเพิกเฉยต่ออีเมลฉบับนี้</p>
+                    <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
+                    <p style="font-size: 10px; color: #aaa; text-align: center;">© 2024 RTBPF. All rights reserved.</p>
+                </div>
+            `,
+        });
+
+        if (error) {
+            console.error("Resend Error:", error);
+            return { success: false, error };
+        }
+
+        return { success: true, data };
+    } catch (e) {
+        console.error("Mail Error:", e);
+        return { success: false, error: e };
+    }
+};
+

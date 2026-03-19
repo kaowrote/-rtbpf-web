@@ -4,7 +4,9 @@ import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 import { z } from "zod";
+import { sendVerificationEmail } from "@/lib/mail";
 
 const loginSchema = z.object({
     email: z.string().email("กรุณากรอกอีเมลให้ถูกต้อง"),
@@ -79,7 +81,7 @@ export async function registerAction(
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Create user
+        // Create user (email not verified yet)
         await prisma.user.create({
             data: {
                 name,
@@ -88,18 +90,30 @@ export async function registerAction(
             },
         });
 
-        // Auto sign in using NextAuth
-        await signIn("credentials", {
-            email,
-            password,
-            redirectTo: "/profile",
+        // Generate verification token
+        const token = crypto.randomBytes(32).toString("hex");
+        const expires = new Date(Date.now() + 24 * 3600 * 1000); // 24 hours
+
+        await prisma.verificationToken.create({
+            data: {
+                identifier: email,
+                token,
+                expires,
+            },
         });
 
+        // Send verification email
+        await sendVerificationEmail(email, token);
+
+        return {
+            success: true,
+            message: "ลงทะเบียนสำเร็จ! กรุณาตรวจสอบอีเมลเพื่อยืนยันบัญชีของคุณ",
+        };
     } catch (error) {
         if (error instanceof AuthError) {
-            return { error: "ลงทะเบียนสำเร็จแต่เข้าสู่ระบบอัตโนมัติล้มเหลว กรุณาเข้าสู่ระบบอีกครั้ง" };
+            return { error: "ลงทะเบียนสำเร็จแต่เกิดข้อผิดพลาด กรุณาติดต่อผู้ดูแลระบบ" };
         }
-        // Let Next.js handle redirect if thrown by signIn
         throw error;
     }
 }
+

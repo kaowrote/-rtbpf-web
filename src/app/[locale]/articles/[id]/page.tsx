@@ -9,6 +9,7 @@ import { ShareButtons } from "@/components/shared/ShareButtons";
 import { ShareFAB } from "@/components/shared/ShareFAB";
 import { CommentSection } from "@/components/comments/CommentSection";
 import { siteConfig } from "@/config/site";
+import { generateArticleSchema, generateBreadcrumbSchema } from "@/lib/structured-data";
 
 import { Link } from "@/i18n/routing";
 import { getTranslations } from "next-intl/server";
@@ -133,8 +134,33 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
     const shareTitle = displayTitle;
     const shareDescription = displayExcerpt || "";
 
+    const articleJsonLd = generateArticleSchema({
+        id: article.id,
+        title: displayTitle,
+        excerpt: displayExcerpt,
+        coverImage: article.featuredImage,
+        createdAt: article.publishedAt || article.createdAt,
+        updatedAt: article.updatedAt,
+        author: (article as any).author,
+        category: (article as any).category,
+    });
+
+    const breadcrumbJsonLd = generateBreadcrumbSchema([
+        { name: "Home", url: `/${locale}` },
+        { name: "Articles", url: `/${locale}/articles` },
+        { name: displayTitle, url: `/${locale}/articles/${slug}` },
+    ]);
+
     return (
         <div className="flex flex-col min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+            />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+            />
 
             {/* 1. HERO IMAGE */}
             <section className="relative w-full h-[60vh] md:h-[75vh] flex items-end">

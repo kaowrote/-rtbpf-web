@@ -10,12 +10,14 @@ import { TextStyle } from '@tiptap/extension-text-style';
 import { FontFamily } from '@tiptap/extension-font-family';
 import TextAlign from '@tiptap/extension-text-align';
 import { FontSize } from './extensions/FontSize';
-import { Bold, Italic, Strikethrough, Heading1, Heading2, List, ListOrdered, Quote, Undo, Redo, Image as ImageIcon, Link as LinkIcon, Youtube as YoutubeIcon, Instagram as InstagramIcon, Music2 as Music2Icon, Loader2, AlignLeft, AlignCenter, AlignRight, AlignJustify, Maximize, Code, Library } from 'lucide-react';
+import { Bold, Italic, Strikethrough, Heading1, Heading2, List, ListOrdered, Quote, Undo, Redo, Image as ImageIcon, Link as LinkIcon, Youtube as YoutubeIcon, Instagram as InstagramIcon, Music2 as Music2Icon, Loader2, AlignLeft, AlignCenter, AlignRight, AlignJustify, Maximize, Code, Library, Facebook, Twitter } from 'lucide-react';
 import imageCompression from 'browser-image-compression';
 import MediaLibrary from "./MediaLibrary";
 
 import { Instagram } from './extensions/Instagram';
 import { TikTok } from './extensions/TikTok';
+import { FacebookEmbed } from './extensions/FacebookEmbed';
+import { TwitterEmbed } from './extensions/TwitterEmbed';
 
 const ToolbarButton = ({ onClick, isActive, disabled, title, children }: { onClick: () => void, isActive?: boolean, disabled?: boolean, title?: string, children: React.ReactNode }) => (
     <button
@@ -60,6 +62,8 @@ export default function TipTapEditor({ value = "", onChange }: TipTapEditorProps
             }),
             Instagram,
             TikTok,
+            FacebookEmbed,
+            TwitterEmbed,
             TextAlign.configure({
                 types: ['heading', 'paragraph', 'image'],
             }),
@@ -260,12 +264,38 @@ export default function TipTapEditor({ value = "", onChange }: TipTapEditorProps
         }
     };
 
+    const addFacebookPost = () => {
+        const input = prompt('Facebook Post/Video URL หรือ Embed Code:');
+        if (input) {
+            const { src, width, height } = parseMediaInput(input);
+            editor.chain().focus().setFacebookEmbed({
+                src,
+                ...(width && { width }),
+                ...(height && { height }),
+            }).run();
+        }
+    };
+
+    const addTwitterPost = () => {
+        const input = prompt('Twitter/X Post URL:');
+        if (input) {
+            const { src, width, height } = parseMediaInput(input);
+            editor.chain().focus().setTwitterEmbed({
+                src,
+                ...(width && { width }),
+                ...(height && { height }),
+            }).run();
+        }
+    };
+
     const resizeMedia = () => {
         let nodeType = null;
         if (editor.isActive('image')) nodeType = 'image';
         else if (editor.isActive('youtube')) nodeType = 'youtube';
         else if (editor.isActive('instagram')) nodeType = 'instagram';
         else if (editor.isActive('tiktok')) nodeType = 'tiktok';
+        else if (editor.isActive('facebookEmbed')) nodeType = 'facebookEmbed';
+        else if (editor.isActive('twitterEmbed')) nodeType = 'twitterEmbed';
 
         if (!nodeType) {
             alert("กรุณาคลิกเลือกรูปภาพหรือวิดีโอก่อน");
@@ -403,6 +433,14 @@ export default function TipTapEditor({ value = "", onChange }: TipTapEditorProps
 
                 <ToolbarButton onClick={addInstagramPost} title="Instagram" disabled={isCodeView}>
                     <InstagramIcon className="w-4 h-4" />
+                </ToolbarButton>
+
+                <ToolbarButton onClick={addFacebookPost} title="Facebook" disabled={isCodeView}>
+                    <Facebook className="w-4 h-4" />
+                </ToolbarButton>
+
+                <ToolbarButton onClick={addTwitterPost} title="Twitter/X" disabled={isCodeView}>
+                    <Twitter className="w-4 h-4" />
                 </ToolbarButton>
 
                 <ToolbarButton onClick={addTikTokVideo} title="TikTok" disabled={isCodeView}>

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeft, Globe, Bell, Shield, Palette, Save, Mail, Loader2 } from "lucide-react";
+import { ArrowLeft, Globe, Bell, Shield, Palette, Save, Mail, Loader2, Key, Eye, EyeOff, CheckCircle, XCircle, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -32,16 +32,33 @@ export default function AdminSettingsPage() {
         primaryNavyColor: "#000000"
     });
 
+    // API Keys State (separate from general settings for security)
+    const [apiKeys, setApiKeys] = useState({
+        apiKeyGoogleAI: "",
+        apiKeyGoogleTTS: "",
+        apiKeyGoogleTranslate: "",
+        apiKeyOpenAI: "",
+    });
+    const [showKeys, setShowKeys] = useState<Record<string, boolean>>({});
+    const [savingApiKeys, setSavingApiKeys] = useState(false);
+
     useEffect(() => {
         // Fetch current settings
-        const keys = Object.keys(settings).join(",");
-        fetch(`/api/settings?keys=${keys}`)
+        const allKeys = [...Object.keys(settings), ...Object.keys(apiKeys)].join(",");
+        fetch(`/api/settings?keys=${allKeys}`)
             .then(res => res.json())
             .then(response => {
                 if (response.success && response.data) {
                     setSettings(prev => ({
                         ...prev,
                         ...response.data
+                    }));
+                    setApiKeys(prev => ({
+                        ...prev,
+                        ...(response.data.apiKeyGoogleAI !== undefined && { apiKeyGoogleAI: response.data.apiKeyGoogleAI || "" }),
+                        ...(response.data.apiKeyGoogleTTS !== undefined && { apiKeyGoogleTTS: response.data.apiKeyGoogleTTS || "" }),
+                        ...(response.data.apiKeyGoogleTranslate !== undefined && { apiKeyGoogleTranslate: response.data.apiKeyGoogleTranslate || "" }),
+                        ...(response.data.apiKeyOpenAI !== undefined && { apiKeyOpenAI: response.data.apiKeyOpenAI || "" }),
                     }));
                 }
             })
@@ -51,6 +68,33 @@ export default function AdminSettingsPage() {
             })
             .finally(() => setIsLoading(false));
     }, []);
+
+    const handleSaveApiKeys = async () => {
+        setSavingApiKeys(true);
+        try {
+            const response = await fetch("/api/settings", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(apiKeys)
+            });
+            if (!response.ok) throw new Error("Failed to save API keys");
+            toast.success("บันทึก API Keys สำเร็จ");
+        } catch (error: any) {
+            toast.error(`Error: ${error.message}`);
+        } finally {
+            setSavingApiKeys(false);
+        }
+    };
+
+    const toggleShowKey = (key: string) => {
+        setShowKeys(prev => ({ ...prev, [key]: !prev[key] }));
+    };
+
+    const maskKey = (key: string) => {
+        if (!key) return "";
+        if (key.length <= 8) return "••••••••";
+        return key.substring(0, 6) + "••••••••" + key.substring(key.length - 4);
+    };
 
     const handleSaveGeneral = async () => {
         setIsSaving(true);
@@ -74,6 +118,7 @@ export default function AdminSettingsPage() {
     const tabs = [
         { id: "general", label: "General", icon: Globe },
         { id: "appearance", label: "Appearance", icon: Palette },
+        { id: "api", label: "API Keys", icon: Key },
         { id: "notifications", label: "Notifications", icon: Bell },
         { id: "security", label: "Security", icon: Shield },
     ];
@@ -456,6 +501,216 @@ export default function AdminSettingsPage() {
                     <div className="flex justify-end">
                         <Button className="bg-[#000000] text-white hover:bg-[#cfb659] rounded-none uppercase tracking-widest text-xs font-bold px-10 h-12 transition-colors">
                             <Save className="w-4 h-4 mr-2" /> Save Changes
+                        </Button>
+                    </div>
+                </div>
+            )}
+
+            {activeTab === "api" && (
+                <div className="space-y-8">
+                    {/* Google AI Studio */}
+                    <div className="bg-white dark:bg-[#0a0a0a] p-8 border border-gray-100 dark:border-zinc-800 shadow-sm rounded-xl">
+                        <div className="flex items-center justify-between mb-6">
+                            <div>
+                                <h2 className="text-lg font-bold uppercase tracking-widest text-black dark:text-white flex items-center gap-2">
+                                    <span className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                                        <svg className="w-4 h-4 text-blue-600" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                                    </span>
+                                    Google AI Studio
+                                </h2>
+                                <p className="text-xs text-gray-500 font-thai mt-1">ใช้สำหรับ AI Content Generation, TTS (Text-to-Speech ฟังข่าว), และ Translation</p>
+                            </div>
+                            {apiKeys.apiKeyGoogleAI ? (
+                                <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 rounded-none text-[10px] uppercase tracking-widest font-bold gap-1">
+                                    <CheckCircle className="w-3 h-3" /> Configured
+                                </Badge>
+                            ) : (
+                                <Badge variant="outline" className="rounded-none text-[10px] uppercase tracking-widest font-bold border-amber-300 text-amber-600 dark:border-amber-700 dark:text-amber-400 gap-1">
+                                    <AlertCircle className="w-3 h-3" /> Not Set
+                                </Badge>
+                            )}
+                        </div>
+                        <div>
+                            <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2 block">API Key</label>
+                            <div className="flex gap-2">
+                                <Input
+                                    type={showKeys.apiKeyGoogleAI ? "text" : "password"}
+                                    value={showKeys.apiKeyGoogleAI ? apiKeys.apiKeyGoogleAI : (apiKeys.apiKeyGoogleAI ? maskKey(apiKeys.apiKeyGoogleAI) : "")}
+                                    onChange={(e) => setApiKeys({...apiKeys, apiKeyGoogleAI: e.target.value})}
+                                    onFocus={() => setShowKeys(prev => ({...prev, apiKeyGoogleAI: true}))}
+                                    placeholder="AIzaSy..."
+                                    className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-mono text-sm focus-visible:ring-[#cfb659] flex-1"
+                                />
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => toggleShowKey("apiKeyGoogleAI")}
+                                    className="h-12 w-12 rounded-none border-gray-200 dark:border-zinc-700"
+                                    title={showKeys.apiKeyGoogleAI ? "Hide" : "Show"}
+                                >
+                                    {showKeys.apiKeyGoogleAI ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                </Button>
+                            </div>
+                            <p className="text-[10px] text-gray-400 mt-2 font-thai">ไปที่ <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">Google AI Studio</a> เพื่อรับ API Key</p>
+                        </div>
+                    </div>
+
+                    {/* Google Cloud TTS */}
+                    <div className="bg-white dark:bg-[#0a0a0a] p-8 border border-gray-100 dark:border-zinc-800 shadow-sm rounded-xl">
+                        <div className="flex items-center justify-between mb-6">
+                            <div>
+                                <h2 className="text-lg font-bold uppercase tracking-widest text-black dark:text-white flex items-center gap-2">
+                                    <span className="w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center text-base">🔊</span>
+                                    Google Cloud TTS
+                                </h2>
+                                <p className="text-xs text-gray-500 font-thai mt-1">Text-to-Speech สำหรับฟีเจอร์ "ฟังข่าว" (ถ้าไม่ใส่จะใช้ Google AI Studio key แทน)</p>
+                            </div>
+                            {apiKeys.apiKeyGoogleTTS ? (
+                                <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 rounded-none text-[10px] uppercase tracking-widest font-bold gap-1">
+                                    <CheckCircle className="w-3 h-3" /> Configured
+                                </Badge>
+                            ) : (
+                                <Badge variant="outline" className="rounded-none text-[10px] uppercase tracking-widest font-bold border-gray-300 text-gray-400 dark:border-zinc-600 gap-1">
+                                    Optional
+                                </Badge>
+                            )}
+                        </div>
+                        <div>
+                            <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2 block">API Key (Optional)</label>
+                            <div className="flex gap-2">
+                                <Input
+                                    type={showKeys.apiKeyGoogleTTS ? "text" : "password"}
+                                    value={showKeys.apiKeyGoogleTTS ? apiKeys.apiKeyGoogleTTS : (apiKeys.apiKeyGoogleTTS ? maskKey(apiKeys.apiKeyGoogleTTS) : "")}
+                                    onChange={(e) => setApiKeys({...apiKeys, apiKeyGoogleTTS: e.target.value})}
+                                    onFocus={() => setShowKeys(prev => ({...prev, apiKeyGoogleTTS: true}))}
+                                    placeholder="AIzaSy... (optional)"
+                                    className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-mono text-sm focus-visible:ring-[#cfb659] flex-1"
+                                />
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => toggleShowKey("apiKeyGoogleTTS")}
+                                    className="h-12 w-12 rounded-none border-gray-200 dark:border-zinc-700"
+                                    title={showKeys.apiKeyGoogleTTS ? "Hide" : "Show"}
+                                >
+                                    {showKeys.apiKeyGoogleTTS ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Google Cloud Translation */}
+                    <div className="bg-white dark:bg-[#0a0a0a] p-8 border border-gray-100 dark:border-zinc-800 shadow-sm rounded-xl">
+                        <div className="flex items-center justify-between mb-6">
+                            <div>
+                                <h2 className="text-lg font-bold uppercase tracking-widest text-black dark:text-white flex items-center gap-2">
+                                    <span className="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center text-base">🌐</span>
+                                    Google Cloud Translation
+                                </h2>
+                                <p className="text-xs text-gray-500 font-thai mt-1">AI Translation สำหรับแปลบทความเป็น 8 ภาษา (ถ้าไม่ใส่จะใช้ Google AI Studio key แทน)</p>
+                            </div>
+                            {apiKeys.apiKeyGoogleTranslate ? (
+                                <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 rounded-none text-[10px] uppercase tracking-widest font-bold gap-1">
+                                    <CheckCircle className="w-3 h-3" /> Configured
+                                </Badge>
+                            ) : (
+                                <Badge variant="outline" className="rounded-none text-[10px] uppercase tracking-widest font-bold border-gray-300 text-gray-400 dark:border-zinc-600 gap-1">
+                                    Optional
+                                </Badge>
+                            )}
+                        </div>
+                        <div>
+                            <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2 block">API Key (Optional)</label>
+                            <div className="flex gap-2">
+                                <Input
+                                    type={showKeys.apiKeyGoogleTranslate ? "text" : "password"}
+                                    value={showKeys.apiKeyGoogleTranslate ? apiKeys.apiKeyGoogleTranslate : (apiKeys.apiKeyGoogleTranslate ? maskKey(apiKeys.apiKeyGoogleTranslate) : "")}
+                                    onChange={(e) => setApiKeys({...apiKeys, apiKeyGoogleTranslate: e.target.value})}
+                                    onFocus={() => setShowKeys(prev => ({...prev, apiKeyGoogleTranslate: true}))}
+                                    placeholder="AIzaSy... (optional)"
+                                    className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-mono text-sm focus-visible:ring-[#cfb659] flex-1"
+                                />
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => toggleShowKey("apiKeyGoogleTranslate")}
+                                    className="h-12 w-12 rounded-none border-gray-200 dark:border-zinc-700"
+                                    title={showKeys.apiKeyGoogleTranslate ? "Hide" : "Show"}
+                                >
+                                    {showKeys.apiKeyGoogleTranslate ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* OpenAI (Optional) */}
+                    <div className="bg-white dark:bg-[#0a0a0a] p-8 border border-gray-100 dark:border-zinc-800 shadow-sm rounded-xl">
+                        <div className="flex items-center justify-between mb-6">
+                            <div>
+                                <h2 className="text-lg font-bold uppercase tracking-widest text-black dark:text-white flex items-center gap-2">
+                                    <span className="w-8 h-8 bg-zinc-100 dark:bg-zinc-800 rounded-lg flex items-center justify-center text-base">🤖</span>
+                                    OpenAI
+                                </h2>
+                                <p className="text-xs text-gray-500 font-thai mt-1">สำหรับ AI Recommendation และฟีเจอร์ AI เสริม (Optional)</p>
+                            </div>
+                            {apiKeys.apiKeyOpenAI ? (
+                                <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 rounded-none text-[10px] uppercase tracking-widest font-bold gap-1">
+                                    <CheckCircle className="w-3 h-3" /> Configured
+                                </Badge>
+                            ) : (
+                                <Badge variant="outline" className="rounded-none text-[10px] uppercase tracking-widest font-bold border-gray-300 text-gray-400 dark:border-zinc-600 gap-1">
+                                    Optional
+                                </Badge>
+                            )}
+                        </div>
+                        <div>
+                            <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2 block">API Key (Optional)</label>
+                            <div className="flex gap-2">
+                                <Input
+                                    type={showKeys.apiKeyOpenAI ? "text" : "password"}
+                                    value={showKeys.apiKeyOpenAI ? apiKeys.apiKeyOpenAI : (apiKeys.apiKeyOpenAI ? maskKey(apiKeys.apiKeyOpenAI) : "")}
+                                    onChange={(e) => setApiKeys({...apiKeys, apiKeyOpenAI: e.target.value})}
+                                    onFocus={() => setShowKeys(prev => ({...prev, apiKeyOpenAI: true}))}
+                                    placeholder="sk-..."
+                                    className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-mono text-sm focus-visible:ring-[#cfb659] flex-1"
+                                />
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => toggleShowKey("apiKeyOpenAI")}
+                                    className="h-12 w-12 rounded-none border-gray-200 dark:border-zinc-700"
+                                    title={showKeys.apiKeyOpenAI ? "Hide" : "Show"}
+                                >
+                                    {showKeys.apiKeyOpenAI ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                </Button>
+                            </div>
+                            <p className="text-[10px] text-gray-400 mt-2 font-thai">ไปที่ <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">OpenAI Platform</a> เพื่อรับ API Key</p>
+                        </div>
+                    </div>
+
+                    {/* Info Card */}
+                    <div className="bg-blue-50 dark:bg-blue-950/10 p-6 border border-blue-200 dark:border-blue-900/30 rounded-xl">
+                        <div className="flex items-start gap-3">
+                            <AlertCircle className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />
+                            <div>
+                                <p className="text-sm font-bold text-blue-800 dark:text-blue-300 font-thai">หมายเหตุเรื่อง API Keys</p>
+                                <ul className="text-xs text-blue-600 dark:text-blue-400 font-thai mt-2 space-y-1 list-disc list-inside">
+                                    <li><strong>Google AI Studio</strong> — เป็น key หลัก ใช้ได้ทั้ง AI Generation, TTS, และ Translation</li>
+                                    <li>key อื่นๆ เป็น Optional ใส่เพิ่มเพื่อแยก quota หรือใช้ service เฉพาะ</li>
+                                    <li>API Keys จะถูกเก็บเข้ารหัสในฐานข้อมูล ปลอดภัย</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Save Button */}
+                    <div className="flex justify-end sticky bottom-8 z-10">
+                        <Button
+                            onClick={handleSaveApiKeys}
+                            disabled={savingApiKeys}
+                            className="bg-[#000000] text-white hover:bg-[#cfb659] shadow-lg rounded-none uppercase tracking-widest text-xs font-bold px-12 h-14 transition-colors disabled:opacity-50"
+                        >
+                            {savingApiKeys ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Saving...</> : <><Save className="w-4 h-4 mr-2" /> Save API Keys</>}
                         </Button>
                     </div>
                 </div>

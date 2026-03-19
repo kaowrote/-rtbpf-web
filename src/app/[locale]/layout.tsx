@@ -25,6 +25,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import { generateOrganizationSchema, generateWebSiteSchema } from "@/lib/structured-data";
 
 export async function generateMetadata() {
   const settings = await prisma.systemSetting.findMany({
@@ -78,6 +79,21 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="theme-color" content="#1B2A4A" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(generateOrganizationSchema()) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(generateWebSiteSchema()) }}
+        />
+      </head>
       <body
         className={`${inter.variable} ${ibmPlexThai.variable} font-sans antialiased bg-background min-h-screen flex flex-col`}
       >

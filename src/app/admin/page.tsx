@@ -1,8 +1,9 @@
 import React from "react";
-import { ArrowRight, FileText, Calendar, Users, Trophy, Activity, TrendingUp, ExternalLink } from "lucide-react";
+import { ArrowRight, FileText, Calendar, Users, Trophy, Activity, TrendingUp, ExternalLink, BarChart3 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
+import { DashboardChart } from "@/components/admin/DashboardChart";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import 'dayjs/locale/th';
@@ -72,6 +73,27 @@ export default async function AdminDashboardPage() {
         })
     ]);
 
+    // Fetch weekly article data for chart (last 12 weeks)
+    const twelveWeeksAgo = new Date();
+    twelveWeeksAgo.setDate(twelveWeeksAgo.getDate() - 84);
+
+    let weeklyData: { label: string; count: number }[] = [];
+    try {
+        const rawWeekly = await prisma.$queryRaw<{ week_start: Date; count: bigint }[]>`
+            SELECT date_trunc('week', "createdAt") as week_start, COUNT(*) as count
+            FROM "Article"
+            WHERE "createdAt" >= ${twelveWeeksAgo}
+            GROUP BY week_start
+            ORDER BY week_start ASC
+        `;
+        weeklyData = rawWeekly.map(r => ({
+            label: dayjs(r.week_start).format('D MMM'),
+            count: Number(r.count),
+        }));
+    } catch (e) {
+        console.error('Failed to fetch weekly chart data:', e);
+    }
+
     const stats = [
         { label: "Total Articles", count: totalArticles.toLocaleString(), icon: FileText, color: "text-blue-500", bg: "bg-blue-50 dark:bg-blue-950/30" },
         { label: "Upcoming Events", count: upcomingEvents.toLocaleString(), icon: Calendar, color: "text-green-500", bg: "bg-green-50 dark:bg-green-950/30" },
@@ -115,6 +137,17 @@ export default async function AdminDashboardPage() {
                         </div>
                     </div>
                 ))}
+            </div>
+
+            {/* Publishing Trend Chart */}
+            <div className="bg-white dark:bg-[#0a0a0a] p-8 border border-gray-100 dark:border-zinc-800 rounded-xl shadow-sm">
+                <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-xl font-bold font-thai tracking-wide uppercase flex items-center gap-2">
+                        <BarChart3 className="w-5 h-5 text-[#cfb659]" /> Publishing Trend
+                    </h2>
+                    <span className="text-xs text-gray-500 font-bold uppercase tracking-widest">Last 12 Weeks</span>
+                </div>
+                <DashboardChart data={weeklyData} />
             </div>
 
             {/* Top Articles & Activity Log Row */}

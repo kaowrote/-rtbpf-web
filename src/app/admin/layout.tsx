@@ -4,9 +4,10 @@ import "@/app/[locale]/globals.css";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, FileText, Calendar as CalendarIcon, Trophy, Settings, Users, LogOut, ChevronRight, Loader2, Menu, X, PanelLeftClose, PanelLeft } from "lucide-react";
+import { LayoutDashboard, FileText, Calendar as CalendarIcon, Trophy, Settings, Users, LogOut, ChevronRight, Loader2, Menu, X, PanelLeftClose, PanelLeft, Languages } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/admin/UserAvatar";
+import { Toaster } from "sonner";
 
 interface NavItem {
     label: string;
@@ -29,6 +30,7 @@ const NAV_ITEMS: NavSection[] = [
             { label: "Articles & News", href: "/admin/articles", icon: FileText, allowedRoles: ["SUPER_ADMIN", "ADMIN", "EDITOR", "AUTHOR", "TRANSLATOR"] },
             { label: "Events", href: "/admin/events", icon: CalendarIcon, allowedRoles: ["SUPER_ADMIN", "ADMIN", "EDITOR"] },
             { label: "Awards", href: "/admin/awards", icon: Trophy, allowedRoles: ["SUPER_ADMIN", "ADMIN", "EDITOR", "JURY"] },
+            { label: "Translations", href: "/admin/translations", icon: Languages, allowedRoles: ["SUPER_ADMIN", "ADMIN", "EDITOR", "TRANSLATOR"] },
         ],
     },
     {
@@ -69,9 +71,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const isForgotPasswordPage = pathname === "/admin/forgot-password";
     const isResetPasswordPage = pathname === "/admin/reset-password";
     const isLogoutPage = pathname === "/admin/logout";
+    const isVerifyEmailPage = pathname === "/admin/verify-email";
 
     useEffect(() => {
-        if (isLoginPage || isForgotPasswordPage || isResetPasswordPage || isLogoutPage) return;
+        if (isLoginPage || isForgotPasswordPage || isResetPasswordPage || isLogoutPage || isVerifyEmailPage) return;
         fetch("/api/auth/session")
             .then((res) => res.json())
             .then((data) => {
@@ -100,8 +103,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         }
     };
 
-    if (isLoginPage || isForgotPasswordPage || isResetPasswordPage || isLogoutPage) {
-        return <>{children}</>;
+    if (isLoginPage || isForgotPasswordPage || isResetPasswordPage || isLogoutPage || isVerifyEmailPage) {
+        return (
+            <html lang="th" suppressHydrationWarning>
+                <body className="font-sans antialiased bg-background min-h-screen">
+                    {children}
+                    <Toaster position="top-right" richColors />
+                </body>
+            </html>
+        );
     }
 
     const displayName = user?.name || user?.email?.split("@")[0] || "Admin User";
@@ -242,85 +252,90 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     );
 
     return (
-        <div className="flex min-h-screen bg-gray-50 dark:bg-[#0d0d0d]">
-            {/* Mobile Menu Button */}
-            <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="fixed top-4 left-4 z-50 lg:hidden p-2 rounded-lg bg-[#1b294b] text-white shadow-lg"
-            >
-                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
+        <html lang="th" suppressHydrationWarning>
+            <body className="font-sans antialiased bg-background min-h-screen">
+                <div className="flex min-h-screen bg-gray-50 dark:bg-[#0d0d0d]">
+                    {/* Mobile Menu Button */}
+                    <button
+                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                        className="fixed top-4 left-4 z-50 lg:hidden p-2 rounded-lg bg-[#1b294b] text-white shadow-lg"
+                    >
+                        {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                    </button>
 
-            {/* Mobile Sidebar Overlay */}
-            {mobileMenuOpen && (
-                <div 
-                    className="fixed inset-0 bg-black/60 z-40 lg:hidden backdrop-blur-sm"
-                    onClick={() => setMobileMenuOpen(false)}
-                />
-            )}
+                    {/* Mobile Sidebar Overlay */}
+                    {mobileMenuOpen && (
+                        <div 
+                            className="fixed inset-0 bg-black/60 z-40 lg:hidden backdrop-blur-sm"
+                            onClick={() => setMobileMenuOpen(false)}
+                        />
+                    )}
 
-            {/* Sidebar - Desktop */}
-            <aside className={cn(
-                "hidden lg:flex flex-col h-screen sticky top-0 bg-[#1b294b] transition-all duration-300 ease-in-out",
-                sidebarCollapsed ? "w-[72px]" : "w-[260px]"
-            )}>
-                <SidebarContent />
-                {/* Collapse toggle */}
-                <button
-                    onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-                    className="absolute -right-3 top-8 w-6 h-6 rounded-full bg-[#1b294b] border-2 border-gray-200 dark:border-zinc-700 flex items-center justify-center text-white hover:bg-[#cfb659] hover:text-[#1b294b] transition-colors shadow-md z-10"
-                    title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-                >
-                    {sidebarCollapsed ? <PanelLeft className="w-3 h-3" /> : <PanelLeftClose className="w-3 h-3" />}
-                </button>
-            </aside>
+                    {/* Sidebar - Desktop */}
+                    <aside className={cn(
+                        "hidden lg:flex flex-col h-screen sticky top-0 bg-[#1b294b] transition-all duration-300 ease-in-out",
+                        sidebarCollapsed ? "w-[72px]" : "w-[260px]"
+                    )}>
+                        <SidebarContent />
+                        {/* Collapse toggle */}
+                        <button
+                            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+                            className="absolute -right-3 top-8 w-6 h-6 rounded-full bg-[#1b294b] border-2 border-gray-200 dark:border-zinc-700 flex items-center justify-center text-white hover:bg-[#cfb659] hover:text-[#1b294b] transition-colors shadow-md z-10"
+                            title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+                        >
+                            {sidebarCollapsed ? <PanelLeft className="w-3 h-3" /> : <PanelLeftClose className="w-3 h-3" />}
+                        </button>
+                    </aside>
 
-            {/* Sidebar - Mobile */}
-            <aside className={cn(
-                "fixed top-0 left-0 h-full w-[260px] bg-[#1b294b] z-50 flex flex-col lg:hidden transition-transform duration-300",
-                mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-            )}>
-                <SidebarContent />
-            </aside>
+                    {/* Sidebar - Mobile */}
+                    <aside className={cn(
+                        "fixed top-0 left-0 h-full w-[260px] bg-[#1b294b] z-50 flex flex-col lg:hidden transition-transform duration-300",
+                        mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+                    )}>
+                        <SidebarContent />
+                    </aside>
 
-            {/* Main Content Area */}
-            <main className="flex-1 min-w-0">
-                {/* Top bar */}
-                <div className="sticky top-0 z-30 bg-white/80 dark:bg-[#0d0d0d]/80 backdrop-blur-md border-b border-gray-100 dark:border-zinc-800 px-6 lg:px-8 py-3">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3 lg:gap-0">
-                            <div className="w-8 lg:hidden" />
-                            <nav className="flex items-center text-sm text-gray-400">
-                                <Link href="/admin" className="hover:text-[#cfb659] transition-colors font-medium">
-                                    CMS
-                                </Link>
-                                {pathname !== "/admin" && (
-                                    <>
-                                        <ChevronRight className="w-3.5 h-3.5 mx-1.5" />
-                                        <span className="text-gray-700 dark:text-gray-200 font-semibold capitalize">
-                                            {pathname.split("/admin/")[1]?.split("/")[0] || "Dashboard"}
-                                        </span>
-                                    </>
-                                )}
-                            </nav>
+                    {/* Main Content Area */}
+                    <main className="flex-1 min-w-0">
+                        {/* Top bar */}
+                        <div className="sticky top-0 z-30 bg-white/80 dark:bg-[#0d0d0d]/80 backdrop-blur-md border-b border-gray-100 dark:border-zinc-800 px-6 lg:px-8 py-3">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-3 lg:gap-0">
+                                    <div className="w-8 lg:hidden" />
+                                    <nav className="flex items-center text-sm text-gray-400">
+                                        <Link href="/admin" className="hover:text-[#cfb659] transition-colors font-medium">
+                                            CMS
+                                        </Link>
+                                        {pathname !== "/admin" && (
+                                            <>
+                                                <ChevronRight className="w-3.5 h-3.5 mx-1.5" />
+                                                <span className="text-gray-700 dark:text-gray-200 font-semibold capitalize">
+                                                    {pathname.split("/admin/")[1]?.split("/")[0] || "Dashboard"}
+                                                </span>
+                                            </>
+                                        )}
+                                    </nav>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <Link 
+                                        href="/" 
+                                        target="_blank"
+                                        className="text-xs text-gray-400 hover:text-[#cfb659] transition-colors font-medium"
+                                    >
+                                        View Site →
+                                    </Link>
+                                </div>
+                            </div>
                         </div>
-                        <div className="flex items-center gap-3">
-                            <Link 
-                                href="/" 
-                                target="_blank"
-                                className="text-xs text-gray-400 hover:text-[#cfb659] transition-colors font-medium"
-                            >
-                                View Site →
-                            </Link>
-                        </div>
-                    </div>
-                </div>
 
-                {/* Page Content */}
-                <div className="p-6 lg:p-8 xl:p-10">
-                    {children}
+                        {/* Page Content */}
+                        <div className="p-6 lg:p-8 xl:p-10">
+                            {children}
+                        </div>
+                    </main>
                 </div>
-            </main>
-        </div>
+                <Toaster position="top-right" richColors />
+            </body>
+        </html>
     );
 }
