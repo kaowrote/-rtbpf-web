@@ -337,11 +337,11 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       </section>
 
       {/* NEWSLETTER SECTION */}
-      <section className="w-full py-24 bg-accent text-black text-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-white/20 dark:bg-black/20 mix-blend-overlay"></div>
+      <section className="w-full py-24 bg-[#1b294b] text-white text-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-white/5 dark:bg-black/20 mix-blend-overlay"></div>
         <div className="container px-6 mx-auto max-w-2xl relative z-10">
           <h2 className="text-3xl md:text-5xl font-bold uppercase tracking-widest mb-4 font-serif">{t("stayConnected")}</h2>
-          <p className="text-black/80 font-thai text-lg mb-8 font-medium">
+          <p className="text-white/80 font-thai text-lg mb-8 font-medium">
             {t("newsletterDesc")}
           </p>
           <form className="flex flex-col sm:flex-row gap-0 justify-center w-full max-w-lg mx-auto shadow-2xl xl:rounded-xl overflow-hidden">
