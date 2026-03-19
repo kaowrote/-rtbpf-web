@@ -30,5 +30,12 @@ export const config = {
 
         // Admin routes
         "/admin/:path*",
+
+        // Catch public paths without locale prefix → redirect to default locale
+        "/articles/:path*",
+        "/events/:path*",
+        "/awards/:path*",
+        "/about/:path*",
+        "/contact/:path*",
     ],
 };

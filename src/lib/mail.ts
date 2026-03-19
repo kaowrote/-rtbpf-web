@@ -1,10 +1,20 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let _resend: Resend | null = null;
+function getResend() {
+    if (!_resend) {
+        const apiKey = process.env.RESEND_API_KEY;
+        if (!apiKey) {
+            throw new Error('RESEND_API_KEY is not configured');
+        }
+        _resend = new Resend(apiKey);
+    }
+    return _resend;
+}
 
 export const sendInviteEmail = async (email: string, name: string, role: string) => {
     try {
-        const { data, error } = await resend.emails.send({
+        const { data, error } = await getResend().emails.send({
             from: 'RTBPF CMS <noreply@rtbpf.org>', // Note: Needs verified domain in Resend
             to: email,
             subject: 'Invite: เว็บไซต์สมาพันธ์ฯ (RTBPF CMS)',
@@ -43,7 +53,7 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
     const resetLink = `${process.env.NEXT_PUBLIC_APP_URL}/admin/reset-password?token=${token}`;
 
     try {
-        const { data, error } = await resend.emails.send({
+        const { data, error } = await getResend().emails.send({
             from: 'RTBPF CMS <noreply@rtbpf.org>',
             to: email,
             subject: 'Reset Password: กู้คืนรหัสผ่าน RTBPF CMS',
