@@ -5,6 +5,17 @@ description: How to set up, develop, and deploy the RTBPF website — tech stack
 
 # Project Setup & Deployment
 
+## 🎨 Official Theme Colors
+| Color | Hex | Usage |
+|-------|-----|-------|
+| **Gold (Primary)** | `#cfb659` | Accent color, buttons, links, highlights, awards text |
+| **Black (Background)** | `#000000` | Primary buttons, admin sidebar active, card backgrounds |
+| **Navy Blue (Secondary)** | `#1b294b` | Stay Connected section, Footer background, hero sections (About, Contact, etc.) |
+| **Darker Gold** | `#bda348` | Gradient darker end for gold buttons |
+| **Lighter Gold** | `#d9c26a` | Gradient lighter end for gold hover states |
+
+> **Note:** Previously the primary background was Navy Blue `#1B2A4A` and gold was `#C9A84C`. These were updated on 2026-03-19.
+
 ## Tech Stack
 | Technology | Version | Purpose |
 |------------|---------|---------|
