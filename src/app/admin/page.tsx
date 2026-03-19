@@ -88,12 +88,12 @@ export default async function AdminDashboardPage() {
                 </div>
                 <div className="flex gap-4">
                     <Link href="/admin/articles/create">
-                        <Button className="bg-[#1B2A4A] text-white hover:bg-[#C9A84C] transition-colors rounded-none font-bold uppercase tracking-widest text-xs px-6">
+                        <Button className="bg-[#1b294b] text-white hover:bg-[#cfb659] transition-colors rounded-none font-bold uppercase tracking-widest text-xs px-6">
                             + New Article
                         </Button>
                     </Link>
                     <Link href="/admin/events/create">
-                        <Button className="bg-black text-white dark:bg-white dark:text-black hover:bg-[#C9A84C] dark:hover:bg-[#C9A84C] dark:hover:text-white transition-colors rounded-none font-bold uppercase tracking-widest text-xs px-6">
+                        <Button className="bg-black text-white dark:bg-white dark:text-black hover:bg-[#cfb659] dark:hover:bg-[#cfb659] dark:hover:text-white transition-colors rounded-none font-bold uppercase tracking-widest text-xs px-6">
                             + New Event
                         </Button>
                     </Link>
@@ -122,7 +122,7 @@ export default async function AdminDashboardPage() {
                 <div className="col-span-1 lg:col-span-2 bg-white dark:bg-[#0a0a0a] p-8 border border-gray-100 dark:border-zinc-800 rounded-xl shadow-sm">
                     <div className="flex justify-between items-center mb-6">
                         <h2 className="text-xl font-bold font-thai tracking-wide uppercase">Top Content by Views</h2>
-                        <Link href="/admin/articles" className="text-sm font-bold text-[#C9A84C] hover:text-black dark:hover:text-white flex items-center uppercase tracking-widest transition-colors">
+                        <Link href="/admin/articles" className="text-sm font-bold text-[#cfb659] hover:text-black dark:hover:text-white flex items-center uppercase tracking-widest transition-colors">
                             All Content <ArrowRight className="w-4 h-4 ml-1" />
                         </Link>
                     </div>
@@ -155,7 +155,7 @@ export default async function AdminDashboardPage() {
                     <div className="space-y-6">
                         {recentLogs.map((log) => (
                             <div key={log.id} className="relative pl-6 border-l-2 border-gray-100 dark:border-zinc-800 pb-2 last:pb-0">
-                                <div className="absolute left-[-5px] top-0 w-2 h-2 rounded-full bg-[#C9A84C]" />
+                                <div className="absolute left-[-5px] top-0 w-2 h-2 rounded-full bg-[#cfb659]" />
                                 <p className="text-xs font-bold text-black dark:text-white uppercase tracking-wider mb-1">
                                     {log.action.replace(/_/g, " ")}
                                 </p>
@@ -178,7 +178,7 @@ export default async function AdminDashboardPage() {
                 <div className="col-span-1 lg:col-span-2 bg-white dark:bg-[#0a0a0a] p-8 border border-gray-100 dark:border-zinc-800 rounded-xl shadow-sm">
                     <div className="flex justify-between items-center mb-6">
                         <h2 className="text-xl font-bold font-thai tracking-wide uppercase">Recent Content Additions</h2>
-                        <Link href="/admin/articles" className="text-sm font-bold text-[#C9A84C] hover:text-black dark:hover:text-white flex items-center uppercase tracking-widest transition-colors">
+                        <Link href="/admin/articles" className="text-sm font-bold text-[#cfb659] hover:text-black dark:hover:text-white flex items-center uppercase tracking-widest transition-colors">
                             View All <ArrowRight className="w-4 h-4 ml-1" />
                         </Link>
                     </div>
@@ -207,7 +207,7 @@ export default async function AdminDashboardPage() {
                                     </div>
                                     <div className="flex gap-2">
                                         <Link href={`/articles/${article.id}`} target="_blank">
-                                            <Button variant="ghost" size="sm" className="text-[#C9A84C] hover:text-black dark:hover:text-white">
+                                            <Button variant="ghost" size="sm" className="text-[#cfb659] hover:text-black dark:hover:text-white">
                                                 <ExternalLink className="w-4 h-4 mr-1" /> View
                                             </Button>
                                         </Link>

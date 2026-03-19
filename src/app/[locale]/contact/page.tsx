@@ -20,13 +20,13 @@ export default function ContactPage() {
         <div className="flex flex-col min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
 
             {/* ===== HERO ===== */}
-            <section className="relative w-full py-24 md:py-32 bg-[#1B2A4A] text-white overflow-hidden">
+            <section className="relative w-full py-24 md:py-32 bg-[#1b294b] text-white overflow-hidden">
                 <div className="absolute inset-0 opacity-10">
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_25%,rgba(201,168,76,0.3)_0%,transparent_50%),radial-gradient(circle_at_75%_75%,rgba(201,168,76,0.2)_0%,transparent_50%)]"></div>
                 </div>
 
                 <div className="container relative z-10 mx-auto px-6 text-center">
-                    <Badge className="bg-[#C9A84C] text-black hover:bg-[#C9A84C]/90 uppercase tracking-[0.3em] font-sans font-bold px-4 py-1.5 rounded-none text-xs mb-6">
+                    <Badge className="bg-[#cfb659] text-black hover:bg-[#cfb659]/90 uppercase tracking-[0.3em] font-sans font-bold px-4 py-1.5 rounded-none text-xs mb-6">
                         Contact
                     </Badge>
                     <h1 className="text-4xl md:text-6xl font-bold font-thai uppercase tracking-wide mb-4">
@@ -49,13 +49,13 @@ export default function ContactPage() {
                                 <h2 className="text-2xl font-bold font-thai text-black dark:text-white uppercase tracking-wide mb-6">
                                     ข้อมูลติดต่อ
                                 </h2>
-                                <div className="w-12 h-1 bg-[#C9A84C] mb-8"></div>
+                                <div className="w-12 h-1 bg-[#cfb659] mb-8"></div>
                             </div>
 
                             {/* Address */}
                             <div className="flex items-start gap-4">
-                                <div className="w-12 h-12 flex items-center justify-center bg-[#C9A84C]/10 shrink-0">
-                                    <MapPin className="w-5 h-5 text-[#C9A84C]" />
+                                <div className="w-12 h-12 flex items-center justify-center bg-[#cfb659]/10 shrink-0">
+                                    <MapPin className="w-5 h-5 text-[#cfb659]" />
                                 </div>
                                 <div>
                                     <h3 className="font-bold font-thai text-black dark:text-white mb-1">ที่อยู่สำนักงาน</h3>
@@ -69,8 +69,8 @@ export default function ContactPage() {
 
                             {/* Phone */}
                             <div className="flex items-start gap-4">
-                                <div className="w-12 h-12 flex items-center justify-center bg-[#C9A84C]/10 shrink-0">
-                                    <Phone className="w-5 h-5 text-[#C9A84C]" />
+                                <div className="w-12 h-12 flex items-center justify-center bg-[#cfb659]/10 shrink-0">
+                                    <Phone className="w-5 h-5 text-[#cfb659]" />
                                 </div>
                                 <div>
                                     <h3 className="font-bold font-thai text-black dark:text-white mb-1">โทรศัพท์</h3>
@@ -81,21 +81,21 @@ export default function ContactPage() {
 
                             {/* Email */}
                             <div className="flex items-start gap-4">
-                                <div className="w-12 h-12 flex items-center justify-center bg-[#C9A84C]/10 shrink-0">
-                                    <Mail className="w-5 h-5 text-[#C9A84C]" />
+                                <div className="w-12 h-12 flex items-center justify-center bg-[#cfb659]/10 shrink-0">
+                                    <Mail className="w-5 h-5 text-[#cfb659]" />
                                 </div>
                                 <div>
                                     <h3 className="font-bold font-thai text-black dark:text-white mb-1">อีเมล</h3>
-                                    <a href="mailto:info@rtbpf.org" className="font-thai text-[#C9A84C] hover:underline">info@rtbpf.org</a>
+                                    <a href="mailto:info@rtbpf.org" className="font-thai text-[#cfb659] hover:underline">info@rtbpf.org</a>
                                     <br />
-                                    <a href="mailto:awards@rtbpf.org" className="font-thai text-gray-600 dark:text-gray-400 hover:text-[#C9A84C] transition-colors">awards@rtbpf.org (งานรางวัลนาฏราช)</a>
+                                    <a href="mailto:awards@rtbpf.org" className="font-thai text-gray-600 dark:text-gray-400 hover:text-[#cfb659] transition-colors">awards@rtbpf.org (งานรางวัลนาฏราช)</a>
                                 </div>
                             </div>
 
                             {/* Office Hours */}
                             <div className="flex items-start gap-4">
-                                <div className="w-12 h-12 flex items-center justify-center bg-[#C9A84C]/10 shrink-0">
-                                    <Clock className="w-5 h-5 text-[#C9A84C]" />
+                                <div className="w-12 h-12 flex items-center justify-center bg-[#cfb659]/10 shrink-0">
+                                    <Clock className="w-5 h-5 text-[#cfb659]" />
                                 </div>
                                 <div>
                                     <h3 className="font-bold font-thai text-black dark:text-white mb-1">เวลาทำการ</h3>
@@ -108,13 +108,13 @@ export default function ContactPage() {
                             <div className="pt-4 border-t border-gray-200 dark:border-zinc-800">
                                 <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">Follow Us</h3>
                                 <div className="flex gap-3">
-                                    <a href={siteConfig.links.facebook} target="_blank" rel="noreferrer" title="Facebook" className="w-10 h-10 flex items-center justify-center bg-gray-100 dark:bg-zinc-800 hover:bg-[#C9A84C] hover:text-black text-gray-600 dark:text-gray-400 transition-all">
+                                    <a href={siteConfig.links.facebook} target="_blank" rel="noreferrer" title="Facebook" className="w-10 h-10 flex items-center justify-center bg-gray-100 dark:bg-zinc-800 hover:bg-[#cfb659] hover:text-black text-gray-600 dark:text-gray-400 transition-all">
                                         <Facebook className="w-4 h-4" />
                                     </a>
-                                    <a href={siteConfig.links.twitter} target="_blank" rel="noreferrer" title="Twitter" className="w-10 h-10 flex items-center justify-center bg-gray-100 dark:bg-zinc-800 hover:bg-[#C9A84C] hover:text-black text-gray-600 dark:text-gray-400 transition-all">
+                                    <a href={siteConfig.links.twitter} target="_blank" rel="noreferrer" title="Twitter" className="w-10 h-10 flex items-center justify-center bg-gray-100 dark:bg-zinc-800 hover:bg-[#cfb659] hover:text-black text-gray-600 dark:text-gray-400 transition-all">
                                         <Twitter className="w-4 h-4" />
                                     </a>
-                                    <a href={siteConfig.links.youtube} target="_blank" rel="noreferrer" title="YouTube" className="w-10 h-10 flex items-center justify-center bg-gray-100 dark:bg-zinc-800 hover:bg-[#C9A84C] hover:text-black text-gray-600 dark:text-gray-400 transition-all">
+                                    <a href={siteConfig.links.youtube} target="_blank" rel="noreferrer" title="YouTube" className="w-10 h-10 flex items-center justify-center bg-gray-100 dark:bg-zinc-800 hover:bg-[#cfb659] hover:text-black text-gray-600 dark:text-gray-400 transition-all">
                                         <Youtube className="w-4 h-4" />
                                     </a>
                                 </div>
@@ -140,7 +140,7 @@ export default function ContactPage() {
                                         <p className="text-gray-500 font-thai">ขอบคุณที่ติดต่อเข้ามา ทีมงานจะตอบกลับโดยเร็วที่สุด</p>
                                         <button
                                             onClick={() => setFormStatus("idle")}
-                                            className="mt-6 text-[#C9A84C] hover:underline font-thai text-sm"
+                                            className="mt-6 text-[#cfb659] hover:underline font-thai text-sm"
                                         >
                                             ส่งข้อความอีกครั้ง
                                         </button>
@@ -153,7 +153,7 @@ export default function ContactPage() {
                                                 <Input
                                                     required
                                                     placeholder="กรอกชื่อ-นามสกุล"
-                                                    className="h-12 bg-white dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-thai focus-visible:ring-[#C9A84C]"
+                                                    className="h-12 bg-white dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-thai focus-visible:ring-[#cfb659]"
                                                 />
                                             </div>
                                             <div>
@@ -162,7 +162,7 @@ export default function ContactPage() {
                                                     required
                                                     type="email"
                                                     placeholder="you@example.com"
-                                                    className="h-12 bg-white dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-sans focus-visible:ring-[#C9A84C]"
+                                                    className="h-12 bg-white dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-sans focus-visible:ring-[#cfb659]"
                                                 />
                                             </div>
                                         </div>
@@ -173,12 +173,12 @@ export default function ContactPage() {
                                                 <Input
                                                     type="tel"
                                                     placeholder="08X-XXX-XXXX"
-                                                    className="h-12 bg-white dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-sans focus-visible:ring-[#C9A84C]"
+                                                    className="h-12 bg-white dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-sans focus-visible:ring-[#cfb659]"
                                                 />
                                             </div>
                                             <div>
                                                 <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2 block">หัวข้อ</label>
-                                                <select title="Contact Topic" className="w-full h-12 px-4 bg-white dark:bg-black border border-gray-200 dark:border-zinc-700 font-thai text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A84C] text-black dark:text-white">
+                                                <select title="Contact Topic" className="w-full h-12 px-4 bg-white dark:bg-black border border-gray-200 dark:border-zinc-700 font-thai text-sm focus:outline-none focus:ring-2 focus:ring-[#cfb659] text-black dark:text-white">
                                                     <option value="">เลือกหัวข้อ</option>
                                                     <option value="general">สอบถามข้อมูลทั่วไป</option>
                                                     <option value="awards">เกี่ยวกับรางวัลนาฏราช</option>
@@ -196,14 +196,14 @@ export default function ContactPage() {
                                                 required
                                                 rows={5}
                                                 placeholder="พิมพ์ข้อความของคุณที่นี่..."
-                                                className="w-full px-4 py-3 bg-white dark:bg-black border border-gray-200 dark:border-zinc-700 font-thai text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A84C] resize-none text-black dark:text-white placeholder:text-gray-400"
+                                                className="w-full px-4 py-3 bg-white dark:bg-black border border-gray-200 dark:border-zinc-700 font-thai text-sm focus:outline-none focus:ring-2 focus:ring-[#cfb659] resize-none text-black dark:text-white placeholder:text-gray-400"
                                             />
                                         </div>
 
                                         <Button
                                             type="submit"
                                             disabled={formStatus === "sending"}
-                                            className="w-full bg-[#C9A84C] text-black hover:bg-[#b8963d] rounded-none h-14 font-bold uppercase tracking-widest text-sm transition-all duration-300 disabled:opacity-50"
+                                            className="w-full bg-[#cfb659] text-black hover:bg-[#b8963d] rounded-none h-14 font-bold uppercase tracking-widest text-sm transition-all duration-300 disabled:opacity-50"
                                         >
                                             {formStatus === "sending" ? (
                                                 <span className="flex items-center gap-2">

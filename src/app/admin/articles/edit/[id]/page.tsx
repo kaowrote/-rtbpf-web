@@ -139,7 +139,7 @@ export default function ArticleEditPage({
     if (isFetchingData) {
         return (
             <div className="flex h-[60vh] items-center justify-center">
-                <Loader2 className="h-8 w-8 animate-spin text-[#C9A84C]" />
+                <Loader2 className="h-8 w-8 animate-spin text-[#cfb659]" />
             </div>
         );
     }
@@ -169,7 +169,7 @@ export default function ArticleEditPage({
                     <Button
                         onClick={() => handleSave("PUBLISHED")}
                         disabled={isLoading}
-                        className="h-10 rounded-none font-bold uppercase tracking-widest text-xs bg-[#1B2A4A] dark:bg-white text-white dark:text-black hover:bg-black dark:hover:bg-[#C9A84C] transition-colors"
+                        className="h-10 rounded-none font-bold uppercase tracking-widest text-xs bg-[#1b294b] dark:bg-white text-white dark:text-black hover:bg-black dark:hover:bg-[#cfb659] transition-colors"
                     >
                         {isLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <RefreshCw className="w-4 h-4 mr-2" />}
                         Update
@@ -187,7 +187,7 @@ export default function ArticleEditPage({
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                             placeholder="พิมพ์หัวข้อข่าวหรือบทความที่นี่..."
-                            className="text-lg font-thai font-semibold h-14 border-gray-200 dark:border-zinc-800 focus-visible:ring-[#C9A84C]"
+                            className="text-lg font-thai font-semibold h-14 border-gray-200 dark:border-zinc-800 focus-visible:ring-[#cfb659]"
                         />
                         <div className="mt-4">
                             <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-2 font-sans">URL Slug</label>
@@ -195,7 +195,7 @@ export default function ArticleEditPage({
                                 value={slug!}
                                 onChange={(e) => setSlug(e.target.value)}
                                 placeholder="article-slug-url"
-                                className="font-mono text-xs border-gray-200 dark:border-zinc-800 focus-visible:ring-[#C9A84C]"
+                                className="font-mono text-xs border-gray-200 dark:border-zinc-800 focus-visible:ring-[#cfb659]"
                             />
                         </div>
                     </div>
@@ -268,11 +268,11 @@ export default function ArticleEditPage({
                                     placeholder="เช่น รางวัลนาฏราช, ละครดี, 2024" 
                                     value={tags}
                                     onChange={(e) => setTags(e.target.value)}
-                                    className="border-gray-200 dark:border-zinc-800 focus-visible:ring-[#C9A84C] font-thai text-sm" 
+                                    className="border-gray-200 dark:border-zinc-800 focus-visible:ring-[#cfb659] font-thai text-sm" 
                                 />
                                 <div className="flex flex-wrap gap-1 mt-3">
                                     {tags.split(",").map((tag, i) => tag.trim() && (
-                                        <div key={i} className="px-2 py-1 bg-[#C9A84C]/10 text-[#C9A84C] text-[10px] font-bold rounded uppercase">
+                                        <div key={i} className="px-2 py-1 bg-[#cfb659]/10 text-[#cfb659] text-[10px] font-bold rounded uppercase">
                                             #{tag.trim()}
                                         </div>
                                     ))}

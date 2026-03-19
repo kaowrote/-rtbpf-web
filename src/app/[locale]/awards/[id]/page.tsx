@@ -58,13 +58,13 @@ export default function AwardDetailPage({ params }: { params: Promise<{ id: stri
                 {/* Content Half */}
                 <div className="w-full md:w-1/2 flex items-center p-8 md:p-16 lg:p-24 order-1 md:order-2">
                     <div className="max-w-xl w-full">
-                        <Link href="/awards" className="inline-flex items-center text-sm font-bold uppercase tracking-widest text-[#C9A84C] hover:text-black dark:hover:text-white transition-colors mb-8 group">
+                        <Link href="/awards" className="inline-flex items-center text-sm font-bold uppercase tracking-widest text-[#cfb659] hover:text-black dark:hover:text-white transition-colors mb-8 group">
                             <ArrowLeft className="mr-2 h-4 w-4 transform group-hover:-translate-x-1 transition-transform" />
                             Back to Database
                         </Link>
 
                         <div className="flex flex-wrap items-center gap-3 mb-6">
-                            <Badge className="bg-[#1B2A4A] text-white hover:bg-[#1B2A4A]/90 dark:bg-[#1f2b46] rounded-none px-3 py-1 font-sans text-xs uppercase tracking-widest">
+                            <Badge className="bg-[#1b294b] text-white hover:bg-[#1b294b]/90 dark:bg-[#1f2b46] rounded-none px-3 py-1 font-sans text-xs uppercase tracking-widest">
                                 {award.year}
                             </Badge>
                             <Badge className="bg-transparent border border-black dark:border-white text-black dark:text-white rounded-none px-3 py-1 font-thai font-semibold text-xs tracking-wide">
@@ -72,7 +72,7 @@ export default function AwardDetailPage({ params }: { params: Promise<{ id: stri
                             </Badge>
                         </div>
 
-                        <h2 className="text-[#C9A84C] text-lg md:text-xl font-thai font-bold tracking-wide mb-2 uppercase">
+                        <h2 className="text-[#cfb659] text-lg md:text-xl font-thai font-bold tracking-wide mb-2 uppercase">
                             {award.category}
                         </h2>
 
@@ -103,7 +103,7 @@ export default function AwardDetailPage({ params }: { params: Promise<{ id: stri
                         {/* Synposis */}
                         <div className="mb-16">
                             <div className="flex items-center gap-3 mb-6">
-                                <Crown className="text-[#C9A84C] h-6 w-6" />
+                                <Crown className="text-[#cfb659] h-6 w-6" />
                                 <h3 className="text-2xl font-bold uppercase tracking-wider text-black dark:text-white">Synopsis & Overview</h3>
                             </div>
                             <p className="text-gray-700 dark:text-gray-300 font-thai text-lg md:text-xl leading-relaxed">
@@ -143,13 +143,13 @@ export default function AwardDetailPage({ params }: { params: Promise<{ id: stri
                         <div className="bg-white dark:bg-[#0a0a0a] p-8 border border-gray-100 dark:border-zinc-800 shadow-sm mb-10 text-center">
                             <h3 className="text-sm font-bold uppercase tracking-widest text-black dark:text-white mb-6">Share this Award</h3>
                             <div className="flex justify-center gap-4">
-                                <Button variant="outline" size="icon" className="rounded-full border-gray-200 dark:border-zinc-700 hover:text-[#C9A84C] hover:border-[#C9A84C]">
+                                <Button variant="outline" size="icon" className="rounded-full border-gray-200 dark:border-zinc-700 hover:text-[#cfb659] hover:border-[#cfb659]">
                                     <Facebook className="h-4 w-4" />
                                 </Button>
-                                <Button variant="outline" size="icon" className="rounded-full border-gray-200 dark:border-zinc-700 hover:text-[#C9A84C] hover:border-[#C9A84C]">
+                                <Button variant="outline" size="icon" className="rounded-full border-gray-200 dark:border-zinc-700 hover:text-[#cfb659] hover:border-[#cfb659]">
                                     <Twitter className="h-4 w-4" />
                                 </Button>
-                                <Button variant="outline" size="icon" className="rounded-full border-gray-200 dark:border-zinc-700 hover:text-[#C9A84C] hover:border-[#C9A84C]">
+                                <Button variant="outline" size="icon" className="rounded-full border-gray-200 dark:border-zinc-700 hover:text-[#cfb659] hover:border-[#cfb659]">
                                     <Link2 className="h-4 w-4" />
                                 </Button>
                             </div>
@@ -157,13 +157,13 @@ export default function AwardDetailPage({ params }: { params: Promise<{ id: stri
 
                         {/* Nominees List */}
                         <div className="bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-zinc-800 shadow-sm">
-                            <div className="bg-[#1B2A4A] dark:bg-[#111827] text-white p-6 flex items-center justify-between">
+                            <div className="bg-[#1b294b] dark:bg-[#111827] text-white p-6 flex items-center justify-between">
                                 <h3 className="text-lg font-bold font-thai tracking-wide">รายชื่อผู้เข้าชิง (Nominees)</h3>
-                                <Trophy className="text-[#C9A84C] h-5 w-5" />
+                                <Trophy className="text-[#cfb659] h-5 w-5" />
                             </div>
                             <div className="p-6">
-                                <div className="mb-4 pb-4 border-b border-[#C9A84C]/30 flex items-start gap-3">
-                                    <Award className="text-[#C9A84C] shrink-0 mt-0.5 h-4 w-4" />
+                                <div className="mb-4 pb-4 border-b border-[#cfb659]/30 flex items-start gap-3">
+                                    <Award className="text-[#cfb659] shrink-0 mt-0.5 h-4 w-4" />
                                     <div>
                                         <p className="font-thai font-semibold text-black dark:text-white">{award.title}</p>
                                         <p className="text-xs uppercase tracking-wider text-gray-500 mt-1">{award.network} (ผู้ชนะ)</p>

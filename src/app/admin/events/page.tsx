@@ -35,7 +35,7 @@ export default async function AdminEventsPage() {
                     <p className="text-gray-500 mt-2 font-thai">จัดการกำหนดการกิจกรรม งานสัมมนา และงานประกาศผลรางวัล</p>
                 </div>
                 <Link href="/admin/events/create">
-                    <Button className="bg-[#1B2A4A] text-white hover:bg-[#C9A84C] transition-colors rounded-none font-bold uppercase tracking-widest text-xs px-6">
+                    <Button className="bg-[#1b294b] text-white hover:bg-[#cfb659] transition-colors rounded-none font-bold uppercase tracking-widest text-xs px-6">
                         <Plus className="w-4 h-4 mr-2" /> New Event
                     </Button>
                 </Link>
@@ -83,7 +83,7 @@ export default async function AdminEventsPage() {
                                         <td className="px-6 py-5 font-thai">
                                             <div className="flex flex-col text-gray-600 dark:text-gray-400">
                                                 <div className="flex items-center mb-1 text-black dark:text-white font-medium text-sm">
-                                                    <Calendar className="w-4 h-4 mr-2 text-[#C9A84C]" /> {dayjs(event.startDate).format('D MMMM YYYY')}
+                                                    <Calendar className="w-4 h-4 mr-2 text-[#cfb659]" /> {dayjs(event.startDate).format('D MMMM YYYY')}
                                                 </div>
                                             </div>
                                         </td>

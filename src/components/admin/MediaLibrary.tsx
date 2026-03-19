@@ -152,7 +152,7 @@ export default function MediaLibrary({
                 <DialogHeader className="p-6 border-b border-gray-100 dark:border-white/5 flex flex-row items-center justify-between space-y-0">
                     <div>
                         <DialogTitle className="text-xl font-bold font-thai tracking-tight flex items-center gap-2">
-                            <ImageIcon className="w-5 h-5 text-[#C9A84C]" />
+                            <ImageIcon className="w-5 h-5 text-[#cfb659]" />
                             {title}
                         </DialogTitle>
                         <p className="text-xs text-gray-500 font-thai mt-1">เลือกรูปภาพหรืสื่อที่เคยอัปโหลดไว้แล้วในระบบ</p>
@@ -192,7 +192,7 @@ export default function MediaLibrary({
                         <div className="flex-1 overflow-y-auto p-6">
                             {isLoading ? (
                                 <div className="h-full flex flex-col items-center justify-center space-y-4">
-                                    <Loader2 className="w-10 h-10 text-[#C9A84C] animate-spin" />
+                                    <Loader2 className="w-10 h-10 text-[#cfb659] animate-spin" />
                                     <p className="text-sm font-thai text-gray-500">กำลังเข้าถึงคลังข้อมูล...</p>
                                 </div>
                             ) : mediaItems.length > 0 ? (
@@ -204,7 +204,7 @@ export default function MediaLibrary({
                                             className={cn(
                                                 "group relative aspect-square rounded-xl overflow-hidden border-2 transition-all cursor-pointer",
                                                 selectedItem?.id === item.id 
-                                                    ? "border-[#C9A84C] ring-4 ring-[#C9A84C]/10" 
+                                                    ? "border-[#cfb659] ring-4 ring-[#cfb659]/10" 
                                                     : "border-gray-100 dark:border-white/5 hover:border-gray-200 dark:hover:border-white/20"
                                             )}
                                         >
@@ -216,7 +216,7 @@ export default function MediaLibrary({
                                                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 200px"
                                             />
                                             {selectedItem?.id === item.id && (
-                                                <div className="absolute top-2 right-2 w-6 h-6 bg-[#C9A84C] rounded-full flex items-center justify-center shadow-lg border-2 border-white">
+                                                <div className="absolute top-2 right-2 w-6 h-6 bg-[#cfb659] rounded-full flex items-center justify-center shadow-lg border-2 border-white">
                                                     <Check className="w-4 h-4 text-black font-bold" />
                                                 </div>
                                             )}
@@ -275,8 +275,8 @@ export default function MediaLibrary({
                         {selectedItem ? (
                             <div className="px-6 space-y-8">
                                 <div className="flex items-center justify-between">
-                                    <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-[#C9A84C]">File Details</h3>
-                                    <Badge variant="outline" className="text-[9px] uppercase border-[#C9A84C]/20 text-[#C9A84C]">
+                                    <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-[#cfb659]">File Details</h3>
+                                    <Badge variant="outline" className="text-[9px] uppercase border-[#cfb659]/20 text-[#cfb659]">
                                         {selectedItem.folder}
                                     </Badge>
                                 </div>
@@ -358,7 +358,7 @@ export default function MediaLibrary({
                         <Button 
                             onClick={handleSelect} 
                             disabled={!selectedItem}
-                            className="bg-[#C9A84C] hover:bg-[#B39540] text-black rounded-lg px-8 font-bold uppercase tracking-widest text-[10px] shadow-lg shadow-[#C9A84C]/20"
+                            className="bg-[#cfb659] hover:bg-[#B39540] text-black rounded-lg px-8 font-bold uppercase tracking-widest text-[10px] shadow-lg shadow-[#cfb659]/20"
                         >
                             Select Media
                         </Button>

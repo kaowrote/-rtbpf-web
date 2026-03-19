@@ -193,21 +193,21 @@ export default function ImageUpload({
                         aspectRatio,
                         "flex flex-col items-center justify-center gap-3",
                         isDragging
-                            ? "border-[#C9A84C] bg-[#C9A84C]/5"
+                            ? "border-[#cfb659] bg-[#cfb659]/5"
                             : "border-zinc-700 hover:border-zinc-500 bg-zinc-900/50 hover:bg-zinc-900",
                         disabled && "opacity-50 cursor-not-allowed"
                     )}
                 >
                     {isUploading ? (
                         <>
-                            <Loader2 className="w-8 h-8 text-[#C9A84C] animate-spin" />
+                            <Loader2 className="w-8 h-8 text-[#cfb659] animate-spin" />
                             <p className="text-sm text-gray-400">กำลังอัพโหลด...</p>
                         </>
                     ) : (
                         <>
                             <div className="w-12 h-12 rounded-xl bg-zinc-800 flex items-center justify-center">
                                 {isDragging ? (
-                                    <Upload className="w-6 h-6 text-[#C9A84C]" />
+                                    <Upload className="w-6 h-6 text-[#cfb659]" />
                                 ) : (
                                     <ImageIcon className="w-6 h-6 text-gray-500" />
                                 )}
@@ -230,7 +230,7 @@ export default function ImageUpload({
                                         }}
                                         className="bg-zinc-800 border-zinc-600 text-xs h-9 hover:bg-zinc-700 text-white shadow-lg px-4"
                                     >
-                                        <Library className="w-4 h-4 mr-2 text-[#C9A84C]" />
+                                        <Library className="w-4 h-4 mr-2 text-[#cfb659]" />
                                         Choose from Library
                                     </Button>
                                 </div>

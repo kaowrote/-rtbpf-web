@@ -385,7 +385,7 @@ export default function TipTapEditor({ value = "", onChange }: TipTapEditorProps
                 </ToolbarButton>
 
                 <ToolbarButton onClick={() => setIsLibraryOpen(true)} disabled={isCodeView} title="Choose from Library">
-                    <Library className="w-4 h-4 text-[#C9A84C]" />
+                    <Library className="w-4 h-4 text-[#cfb659]" />
                 </ToolbarButton>
                 {/* Hidden File Input for Image Uploads */}
                 <input

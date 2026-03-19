@@ -10,9 +10,9 @@ export default function PrivacyPolicyPage() {
     return (
         <div className="flex flex-col min-h-screen bg-white dark:bg-[#0a0a0a]">
             {/* HEROS */}
-            <section className="relative w-full py-20 bg-[#1B2A4A] text-white">
+            <section className="relative w-full py-20 bg-[#1b294b] text-white">
                 <div className="container px-6 mx-auto text-center relative z-10 space-y-4">
-                    <Badge className="bg-[#C9A84C] text-black hover:bg-[#C9A84C]/90 uppercase tracking-widest font-sans font-bold px-4 py-1.5 rounded-none text-xs">
+                    <Badge className="bg-[#cfb659] text-black hover:bg-[#cfb659]/90 uppercase tracking-widest font-sans font-bold px-4 py-1.5 rounded-none text-xs">
                         Privacy Policy
                     </Badge>
                     <h1 className="text-4xl md:text-5xl font-bold font-thai tracking-tight uppercase">

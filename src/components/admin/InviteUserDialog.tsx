@@ -78,7 +78,7 @@ export function InviteUserDialog({ onSuccess }: InviteUserDialogProps) {
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-                <Button className="bg-[#1B2A4A] text-white hover:bg-[#C9A84C] dark:bg-white dark:text-black dark:hover:bg-[#C9A84C] transition-colors rounded-none font-bold uppercase tracking-widest text-xs px-6">
+                <Button className="bg-[#1b294b] text-white hover:bg-[#cfb659] dark:bg-white dark:text-black dark:hover:bg-[#cfb659] transition-colors rounded-none font-bold uppercase tracking-widest text-xs px-6">
                     <UserPlus className="w-4 h-4 mr-2" /> Invite User
                 </Button>
             </DialogTrigger>

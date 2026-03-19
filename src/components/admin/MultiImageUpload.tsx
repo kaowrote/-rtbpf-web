@@ -141,7 +141,7 @@ export default function MultiImageUpload({
                         )}
                     >
                         {isUploading ? (
-                            <Loader2 className="w-6 h-6 text-[#C9A84C] animate-spin" />
+                            <Loader2 className="w-6 h-6 text-[#cfb659] animate-spin" />
                         ) : (
                             <>
                                 <Plus className="w-6 h-6 text-gray-500" />

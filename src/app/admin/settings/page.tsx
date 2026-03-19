@@ -28,8 +28,8 @@ export default function AdminSettingsPage() {
         facebookUrl: "",
         twitterUrl: "",
         youtubeUrl: "",
-        primaryAccentColor: "#C9A84C",
-        primaryNavyColor: "#1B2A4A"
+        primaryAccentColor: "#cfb659",
+        primaryNavyColor: "#1b294b"
     });
 
     useEffect(() => {
@@ -81,7 +81,7 @@ export default function AdminSettingsPage() {
     if (isLoading) {
         return (
             <div className="flex flex-col items-center justify-center min-h-[60vh]">
-                <Loader2 className="w-12 h-12 animate-spin text-[#C9A84C]" />
+                <Loader2 className="w-12 h-12 animate-spin text-[#cfb659]" />
                 <p className="mt-4 font-thai text-sm text-gray-500 uppercase tracking-widest font-bold font-sans">Checking System Configuration...</p>
             </div>
         );
@@ -104,7 +104,7 @@ export default function AdminSettingsPage() {
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
                         className={`flex items-center gap-2 px-5 py-3 font-bold text-xs uppercase tracking-widest transition-all border-b-2 -mb-px ${activeTab === tab.id
-                            ? "border-[#C9A84C] text-[#C9A84C]"
+                            ? "border-[#cfb659] text-[#cfb659]"
                             : "border-transparent text-gray-500 hover:text-black dark:hover:text-white"
                             }`}
                     >
@@ -130,7 +130,7 @@ export default function AdminSettingsPage() {
                                         value={settings.siteTitleTh}
                                         onChange={(e) => setSettings({...settings, siteTitleTh: e.target.value})}
                                         placeholder="สมาพันธ์สมาคมวิชาชีพวิทยุกระจายเสียงและวิทยุโทรทัศน์"
-                                        className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-thai focus-visible:ring-[#C9A84C]"
+                                        className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-thai focus-visible:ring-[#cfb659]"
                                     />
                                 </div>
                                 <div>
@@ -139,7 +139,7 @@ export default function AdminSettingsPage() {
                                         value={settings.siteTitleEn}
                                         onChange={(e) => setSettings({...settings, siteTitleEn: e.target.value})}
                                         placeholder="Radio and Television Broadcasting Professional Federation"
-                                        className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-sans focus-visible:ring-[#C9A84C]"
+                                        className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-sans focus-visible:ring-[#cfb659]"
                                     />
                                 </div>
                             </div>
@@ -149,7 +149,7 @@ export default function AdminSettingsPage() {
                                     value={settings.siteUrl}
                                     onChange={(e) => setSettings({...settings, siteUrl: e.target.value})}
                                     placeholder="https://rtbpf.org"
-                                    className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-sans focus-visible:ring-[#C9A84C]"
+                                    className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-sans focus-visible:ring-[#cfb659]"
                                 />
                             </div>
                             <div>
@@ -160,7 +160,7 @@ export default function AdminSettingsPage() {
                                     onChange={(e) => setSettings({...settings, metaDescription: e.target.value})}
                                     placeholder="ศูนย์กลางวิชาชีพสื่อวิทยุกระจายเสียงและวิทยุโทรทัศน์..."
                                     rows={3}
-                                    className="w-full px-4 py-3 bg-gray-50 dark:bg-black border border-gray-200 dark:border-zinc-700 font-thai text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A84C] resize-none text-black dark:text-white"
+                                    className="w-full px-4 py-3 bg-gray-50 dark:bg-black border border-gray-200 dark:border-zinc-700 font-thai text-sm focus:outline-none focus:ring-2 focus:ring-[#cfb659] resize-none text-black dark:text-white"
                                 />
                             </div>
                         </div>
@@ -233,7 +233,7 @@ export default function AdminSettingsPage() {
                                     value={settings.facebookUrl}
                                     onChange={(e) => setSettings({...settings, facebookUrl: e.target.value})}
                                     placeholder="https://facebook.com/..."
-                                    className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-sans focus-visible:ring-[#C9A84C]"
+                                    className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-sans focus-visible:ring-[#cfb659]"
                                 />
                             </div>
                             <div>
@@ -242,7 +242,7 @@ export default function AdminSettingsPage() {
                                     value={settings.twitterUrl}
                                     onChange={(e) => setSettings({...settings, twitterUrl: e.target.value})}
                                     placeholder="https://x.com/..."
-                                    className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-sans focus-visible:ring-[#C9A84C]"
+                                    className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-sans focus-visible:ring-[#cfb659]"
                                 />
                             </div>
                             <div>
@@ -251,7 +251,7 @@ export default function AdminSettingsPage() {
                                     value={settings.youtubeUrl}
                                     onChange={(e) => setSettings({...settings, youtubeUrl: e.target.value})}
                                     placeholder="https://youtube.com/..."
-                                    className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-sans focus-visible:ring-[#C9A84C]"
+                                    className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-sans focus-visible:ring-[#cfb659]"
                                 />
                             </div>
                         </div>
@@ -262,7 +262,7 @@ export default function AdminSettingsPage() {
                         <Button
                             onClick={handleSaveGeneral}
                             disabled={isSaving || isLoading}
-                            className="bg-[#1B2A4A] text-white hover:bg-[#C9A84C] shadow-lg rounded-none uppercase tracking-widest text-xs font-bold px-12 h-14 transition-colors disabled:opacity-50"
+                            className="bg-[#1b294b] text-white hover:bg-[#cfb659] shadow-lg rounded-none uppercase tracking-widest text-xs font-bold px-12 h-14 transition-colors disabled:opacity-50"
                         >
                             {isSaving ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Updating...</> : <><Save className="w-4 h-4 mr-2" /> Save System Settings</>}
                         </Button>
@@ -279,7 +279,7 @@ export default function AdminSettingsPage() {
                                 <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3 block">Primary Accent Color</label>
                                 <div className="flex gap-3">
                                     {[
-                                        { bg: "bg-[#C9A84C]", id: "#C9A84C", name: "Gold (Default)" },
+                                        { bg: "bg-[#cfb659]", id: "#cfb659", name: "Gold (Default)" },
                                         { bg: "bg-[#3B82F6]", id: "#3B82F6", name: "Blue" },
                                         { bg: "bg-[#10B981]", id: "#10B981", name: "Emerald" },
                                         { bg: "bg-[#8B5CF6]", id: "#8B5CF6", name: "Purple" },
@@ -289,7 +289,7 @@ export default function AdminSettingsPage() {
                                         <button
                                             key={opt.id}
                                             onClick={() => setSettings({...settings, primaryAccentColor: opt.id})}
-                                            className={`w-10 h-10 rounded-full border-2 transition-transform hover:scale-110 ${opt.bg} ${settings.primaryAccentColor === opt.id ? "border-black dark:border-white ring-2 ring-offset-2 ring-[#C9A84C]" : "border-transparent"}`}
+                                            className={`w-10 h-10 rounded-full border-2 transition-transform hover:scale-110 ${opt.bg} ${settings.primaryAccentColor === opt.id ? "border-black dark:border-white ring-2 ring-offset-2 ring-[#cfb659]" : "border-transparent"}`}
                                             title={opt.name}
                                         />
                                     ))}
@@ -298,7 +298,7 @@ export default function AdminSettingsPage() {
                                         value={settings.primaryAccentColor}
                                         onChange={(c) => setSettings({...settings, primaryAccentColor: c})}
                                         label="Primary Accent"
-                                        presets={["#C9A84C", "#3B82F6", "#10B981", "#8B5CF6", "#F59E0B", "#EF4444"]}
+                                        presets={["#cfb659", "#3B82F6", "#10B981", "#8B5CF6", "#F59E0B", "#EF4444"]}
                                     />
                                 </div>
                                 <div className="mt-2 flex items-center gap-2">
@@ -310,7 +310,7 @@ export default function AdminSettingsPage() {
                                 <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3 block">Primary Navy Color</label>
                                 <div className="flex gap-3">
                                     {[
-                                        { bg: "bg-[#1B2A4A]", id: "#1B2A4A", name: "Navy (Default)" },
+                                        { bg: "bg-[#1b294b]", id: "#1b294b", name: "Navy (Default)" },
                                         { bg: "bg-[#111827]", id: "#111827", name: "Slate" },
                                         { bg: "bg-[#1E293B]", id: "#1E293B", name: "Dark Slate" },
                                         { bg: "bg-[#0F172A]", id: "#0F172A", name: "Deep Blue" },
@@ -318,7 +318,7 @@ export default function AdminSettingsPage() {
                                         <button
                                             key={opt.id}
                                             onClick={() => setSettings({...settings, primaryNavyColor: opt.id})}
-                                            className={`w-10 h-10 rounded-full border-2 transition-transform hover:scale-110 ${opt.bg} ${settings.primaryNavyColor === opt.id ? "border-[#C9A84C] ring-2 ring-offset-2 ring-[#C9A84C]" : "border-gray-300 dark:border-zinc-600"}`}
+                                            className={`w-10 h-10 rounded-full border-2 transition-transform hover:scale-110 ${opt.bg} ${settings.primaryNavyColor === opt.id ? "border-[#cfb659] ring-2 ring-offset-2 ring-[#cfb659]" : "border-gray-300 dark:border-zinc-600"}`}
                                             title={opt.name}
                                         />
                                     ))}
@@ -327,7 +327,7 @@ export default function AdminSettingsPage() {
                                         value={settings.primaryNavyColor}
                                         onChange={(c) => setSettings({...settings, primaryNavyColor: c})}
                                         label="Primary Navy"
-                                        presets={["#1B2A4A", "#111827", "#1E293B", "#0F172A"]}
+                                        presets={["#1b294b", "#111827", "#1E293B", "#0F172A"]}
                                     />
                                 </div>
                                 <div className="mt-2 flex items-center gap-2">
@@ -337,7 +337,7 @@ export default function AdminSettingsPage() {
                             </div>
                             <div>
                                 <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3 block">Homepage Hero Section</label>
-                                <select title="Homepage Hero Section" className="w-full h-12 px-4 bg-gray-50 dark:bg-black border border-gray-200 dark:border-zinc-700 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A84C] text-black dark:text-white">
+                                <select title="Homepage Hero Section" className="w-full h-12 px-4 bg-gray-50 dark:bg-black border border-gray-200 dark:border-zinc-700 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-[#cfb659] text-black dark:text-white">
                                     <option value="featured">Featured Article (Default)</option>
                                     <option value="awards">Latest Award Ceremony</option>
                                     <option value="slider">Image Slider</option>
@@ -348,7 +348,7 @@ export default function AdminSettingsPage() {
                     </div>
 
                     <div className="flex justify-end">
-                        <Button className="bg-[#1B2A4A] text-white hover:bg-[#C9A84C] rounded-none uppercase tracking-widest text-xs font-bold px-10 h-12 transition-colors">
+                        <Button className="bg-[#1b294b] text-white hover:bg-[#cfb659] rounded-none uppercase tracking-widest text-xs font-bold px-10 h-12 transition-colors">
                             <Save className="w-4 h-4 mr-2" /> Save Changes
                         </Button>
                     </div>
@@ -374,7 +374,7 @@ export default function AdminSettingsPage() {
                                             <p className="text-xs text-gray-500 font-thai">{item.desc}</p>
                                         </div>
                                     </div>
-                                    <div className={`relative w-12 h-6 rounded-full transition-colors ${item.enabled ? "bg-[#C9A84C]" : "bg-gray-300 dark:bg-zinc-600"}`}>
+                                    <div className={`relative w-12 h-6 rounded-full transition-colors ${item.enabled ? "bg-[#cfb659]" : "bg-gray-300 dark:bg-zinc-600"}`}>
                                         <div className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${item.enabled ? "translate-x-6" : "translate-x-0.5"}`}></div>
                                     </div>
                                 </div>
@@ -383,7 +383,7 @@ export default function AdminSettingsPage() {
                     </div>
 
                     <div className="flex justify-end">
-                        <Button className="bg-[#1B2A4A] text-white hover:bg-[#C9A84C] rounded-none uppercase tracking-widest text-xs font-bold px-10 h-12 transition-colors">
+                        <Button className="bg-[#1b294b] text-white hover:bg-[#cfb659] rounded-none uppercase tracking-widest text-xs font-bold px-10 h-12 transition-colors">
                             <Save className="w-4 h-4 mr-2" /> Save Changes
                         </Button>
                     </div>
@@ -424,7 +424,7 @@ export default function AdminSettingsPage() {
                                 <Input
                                     type="number"
                                     defaultValue={60}
-                                    className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-sans focus-visible:ring-[#C9A84C] max-w-xs"
+                                    className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-sans focus-visible:ring-[#cfb659] max-w-xs"
                                 />
                             </div>
                             <div>
@@ -432,7 +432,7 @@ export default function AdminSettingsPage() {
                                 <Input
                                     type="number"
                                     defaultValue={3}
-                                    className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-sans focus-visible:ring-[#C9A84C] max-w-xs"
+                                    className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-sans focus-visible:ring-[#cfb659] max-w-xs"
                                 />
                             </div>
                         </div>
@@ -454,7 +454,7 @@ export default function AdminSettingsPage() {
                     </div>
 
                     <div className="flex justify-end">
-                        <Button className="bg-[#1B2A4A] text-white hover:bg-[#C9A84C] rounded-none uppercase tracking-widest text-xs font-bold px-10 h-12 transition-colors">
+                        <Button className="bg-[#1b294b] text-white hover:bg-[#cfb659] rounded-none uppercase tracking-widest text-xs font-bold px-10 h-12 transition-colors">
                             <Save className="w-4 h-4 mr-2" /> Save Changes
                         </Button>
                     </div>

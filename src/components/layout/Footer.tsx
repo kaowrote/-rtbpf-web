@@ -6,7 +6,7 @@ import { Facebook, Twitter, Youtube, Mail, Phone, MapPin } from "lucide-react";
 export function Footer() {
     const t = useTranslations("Footer");
     return (
-        <footer className="w-full bg-[#1B2A4A] dark:bg-black text-white pt-16 pb-8 font-thai border-t border-transparent dark:border-white/10 transition-colors duration-300">
+        <footer className="w-full bg-[#1b294b] dark:bg-black text-white pt-16 pb-8 font-thai border-t border-transparent dark:border-white/10 transition-colors duration-300">
             <div className="container mx-auto px-4 md:px-8">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
                     {/* Column 1: About */}

@@ -158,7 +158,7 @@ export default function AdminUserDetailPage() {
     if (isLoading) {
         return (
             <div className="flex flex-col items-center justify-center min-h-[60vh]">
-                <Loader2 className="w-12 h-12 animate-spin text-[#C9A84C]" />
+                <Loader2 className="w-12 h-12 animate-spin text-[#cfb659]" />
                 <p className="mt-4 font-thai text-sm text-gray-500 uppercase tracking-widest font-bold">Loading User Database...</p>
             </div>
         );
@@ -200,7 +200,7 @@ export default function AdminUserDetailPage() {
                             email={user.email} 
                             image={user.image} 
                             size="xl" 
-                            className="ring-4 ring-[#C9A84C]/30"
+                            className="ring-4 ring-[#cfb659]/30"
                         />
                         <div>
                             <h1 className="text-2xl font-bold font-thai text-black dark:text-white">{user.name || "Unnamed Member"}</h1>
@@ -252,7 +252,7 @@ export default function AdminUserDetailPage() {
                                     <Input 
                                         value={formData.name} 
                                         onChange={(e) => setFormData({...formData, name: e.target.value})}
-                                        className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-thai focus-visible:ring-[#C9A84C]" 
+                                        className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-thai focus-visible:ring-[#cfb659]" 
                                     />
                                 </div>
                                 <div>
@@ -260,7 +260,7 @@ export default function AdminUserDetailPage() {
                                     <Input 
                                         value={formData.email} 
                                         onChange={(e) => setFormData({...formData, email: e.target.value})}
-                                        className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-sans focus-visible:ring-[#C9A84C]" 
+                                        className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-sans focus-visible:ring-[#cfb659]" 
                                     />
                                 </div>
                             </div>
@@ -270,7 +270,7 @@ export default function AdminUserDetailPage() {
                                     <Input 
                                         value={formData.phone} 
                                         onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                                        className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-sans focus-visible:ring-[#C9A84C]" 
+                                        className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-sans focus-visible:ring-[#cfb659]" 
                                     />
                                 </div>
                                 <div>
@@ -279,7 +279,7 @@ export default function AdminUserDetailPage() {
                                         title="Language" 
                                         value={formData.preferredLocale}
                                         onChange={(e) => setFormData({...formData, preferredLocale: e.target.value})}
-                                        className="w-full h-12 px-4 bg-gray-50 dark:bg-black border border-gray-200 dark:border-zinc-700 text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A84C] text-black dark:text-white appearance-none"
+                                        className="w-full h-12 px-4 bg-gray-50 dark:bg-black border border-gray-200 dark:border-zinc-700 text-sm focus:outline-none focus:ring-2 focus:ring-[#cfb659] text-black dark:text-white appearance-none"
                                     >
                                         <option value="th">ภาษาไทย (TH)</option>
                                         <option value="en">English (EN)</option>
@@ -293,7 +293,7 @@ export default function AdminUserDetailPage() {
                                     value={formData.bio}
                                     onChange={(e) => setFormData({...formData, bio: e.target.value})}
                                     rows={3}
-                                    className="w-full px-4 py-3 bg-gray-50 dark:bg-black border border-gray-200 dark:border-zinc-700 font-thai text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A84C] resize-none text-black dark:text-white"
+                                    className="w-full px-4 py-3 bg-gray-50 dark:bg-black border border-gray-200 dark:border-zinc-700 font-thai text-sm focus:outline-none focus:ring-2 focus:ring-[#cfb659] resize-none text-black dark:text-white"
                                 />
                             </div>
 
@@ -301,7 +301,7 @@ export default function AdminUserDetailPage() {
                                 <Button 
                                     onClick={handleSave}
                                     disabled={isSaving}
-                                    className="bg-[#1B2A4A] text-white hover:bg-[#C9A84C] rounded-none uppercase tracking-widest text-xs font-bold px-8 h-12 transition-colors"
+                                    className="bg-[#1b294b] text-white hover:bg-[#cfb659] rounded-none uppercase tracking-widest text-xs font-bold px-8 h-12 transition-colors"
                                 >
                                     {isSaving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
                                     Save Changes
@@ -313,7 +313,7 @@ export default function AdminUserDetailPage() {
                     {/* Role & Permissions */}
                     <div className="bg-white dark:bg-[#0a0a0a] p-8 border border-gray-100 dark:border-zinc-800 shadow-sm rounded-xl">
                         <h2 className="text-lg font-bold uppercase tracking-widest text-black dark:text-white mb-6 flex items-center gap-2">
-                            <Shield className="w-5 h-5 text-[#C9A84C]" /> Role & Permissions
+                            <Shield className="w-5 h-5 text-[#cfb659]" /> Role & Permissions
                         </h2>
                         <div className="space-y-4">
                             <div>
@@ -322,7 +322,7 @@ export default function AdminUserDetailPage() {
                                     title="Role"
                                     value={formData.role}
                                     onChange={(e) => setFormData({...formData, role: e.target.value as UserRole})}
-                                    className="w-full h-12 px-4 bg-gray-50 dark:bg-black border border-gray-200 dark:border-zinc-700 text-sm font-bold uppercase tracking-wider focus:outline-none focus:ring-2 focus:ring-[#C9A84C] text-black dark:text-white"
+                                    className="w-full h-12 px-4 bg-gray-50 dark:bg-black border border-gray-200 dark:border-zinc-700 text-sm font-bold uppercase tracking-wider focus:outline-none focus:ring-2 focus:ring-[#cfb659] text-black dark:text-white"
                                 >
                                     {ROLES.map((r) => (
                                         <option key={r.value} value={r.value}>{r.label}</option>
@@ -359,7 +359,7 @@ export default function AdminUserDetailPage() {
                                 <Button 
                                     onClick={handleSave}
                                     disabled={isSaving}
-                                    className="bg-[#1B2A4A] text-white hover:bg-[#C9A84C] rounded-none uppercase tracking-widest text-xs font-bold px-8 h-12 transition-colors"
+                                    className="bg-[#1b294b] text-white hover:bg-[#cfb659] rounded-none uppercase tracking-widest text-xs font-bold px-8 h-12 transition-colors"
                                 >
                                     <Save className="w-4 h-4 mr-2" /> Update Role
                                 </Button>

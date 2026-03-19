@@ -39,8 +39,8 @@ export function UserAvatar({ name, email, image, className, size = "default" }: 
             "bg-rose-500",
             "bg-indigo-500",
             "bg-cyan-500",
-            "bg-[#1B2A4A]", // Primary Navy
-            "bg-[#C9A84C]", // Primary Gold
+            "bg-[#1b294b]", // Primary Navy
+            "bg-[#cfb659]", // Primary Gold
         ];
         
         let hash = 0;

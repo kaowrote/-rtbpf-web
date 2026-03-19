@@ -133,22 +133,22 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
 
                             <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-white/70 text-sm font-sans mb-8">
                                 <span className="flex items-center gap-2">
-                                    <Calendar className="w-4 h-4 text-[#C9A84C]" />
+                                    <Calendar className="w-4 h-4 text-[#cfb659]" />
                                     {featuredEvent.startDate}
                                 </span>
                                 <span className="flex items-center gap-2">
-                                    <Clock className="w-4 h-4 text-[#C9A84C]" />
+                                    <Clock className="w-4 h-4 text-[#cfb659]" />
                                     {featuredEvent.time}
                                 </span>
                                 <span className="flex items-center gap-2">
-                                    <MapPin className="w-4 h-4 text-[#C9A84C]" />
+                                    <MapPin className="w-4 h-4 text-[#cfb659]" />
                                     {featuredEvent.venue}
                                 </span>
                             </div>
 
                             <div className="flex gap-4">
                                 <Link href={`/events/${featuredEvent.slug}`}>
-                                    <Button className="bg-[#C9A84C] text-black hover:bg-[#b8963d] rounded-none h-12 px-8 font-bold uppercase tracking-widest text-sm transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-xl shadow-[#C9A84C]/20 border border-[#C9A84C]">
+                                    <Button className="bg-[#cfb659] text-black hover:bg-[#b8963d] rounded-none h-12 px-8 font-bold uppercase tracking-widest text-sm transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-xl shadow-[#cfb659]/20 border border-[#cfb659]">
                                         ลงทะเบียน
                                     </Button>
                                 </Link>
@@ -168,7 +168,7 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
                 <section className="w-full bg-gray-50 dark:bg-[#050505] py-16 md:py-24 border-b border-gray-200 dark:border-white/10">
                     <div className="container px-6 mx-auto text-center">
                         <h1 className="text-4xl md:text-6xl font-bold font-thai text-black dark:text-white uppercase tracking-wider mb-4">
-                            Events <span className="text-[#C9A84C]">&</span> Activities
+                            Events <span className="text-[#cfb659]">&</span> Activities
                         </h1>
                         <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 font-thai max-w-2xl mx-auto">
                             กิจกรรม งานประกาศรางวัล และการสัมมนาจากสมาพันธ์และภาคีเครือข่าย
@@ -184,12 +184,12 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
                         {types.map((typeLabel) => (
                             <Link key={typeLabel} href={`/events?type=${typeLabel}`}>
                                 <button
-                                    className={`relative text-xs uppercase tracking-widest font-bold pb-1 transition-colors hover:text-[#C9A84C]
-                                        ${filterType === typeLabel ? 'text-[#C9A84C]' : 'text-gray-500 dark:text-gray-400'}`}
+                                    className={`relative text-xs uppercase tracking-widest font-bold pb-1 transition-colors hover:text-[#cfb659]
+                                        ${filterType === typeLabel ? 'text-[#cfb659]' : 'text-gray-500 dark:text-gray-400'}`}
                                 >
                                     {EVENT_TYPE_LABELS[typeLabel] || typeLabel}
                                     {filterType === typeLabel && (
-                                        <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#C9A84C]"></span>
+                                        <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#cfb659]"></span>
                                     )}
                                 </button>
                             </Link>
@@ -227,7 +227,7 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
                             <div className="flex flex-col flex-grow p-6 md:p-8 relative">
                                 {/* Title & Text */}
                                 <div className="mb-8 relative z-10 flex-grow">
-                                    <h3 className="text-2xl font-bold font-thai text-black dark:text-white leading-[1.3] mb-4 group-hover:text-[#C9A84C] transition-colors line-clamp-2">
+                                    <h3 className="text-2xl font-bold font-thai text-black dark:text-white leading-[1.3] mb-4 group-hover:text-[#cfb659] transition-colors line-clamp-2">
                                         {event.title}
                                     </h3>
                                     <div

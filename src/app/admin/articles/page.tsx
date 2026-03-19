@@ -59,7 +59,7 @@ export default async function AdminArticlesPage() {
                     <p className="text-gray-500 mt-2 font-thai">จัดการข้อมูล ข่าวสาร บทความ และตั้งเวลาเผยแพร่</p>
                 </div>
                 <Link href="/admin/articles/create">
-                    <Button className="bg-[#1B2A4A] text-white hover:bg-[#C9A84C] transition-colors rounded-none font-bold uppercase tracking-widest text-xs px-6">
+                    <Button className="bg-[#1b294b] text-white hover:bg-[#cfb659] transition-colors rounded-none font-bold uppercase tracking-widest text-xs px-6">
                         <Plus className="w-4 h-4 mr-2" /> New Article
                     </Button>
                 </Link>
@@ -87,7 +87,7 @@ export default async function AdminArticlesPage() {
                                             <Link 
                                                 href={`/articles/${article.slug}`} 
                                                 target="_blank"
-                                                className="font-thai font-semibold text-black dark:text-white text-base line-clamp-1 hover:text-[#C9A84C] transition-colors"
+                                                className="font-thai font-semibold text-black dark:text-white text-base line-clamp-1 hover:text-[#cfb659] transition-colors"
                                             >
                                                 {article.title}
                                             </Link>

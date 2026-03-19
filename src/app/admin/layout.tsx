@@ -144,14 +144,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                                 className={cn(
                                                     "flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all duration-150 group relative",
                                                     active
-                                                        ? "bg-[#1B2A4A] text-white shadow-md"
+                                                        ? "bg-[#1b294b] text-white shadow-md"
                                                         : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-800 hover:text-black dark:hover:text-white"
                                                 )}
                                             >
                                                 {active && (
-                                                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-[#C9A84C] rounded-r-full" />
+                                                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-[#cfb659] rounded-r-full" />
                                                 )}
-                                                <item.icon className={cn("w-5 h-5", active ? "text-[#C9A84C]" : "")} />
+                                                <item.icon className={cn("w-5 h-5", active ? "text-[#cfb659]" : "")} />
                                                 <span className="flex-1 text-sm">{item.label}</span>
                                                 {active && (
                                                     <ChevronRight className="w-4 h-4 text-white/50" />
@@ -174,7 +174,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                 email={user?.email || undefined} 
                                 image={user?.image} 
                                 size="sm" 
-                                className="ring-0 group-hover:ring-2 ring-[#C9A84C]/50 transition-all shrink-0" 
+                                className="ring-0 group-hover:ring-2 ring-[#cfb659]/50 transition-all shrink-0" 
                             />
                             <div className="flex-1 min-w-0">
                                 <p className="text-[13px] font-bold text-black dark:text-white truncate">{displayName}</p>
@@ -184,7 +184,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         <div className="flex items-center gap-0.5 shrink-0">
                              <Link 
                                 href="/admin/profile" 
-                                className="p-1.5 text-gray-400 hover:text-[#C9A84C] transition-colors"
+                                className="p-1.5 text-gray-400 hover:text-[#cfb659] transition-colors"
                                 title="Profile Settings"
                              >
                                 <Settings className="w-4 h-4" />
@@ -196,7 +196,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                 title="Logout"
                              >
                                 {isLoggingOut ? (
-                                    <Loader2 className="w-4 h-4 animate-spin text-[#C9A84C]" />
+                                    <Loader2 className="w-4 h-4 animate-spin text-[#cfb659]" />
                                 ) : (
                                     <LogOut className="w-4 h-4" />
                                 )}

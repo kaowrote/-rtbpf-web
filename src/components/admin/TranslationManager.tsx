@@ -107,7 +107,7 @@ export default function TranslationManager({ entityId, entityType }: Translation
                 <Button 
                     variant="ghost" 
                     size="sm" 
-                    className="h-7 text-[10px] text-[#C9A84C] hover:text-[#C9A84C] hover:bg-[#C9A84C]/5 px-2"
+                    className="h-7 text-[10px] text-[#cfb659] hover:text-[#cfb659] hover:bg-[#cfb659]/5 px-2"
                     onClick={() => handleTranslate()}
                     disabled={!!isTranslating}
                 >
@@ -122,7 +122,7 @@ export default function TranslationManager({ entityId, entityType }: Translation
                     const isDefault = lang.isDefault;
 
                     return (
-                        <div key={lang.code} className="flex items-center justify-between group p-2 rounded-lg bg-gray-50 dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800 transition-all hover:border-[#C9A84C]/30">
+                        <div key={lang.code} className="flex items-center justify-between group p-2 rounded-lg bg-gray-50 dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800 transition-all hover:border-[#cfb659]/30">
                             <div className="flex items-center gap-3">
                                 <span className={`text-xs font-bold uppercase ${isDefault ? 'text-gray-400' : 'text-gray-700 dark:text-gray-200'}`}>
                                     {lang.code}
@@ -144,7 +144,7 @@ export default function TranslationManager({ entityId, entityType }: Translation
                                         <Button 
                                             variant="ghost" 
                                             size="icon" 
-                                            className="h-6 w-6 text-gray-400 hover:text-[#C9A84C]"
+                                            className="h-6 w-6 text-gray-400 hover:text-[#cfb659]"
                                             onClick={() => handleTranslate(lang.code)}
                                             disabled={!!isTranslating}
                                         >
@@ -155,7 +155,7 @@ export default function TranslationManager({ entityId, entityType }: Translation
                                     <Button 
                                         variant="outline" 
                                         size="sm" 
-                                        className="h-6 text-[9px] font-bold uppercase tracking-wider py-0 px-2 border-gray-200 hover:border-[#C9A84C] hover:text-[#C9A84C]"
+                                        className="h-6 text-[9px] font-bold uppercase tracking-wider py-0 px-2 border-gray-200 hover:border-[#cfb659] hover:text-[#cfb659]"
                                         onClick={() => handleTranslate(lang.code)}
                                         disabled={!!isTranslating}
                                     >

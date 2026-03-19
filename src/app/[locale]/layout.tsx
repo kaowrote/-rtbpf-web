@@ -73,7 +73,7 @@ export default async function RootLayout({
     return acc;
   }, {});
 
-  const accentColor = settingsMap["primaryAccentColor"] || "#C9A84C";
+  const accentColor = settingsMap["primaryAccentColor"] || "#cfb659";
   const siteName = settingsMap["siteTitle"] || undefined;
 
   return (

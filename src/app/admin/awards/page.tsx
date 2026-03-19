@@ -104,7 +104,7 @@ export default async function AdminAwardsPage({ searchParams }: PageProps) {
                 {!isJury && (
                     <div className="flex gap-3">
                         <Link href="/admin/awards/create">
-                            <Button className="bg-[#1B2A4A] text-white hover:bg-[#C9A84C] transition-colors rounded-none font-bold uppercase tracking-widest text-xs px-6">
+                            <Button className="bg-[#1b294b] text-white hover:bg-[#cfb659] transition-colors rounded-none font-bold uppercase tracking-widest text-xs px-6">
                                 <Plus className="w-4 h-4 mr-2" /> Add Nominee
                             </Button>
                         </Link>
@@ -115,7 +115,7 @@ export default async function AdminAwardsPage({ searchParams }: PageProps) {
             {/* Award Years Summary Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {awardYears.map((ay) => (
-                    <div key={ay.year} className="bg-white dark:bg-[#0a0a0a] p-6 border border-gray-100 dark:border-zinc-800 shadow-sm rounded-xl hover:border-[#C9A84C]/50 transition-colors cursor-pointer group">
+                    <div key={ay.year} className="bg-white dark:bg-[#0a0a0a] p-6 border border-gray-100 dark:border-zinc-800 shadow-sm rounded-xl hover:border-[#cfb659]/50 transition-colors cursor-pointer group">
                         <div className="flex justify-between items-start mb-4">
                             <div>
                                 <h3 className="text-3xl font-bold font-sans text-black dark:text-white">{ay.year}</h3>
@@ -132,7 +132,7 @@ export default async function AdminAwardsPage({ searchParams }: PageProps) {
                             </div>
                             <div>
                                 <p className="text-gray-500 font-sans text-xs uppercase tracking-wider">Winners</p>
-                                <p className="text-xl font-bold text-[#C9A84C] font-sans">{ay.totalWinners}</p>
+                                <p className="text-xl font-bold text-[#cfb659] font-sans">{ay.totalWinners}</p>
                             </div>
                         </div>
                         <div className="mt-4 pt-4 border-t border-gray-100 dark:border-zinc-800">
@@ -146,7 +146,7 @@ export default async function AdminAwardsPage({ searchParams }: PageProps) {
             <div>
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-xl font-bold font-thai uppercase tracking-wide text-black dark:text-white flex items-center gap-2">
-                        <Medal className="w-5 h-5 text-[#C9A84C]" /> รายชื่อผู้เข้าชิง / ผู้ชนะ
+                        <Medal className="w-5 h-5 text-[#cfb659]" /> รายชื่อผู้เข้าชิง / ผู้ชนะ
                     </h2>
                 </div>
 
@@ -158,12 +158,12 @@ export default async function AdminAwardsPage({ searchParams }: PageProps) {
                                 name="q"
                                 defaultValue={q}
                                 placeholder="ค้นหาชื่อผู้เข้าชิง หรือ ผลงาน..."
-                                className="pl-10 h-10 rounded-none border-gray-200 dark:border-zinc-800 focus-visible:ring-[#C9A84C]"
+                                className="pl-10 h-10 rounded-none border-gray-200 dark:border-zinc-800 focus-visible:ring-[#cfb659]"
                             />
                         </div>
                         <div className="grid grid-cols-2 md:flex gap-3">
                             <Select name="year" defaultValue={yearFilter}>
-                                <SelectTrigger className="h-10 w-full md:w-[140px] rounded-none border-gray-200 dark:border-zinc-800 focus:ring-[#C9A84C]">
+                                <SelectTrigger className="h-10 w-full md:w-[140px] rounded-none border-gray-200 dark:border-zinc-800 focus:ring-[#cfb659]">
                                     <SelectValue placeholder="ทุกปี" />
                                 </SelectTrigger>
                                 <SelectContent className="rounded-none">
@@ -175,7 +175,7 @@ export default async function AdminAwardsPage({ searchParams }: PageProps) {
                             </Select>
 
                             <Select name="cat" defaultValue={catFilter}>
-                                <SelectTrigger className="h-10 w-full md:w-[200px] rounded-none border-gray-200 dark:border-zinc-800 focus:ring-[#C9A84C]">
+                                <SelectTrigger className="h-10 w-full md:w-[200px] rounded-none border-gray-200 dark:border-zinc-800 focus:ring-[#cfb659]">
                                     <SelectValue placeholder="ทุกสาขา" />
                                 </SelectTrigger>
                                 <SelectContent className="rounded-none">
@@ -187,7 +187,7 @@ export default async function AdminAwardsPage({ searchParams }: PageProps) {
                             </Select>
 
                             <Select name="winner" defaultValue={winnerFilter}>
-                                <SelectTrigger className="h-10 w-full md:w-[140px] rounded-none border-gray-200 dark:border-zinc-800 focus:ring-[#C9A84C]">
+                                <SelectTrigger className="h-10 w-full md:w-[140px] rounded-none border-gray-200 dark:border-zinc-800 focus:ring-[#cfb659]">
                                     <SelectValue placeholder="สถานะ" />
                                 </SelectTrigger>
                                 <SelectContent className="rounded-none">
@@ -197,7 +197,7 @@ export default async function AdminAwardsPage({ searchParams }: PageProps) {
                                 </SelectContent>
                             </Select>
 
-                            <Button type="submit" className="h-10 bg-black text-white hover:bg-[#C9A84C] transition-colors rounded-none px-6">
+                            <Button type="submit" className="h-10 bg-black text-white hover:bg-[#cfb659] transition-colors rounded-none px-6">
                                 Apply
                             </Button>
                             
@@ -262,7 +262,7 @@ export default async function AdminAwardsPage({ searchParams }: PageProps) {
                                         </td>
                                         <td className="px-6 py-4 text-center">
                                             {nominee.isWinner ? (
-                                                <Badge className="bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/30 rounded-none text-[10px] uppercase tracking-widest font-bold">
+                                                <Badge className="bg-[#cfb659]/10 text-[#cfb659] border border-[#cfb659]/30 rounded-none text-[10px] uppercase tracking-widest font-bold">
                                                     🏆 Winner
                                                 </Badge>
                                             ) : (

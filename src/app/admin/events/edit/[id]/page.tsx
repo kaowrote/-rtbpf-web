@@ -122,7 +122,7 @@ export default function EventEditPage({
     if (isFetchingData) {
         return (
             <div className="flex h-[60vh] items-center justify-center">
-                <Loader2 className="h-8 w-8 animate-spin text-[#C9A84C]" />
+                <Loader2 className="h-8 w-8 animate-spin text-[#cfb659]" />
             </div>
         );
     }
@@ -152,7 +152,7 @@ export default function EventEditPage({
                     <Button
                         onClick={() => handleSave()}
                         disabled={isLoading}
-                        className="h-10 rounded-none font-bold uppercase tracking-widest text-xs bg-[#1B2A4A] dark:bg-white text-white dark:text-black hover:bg-black dark:hover:bg-[#C9A84C] transition-colors"
+                        className="h-10 rounded-none font-bold uppercase tracking-widest text-xs bg-[#1b294b] dark:bg-white text-white dark:text-black hover:bg-black dark:hover:bg-[#cfb659] transition-colors"
                     >
                         {isLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <RefreshCw className="w-4 h-4 mr-2" />}
                         Update
@@ -170,7 +170,7 @@ export default function EventEditPage({
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                             placeholder="กรอกชื่อกิจกรรม หรืองานประกาศรางวัล..."
-                            className="text-lg font-thai font-semibold h-14 border-gray-200 dark:border-zinc-800 focus-visible:ring-[#C9A84C]"
+                            className="text-lg font-thai font-semibold h-14 border-gray-200 dark:border-zinc-800 focus-visible:ring-[#cfb659]"
                         />
                         <div className="mt-4">
                             <label className="block text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-2 font-sans">URL Slug</label>
@@ -178,7 +178,7 @@ export default function EventEditPage({
                                 value={slug}
                                 onChange={(e) => setSlug(e.target.value)}
                                 placeholder="event-slug-url"
-                                className="font-mono text-xs border-gray-200 dark:border-zinc-800 focus-visible:ring-[#C9A84C]"
+                                className="font-mono text-xs border-gray-200 dark:border-zinc-800 focus-visible:ring-[#cfb659]"
                             />
                         </div>
                     </div>
@@ -258,7 +258,7 @@ export default function EventEditPage({
                                     title="Event Status"
                                     value={status}
                                     onChange={(e) => setStatus(e.target.value)}
-                                    className="w-full text-sm font-bold uppercase tracking-widest p-3 border border-gray-200 dark:border-zinc-800 rounded bg-gray-50 dark:bg-zinc-900 text-black dark:text-white focus:outline-none focus:border-[#C9A84C]"
+                                    className="w-full text-sm font-bold uppercase tracking-widest p-3 border border-gray-200 dark:border-zinc-800 rounded bg-gray-50 dark:bg-zinc-900 text-black dark:text-white focus:outline-none focus:border-[#cfb659]"
                                 >
                                     <option value="UPCOMING">Upcoming</option>
                                     <option value="OPEN_FOR_REGISTRATION">Open for Registration</option>

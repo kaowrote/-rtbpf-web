@@ -71,8 +71,8 @@ export function ShareButtons({
 
     const buttonClass =
         variant === "outline"
-            ? "rounded-full border-gray-200 dark:border-zinc-800 hover:text-[#C9A84C] hover:border-[#C9A84C] dark:hover:border-[#C9A84C] text-black dark:text-white bg-transparent transition-all duration-200"
-            : "rounded-full hover:text-[#C9A84C] text-black dark:text-white transition-all duration-200";
+            ? "rounded-full border-gray-200 dark:border-zinc-800 hover:text-[#cfb659] hover:border-[#cfb659] dark:hover:border-[#cfb659] text-black dark:text-white bg-transparent transition-all duration-200"
+            : "rounded-full hover:text-[#cfb659] text-black dark:text-white transition-all duration-200";
 
     return (
         <div

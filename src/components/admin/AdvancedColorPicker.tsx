@@ -26,8 +26,8 @@ export function AdvancedColorPicker({ value, onChange, label, presets = [] }: Ad
     const [isOpen, setIsOpen] = useState(false);
 
     const defaultPresets = [
-        "#C9A84C", "#3B82F6", "#10B981", "#8B5CF6", "#F59E0B", "#EF4444",
-        "#1B2A4A", "#111827", "#1E293B", "#0F172A", "#FFFFFF", "#F3F4F6"
+        "#cfb659", "#3B82F6", "#10B981", "#8B5CF6", "#F59E0B", "#EF4444",
+        "#1b294b", "#111827", "#1E293B", "#0F172A", "#FFFFFF", "#F3F4F6"
     ];
 
     const allPresets = Array.from(new Set([...presets, ...defaultPresets]));

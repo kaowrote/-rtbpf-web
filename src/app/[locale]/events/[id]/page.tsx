@@ -147,7 +147,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"></div>
 
                 <div className="container relative z-10 px-6 mx-auto pb-12 md:pb-16">
-                    <Link href="/events" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-[#C9A84C] hover:text-white transition-colors mb-6 group">
+                    <Link href="/events" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-[#cfb659] hover:text-white transition-colors mb-6 group">
                         <ArrowLeft className="mr-2 h-4 w-4 transform group-hover:-translate-x-1 transition-transform" />
                         กลับไปหน้ากิจกรรม
                     </Link>
@@ -182,7 +182,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                         {/* Quick Info Bar */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 p-6 bg-gray-50 dark:bg-zinc-900/50 border border-gray-100 dark:border-zinc-800">
                             <div className="flex items-start gap-3">
-                                <Calendar className="w-5 h-5 text-[#C9A84C] mt-0.5 shrink-0" />
+                                <Calendar className="w-5 h-5 text-[#cfb659] mt-0.5 shrink-0" />
                                 <div>
                                     <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">วันที่</p>
                                     <p className="font-thai text-black dark:text-white font-semibold">{event.startDate}</p>
@@ -190,7 +190,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
-                                <MapPin className="w-5 h-5 text-[#C9A84C] mt-0.5 shrink-0" />
+                                <MapPin className="w-5 h-5 text-[#cfb659] mt-0.5 shrink-0" />
                                 <div>
                                     <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">สถานที่</p>
                                     <p className="font-thai text-black dark:text-white font-semibold">{event.venue}</p>
@@ -199,7 +199,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
 
                             {capacity > 0 && (
                                 <div className="flex items-start gap-3 w-full lg:col-span-1 sm:col-span-2">
-                                    <Users className="w-5 h-5 text-[#C9A84C] mt-0.5 shrink-0" />
+                                    <Users className="w-5 h-5 text-[#cfb659] mt-0.5 shrink-0" />
                                     <div className="w-full">
                                         <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">ความจุผู้เข้าร่วม</p>
                                         <p className="font-thai text-black dark:text-white font-semibold">รับได้ {capacity} ท่าน</p>
@@ -215,7 +215,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                                 className="prose prose-lg dark:prose-invert max-w-none font-thai text-gray-700 dark:text-gray-300 leading-relaxed
                                     prose-h3:text-xl prose-h3:font-bold prose-h3:text-black dark:prose-h3:text-white prose-h3:mt-8 prose-h3:mb-4 prose-h3:uppercase prose-h3:tracking-wide
                                     prose-ul:list-disc prose-ul:pl-6 prose-li:mb-2
-                                    prose-strong:text-[#C9A84C]"
+                                    prose-strong:text-[#cfb659]"
                                 dangerouslySetInnerHTML={{ __html: event.description }}
                             />
                         </div>
@@ -257,7 +257,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                                     )}
 
                                     <a href={event.registrationUrl} target="_blank" rel="noreferrer">
-                                        <Button className="w-full bg-[#C9A84C] text-black hover:bg-[#b8963d] rounded-none h-14 font-bold uppercase tracking-widest text-sm transition-all duration-300 mb-3">
+                                        <Button className="w-full bg-[#cfb659] text-black hover:bg-[#b8963d] rounded-none h-14 font-bold uppercase tracking-widest text-sm transition-all duration-300 mb-3">
                                             ลงทะเบียนเลย
                                         </Button>
                                     </a>
@@ -271,7 +271,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
 
                                 <div className="space-y-3 text-sm text-gray-600 dark:text-gray-400 font-thai">
                                     <p className="flex items-center gap-2">
-                                        📧 <a href={`mailto:${event.contactEmail}`} className="hover:text-[#C9A84C] transition-colors">{event.contactEmail}</a>
+                                        📧 <a href={`mailto:${event.contactEmail}`} className="hover:text-[#cfb659] transition-colors">{event.contactEmail}</a>
                                     </p>
                                     <p className="flex items-center gap-2">
                                         📞 {event.contactPhone}
@@ -283,13 +283,13 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                             <div className="bg-gray-50 dark:bg-zinc-900/50 border border-gray-100 dark:border-zinc-800 p-8">
                                 <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">แชร์กิจกรรม</h3>
                                 <div className="flex gap-3">
-                                    <Button variant="outline" size="icon" className="rounded-full border-gray-200 dark:border-zinc-700 hover:text-[#C9A84C] hover:border-[#C9A84C] bg-transparent">
+                                    <Button variant="outline" size="icon" className="rounded-full border-gray-200 dark:border-zinc-700 hover:text-[#cfb659] hover:border-[#cfb659] bg-transparent">
                                         <Facebook className="h-4 w-4" />
                                     </Button>
-                                    <Button variant="outline" size="icon" className="rounded-full border-gray-200 dark:border-zinc-700 hover:text-[#C9A84C] hover:border-[#C9A84C] bg-transparent">
+                                    <Button variant="outline" size="icon" className="rounded-full border-gray-200 dark:border-zinc-700 hover:text-[#cfb659] hover:border-[#cfb659] bg-transparent">
                                         <Twitter className="h-4 w-4" />
                                     </Button>
-                                    <Button variant="outline" size="icon" className="rounded-full border-gray-200 dark:border-zinc-700 hover:text-[#C9A84C] hover:border-[#C9A84C] bg-transparent">
+                                    <Button variant="outline" size="icon" className="rounded-full border-gray-200 dark:border-zinc-700 hover:text-[#cfb659] hover:border-[#cfb659] bg-transparent">
                                         <Link2 className="h-4 w-4" />
                                     </Button>
                                 </div>

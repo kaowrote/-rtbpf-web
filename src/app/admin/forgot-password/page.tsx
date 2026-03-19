@@ -42,22 +42,22 @@ export default function ForgotPasswordPage() {
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0a0f1e] via-[#0d1529] to-[#0a0a0a] relative overflow-hidden">
             {/* Background Decorations */}
             <div className="absolute inset-0 overflow-hidden">
-                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#C9A84C]/5 rounded-full blur-3xl" />
-                <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[#1B2A4A]/20 rounded-full blur-3xl" />
+                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#cfb659]/5 rounded-full blur-3xl" />
+                <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[#1b294b]/20 rounded-full blur-3xl" />
             </div>
 
             <div className="relative z-10 w-full max-w-md px-6">
                 <div className="text-center mb-10">
-                    <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-[#1B2A4A] to-[#0d1529] border border-[#C9A84C]/30 shadow-2xl mb-6">
-                        <Shield className="w-10 h-10 text-[#C9A84C]" />
+                    <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-[#1b294b] to-[#0d1529] border border-[#cfb659]/30 shadow-2xl mb-6">
+                        <Shield className="w-10 h-10 text-[#cfb659]" />
                     </div>
                     <h1 className="text-3xl font-bold text-white tracking-tight font-sans">
-                        FORGOT <span className="text-[#C9A84C]">PASSWORD</span>
+                        FORGOT <span className="text-[#cfb659]">PASSWORD</span>
                     </h1>
                     <p className="text-gray-500 mt-2 text-sm font-thai">กรอกอีเมลเพื่อกู้คืนรหัสผ่านของคุณ</p>
                 </div>
 
-                <div className="bg-[#0d1529]/60 backdrop-blur-xl border border-[#1B2A4A]/50 rounded-2xl p-8 shadow-2xl">
+                <div className="bg-[#0d1529]/60 backdrop-blur-xl border border-[#1b294b]/50 rounded-2xl p-8 shadow-2xl">
                     {!isSubmitted ? (
                         <form onSubmit={handleSubmit} className="space-y-6">
                             {error && (
@@ -78,7 +78,7 @@ export default function ForgotPasswordPage() {
                                         onChange={(e) => setEmail(e.target.value)}
                                         required
                                         disabled={isPending}
-                                        className="h-12 pl-11 bg-[#0a0f1e] border-[#1B2A4A] text-white placeholder-gray-600 rounded-lg focus-visible:ring-[#C9A84C]"
+                                        className="h-12 pl-11 bg-[#0a0f1e] border-[#1b294b] text-white placeholder-gray-600 rounded-lg focus-visible:ring-[#cfb659]"
                                     />
                                 </div>
                             </div>
@@ -86,7 +86,7 @@ export default function ForgotPasswordPage() {
                             <Button
                                 type="submit"
                                 disabled={isPending}
-                                className="w-full h-12 bg-gradient-to-r from-[#C9A84C] to-[#B8973B] text-[#0a0f1e] font-bold uppercase tracking-widest text-xs rounded-lg hover:from-[#D4B45A] hover:to-[#C9A84C] transition-all duration-300 shadow-lg shadow-[#C9A84C]/20"
+                                className="w-full h-12 bg-gradient-to-r from-[#cfb659] to-[#bda348] text-[#0a0f1e] font-bold uppercase tracking-widest text-xs rounded-lg hover:from-[#d9c26a] hover:to-[#cfb659] transition-all duration-300 shadow-lg shadow-[#cfb659]/20"
                             >
                                 {isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : "ส่งลิงก์กู้คืนรหัสผ่าน"}
                             </Button>
@@ -105,7 +105,7 @@ export default function ForgotPasswordPage() {
                                 เราได้ส่งลิงก์สำหรับกู้คืนรหัสผ่านไปยัง <strong>{email}</strong> แล้ว กรุณาตรวจสอบใน Inbox ของคุณ (รวมถึงใน Junk/Spam)
                             </p>
                             <Link href="/admin/login" className="block mt-6">
-                                <Button variant="outline" className="w-full h-12 border-[#1B2A4A] text-gray-400 hover:text-white hover:bg-[#1B2A4A]/50 rounded-lg uppercase tracking-widest text-xs font-bold transition-all">
+                                <Button variant="outline" className="w-full h-12 border-[#1b294b] text-gray-400 hover:text-white hover:bg-[#1b294b]/50 rounded-lg uppercase tracking-widest text-xs font-bold transition-all">
                                     กลับไปหน้าเข้าสู่ระบบ
                                 </Button>
                             </Link>

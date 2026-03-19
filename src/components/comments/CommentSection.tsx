@@ -114,12 +114,12 @@ export function CommentSection({ articleId, locale }: CommentSectionProps) {
             <div className="container mx-auto px-6 lg:px-8 max-w-3xl">
                 {/* Header */}
                 <div className="flex items-center gap-3 mb-10">
-                    <MessageCircle className="w-6 h-6 text-[#C9A84C]" />
+                    <MessageCircle className="w-6 h-6 text-[#cfb659]" />
                     <h2 className="text-2xl md:text-3xl font-bold font-thai text-black dark:text-white">
                         ความคิดเห็น
                     </h2>
                     {totalCount > 0 && (
-                        <span className="ml-2 bg-[#C9A84C]/10 text-[#C9A84C] text-sm font-bold px-3 py-1 rounded-full">
+                        <span className="ml-2 bg-[#cfb659]/10 text-[#cfb659] text-sm font-bold px-3 py-1 rounded-full">
                             {totalCount}
                         </span>
                     )}
@@ -131,7 +131,7 @@ export function CommentSection({ articleId, locale }: CommentSectionProps) {
                 {/* Comments List */}
                 {loading ? (
                     <div className="flex items-center justify-center py-12">
-                        <Loader2 className="w-6 h-6 animate-spin text-[#C9A84C]" />
+                        <Loader2 className="w-6 h-6 animate-spin text-[#cfb659]" />
                     </div>
                 ) : error ? (
                     <div className="text-center py-12 text-gray-500 dark:text-gray-400">
@@ -196,7 +196,7 @@ function CommentItem({
                             className="w-10 h-10 rounded-full object-cover ring-2 ring-gray-100 dark:ring-zinc-800"
                         />
                     ) : (
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#C9A84C] to-[#a08636] flex items-center justify-center text-white font-bold text-sm">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#cfb659] to-[#a08636] flex items-center justify-center text-white font-bold text-sm">
                             {avatarFallback}
                         </div>
                     )}
@@ -237,7 +237,7 @@ function CommentItem({
                         </button>
                         <button
                             onClick={() => setShowReplyForm(!showReplyForm)}
-                            className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-[#C9A84C] transition-colors"
+                            className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-[#cfb659] transition-colors"
                         >
                             <Reply className="w-3.5 h-3.5" />
                             <span>ตอบกลับ</span>
@@ -265,7 +265,7 @@ function CommentItem({
                         <div className="mt-3">
                             <button
                                 onClick={() => setShowReplies(!showReplies)}
-                                className="flex items-center gap-1.5 text-xs font-medium text-[#C9A84C] hover:text-[#a08636] transition-colors ml-2 mb-3"
+                                className="flex items-center gap-1.5 text-xs font-medium text-[#cfb659] hover:text-[#a08636] transition-colors ml-2 mb-3"
                             >
                                 {showReplies ? (
                                     <ChevronUp className="w-3.5 h-3.5" />
@@ -322,7 +322,7 @@ function ReplyItem({
                         className="w-8 h-8 rounded-full object-cover ring-2 ring-gray-100 dark:ring-zinc-800"
                     />
                 ) : (
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#C9A84C]/70 to-[#a08636]/70 flex items-center justify-center text-white font-bold text-xs">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#cfb659]/70 to-[#a08636]/70 flex items-center justify-center text-white font-bold text-xs">
                         {avatarFallback}
                     </div>
                 )}

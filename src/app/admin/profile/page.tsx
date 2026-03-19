@@ -96,7 +96,7 @@ export default function ProfilePage() {
     if (isLoading) {
         return (
             <div className="flex flex-col items-center justify-center min-h-[60vh]">
-                <Loader2 className="w-12 h-12 animate-spin text-[#C9A84C]" />
+                <Loader2 className="w-12 h-12 animate-spin text-[#cfb659]" />
                 <p className="mt-4 font-thai text-sm text-gray-500 uppercase tracking-widest font-bold font-sans">Loading Profile...</p>
             </div>
         );
@@ -113,12 +113,12 @@ export default function ProfilePage() {
                 {/* Left: Info Card */}
                 <div className="lg:col-span-1 space-y-6">
                     <div className="bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-zinc-800 rounded-2xl p-6 text-center shadow-sm">
-                        <div className="w-24 h-24 bg-gradient-to-br from-[#1B2A4A] to-[#0d1529] rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-[#C9A84C]/20 text-4xl font-bold text-[#C9A84C]">
+                        <div className="w-24 h-24 bg-gradient-to-br from-[#1b294b] to-[#0d1529] rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-[#cfb659]/20 text-4xl font-bold text-[#cfb659]">
                             {formData.name ? formData.name.charAt(0).toUpperCase() : formData.email.charAt(0).toUpperCase()}
                         </div>
                         <h2 className="text-xl font-bold text-black dark:text-white">{formData.name || "User"}</h2>
                         <p className="text-sm text-gray-500 font-thai mt-1">{formData.email}</p>
-                        <div className="mt-4 inline-flex items-center gap-2 px-3 py-1 bg-[#C9A84C]/10 text-[#C9A84C] rounded-full text-[10px] font-bold uppercase tracking-widest border border-[#C9A84C]/20">
+                        <div className="mt-4 inline-flex items-center gap-2 px-3 py-1 bg-[#cfb659]/10 text-[#cfb659] rounded-full text-[10px] font-bold uppercase tracking-widest border border-[#cfb659]/20">
                             <Shield className="w-3 h-3" />
                             {formData.role}
                         </div>
@@ -151,7 +151,7 @@ export default function ProfilePage() {
                                     <Input 
                                         value={formData.name}
                                         onChange={(e) => setFormData({...formData, name: e.target.value})}
-                                        className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-lg focus-visible:ring-[#C9A84C]"
+                                        className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-lg focus-visible:ring-[#cfb659]"
                                     />
                                 </div>
                                 <div>
@@ -183,7 +183,7 @@ export default function ProfilePage() {
                                             placeholder="รหัสผ่านปัจจุบัน"
                                             value={formData.currentPassword}
                                             onChange={(e) => setFormData({...formData, currentPassword: e.target.value})}
-                                            className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-lg focus-visible:ring-[#C9A84C]"
+                                            className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-lg focus-visible:ring-[#cfb659]"
                                         />
                                         <button 
                                             type="button"
@@ -203,7 +203,7 @@ export default function ProfilePage() {
                                             placeholder="รหัสผ่านใหม่"
                                             value={formData.newPassword}
                                             onChange={(e) => setFormData({...formData, newPassword: e.target.value})}
-                                            className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-lg focus-visible:ring-[#C9A84C]"
+                                            className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-lg focus-visible:ring-[#cfb659]"
                                         />
                                     </div>
                                     <div>
@@ -213,7 +213,7 @@ export default function ProfilePage() {
                                             placeholder="ยืนยันรหัสผ่านใหม่"
                                             value={formData.confirmPassword}
                                             onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
-                                            className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-lg focus-visible:ring-[#C9A84C]"
+                                            className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-lg focus-visible:ring-[#cfb659]"
                                         />
                                     </div>
                                 </div>
@@ -225,7 +225,7 @@ export default function ProfilePage() {
                             <Button
                                 type="submit"
                                 disabled={isPending}
-                                className="h-14 px-10 bg-[#1B2A4A] hover:bg-[#C9A84C] text-white rounded-lg font-bold uppercase tracking-widest text-xs transition-all shadow-lg flex items-center gap-2"
+                                className="h-14 px-10 bg-[#1b294b] hover:bg-[#cfb659] text-white rounded-lg font-bold uppercase tracking-widest text-xs transition-all shadow-lg flex items-center gap-2"
                             >
                                 {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                                 {isPending ? "Saving..." : "Update Profile"}

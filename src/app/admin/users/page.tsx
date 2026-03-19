@@ -213,7 +213,7 @@ export default function AdminUsersPage() {
                         placeholder="ค้นหาชื่อหรืออีเมล..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="h-12 pl-11 bg-white dark:bg-[#0a0a0a] border-gray-200 dark:border-zinc-700 rounded-lg font-thai focus-visible:ring-[#C9A84C]"
+                        className="h-12 pl-11 bg-white dark:bg-[#0a0a0a] border-gray-200 dark:border-zinc-700 rounded-lg font-thai focus-visible:ring-[#cfb659]"
                     />
                 </div>
                 <div className="flex gap-3">
@@ -222,7 +222,7 @@ export default function AdminUsersPage() {
                             title="Filter by Role"
                             value={filterRole}
                             onChange={(e) => setFilterRole(e.target.value)}
-                            className="h-12 px-4 pr-10 bg-white dark:bg-[#0a0a0a] border border-gray-200 dark:border-zinc-700 rounded-lg text-sm font-bold uppercase tracking-wider appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#C9A84C] text-black dark:text-white"
+                            className="h-12 px-4 pr-10 bg-white dark:bg-[#0a0a0a] border border-gray-200 dark:border-zinc-700 rounded-lg text-sm font-bold uppercase tracking-wider appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#cfb659] text-black dark:text-white"
                         >
                             <option value="ALL">All Roles</option>
                             {Object.entries(ROLE_CONFIG).map(([key, val]) => (
@@ -236,7 +236,7 @@ export default function AdminUsersPage() {
                             title="Filter by Status"
                             value={filterStatus}
                             onChange={(e) => setFilterStatus(e.target.value)}
-                            className="h-12 px-4 pr-10 bg-white dark:bg-[#0a0a0a] border border-gray-200 dark:border-zinc-700 rounded-lg text-sm font-bold uppercase tracking-wider appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#C9A84C] text-black dark:text-white"
+                            className="h-12 px-4 pr-10 bg-white dark:bg-[#0a0a0a] border border-gray-200 dark:border-zinc-700 rounded-lg text-sm font-bold uppercase tracking-wider appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#cfb659] text-black dark:text-white"
                         >
                             <option value="ALL">All Status</option>
                             <option value="ACTIVE">Active</option>
@@ -252,7 +252,7 @@ export default function AdminUsersPage() {
             <div className="bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-zinc-800 shadow-sm rounded-xl overflow-hidden min-h-[400px]">
                 {isLoading ? (
                     <div className="flex flex-col items-center justify-center py-20 text-gray-500">
-                        <Loader2 className="w-12 h-12 animate-spin mb-4 text-[#C9A84C]" />
+                        <Loader2 className="w-12 h-12 animate-spin mb-4 text-[#cfb659]" />
                         <p className="font-thai font-bold uppercase tracking-widest text-xs">Loading Users Database...</p>
                     </div>
                 ) : (

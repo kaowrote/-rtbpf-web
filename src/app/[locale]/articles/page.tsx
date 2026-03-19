@@ -92,13 +92,13 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
             <section className="w-full bg-gray-50 dark:bg-[#050505] py-16 md:py-24 border-b border-gray-200 dark:border-white/10">
                 <div className="container px-6 mx-auto text-center">
                     <h1 className="text-4xl md:text-6xl font-bold font-thai text-black dark:text-white uppercase tracking-wider mb-4">
-                        News <span className="text-[#C9A84C]">&</span> Articles
+                        News <span className="text-[#cfb659]">&</span> Articles
                     </h1>
                     <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 font-thai max-w-2xl mx-auto">
                         {tag ? `แสดงบทความที่มีข้อความกำกับ: #${tag}` : "ติดตามทุกความเคลื่อนไหว บทความพิเศษ และข่าวสารสำคัญของวงการสื่อสารมวลชนไทย"}
                     </p>
                     {tag && (
-                        <Link href="/articles" className="inline-block mt-6 text-[#C9A84C] hover:underline font-sans text-sm font-bold uppercase tracking-widest">
+                        <Link href="/articles" className="inline-block mt-6 text-[#cfb659] hover:underline font-sans text-sm font-bold uppercase tracking-widest">
                             &times; Clear Filter
                         </Link>
                     )}
@@ -119,7 +119,7 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
                             />
                             {/* Gradient overlay */}
                             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent flex flex-col justify-end p-6 md:p-12 lg:p-16">
-                                <Badge className="bg-[#C9A84C] text-black hover:bg-white uppercase tracking-widest text-xs px-3 py-1 mb-4 w-fit rounded-none font-bold border-none">
+                                <Badge className="bg-[#cfb659] text-black hover:bg-white uppercase tracking-widest text-xs px-3 py-1 mb-4 w-fit rounded-none font-bold border-none">
                                     {featuredArticle.category}
                                 </Badge>
                                 <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold font-thai text-white leading-tight mb-4 group-hover:text-gray-200 transition-colors line-clamp-2">
@@ -129,10 +129,10 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
                                     {featuredArticle.excerpt}
                                 </p>
                                 <div className="flex items-center text-white/80 text-sm font-sans uppercase tracking-widest font-semibold">
-                                    <Clock className="w-4 h-4 mr-2 text-[#C9A84C]" />
+                                    <Clock className="w-4 h-4 mr-2 text-[#cfb659]" />
                                     {featuredArticle.date}
                                     <span className="mx-4 text-white/30">|</span>
-                                    <span className="flex items-center text-[#C9A84C] group-hover:text-white transition-colors">
+                                    <span className="flex items-center text-[#cfb659] group-hover:text-white transition-colors">
                                         Read Full Story <ArrowRight className="ml-2 w-4 h-4" />
                                     </span>
                                 </div>
@@ -173,13 +173,13 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
                                         <div className="flex items-center space-x-2 text-gray-400 dark:text-gray-500 text-xs uppercase font-sans font-bold mb-3 tracking-wider">
                                             <span>{article.date}</span>
                                         </div>
-                                        <h4 className="text-2xl md:text-3xl lg:text-4xl font-bold font-thai text-black dark:text-white group-hover:text-[#C9A84C] transition-colors leading-snug mb-4">
+                                        <h4 className="text-2xl md:text-3xl lg:text-4xl font-bold font-thai text-black dark:text-white group-hover:text-[#cfb659] transition-colors leading-snug mb-4">
                                             {article.title}
                                         </h4>
                                         <p className="text-gray-600 dark:text-gray-400 font-thai text-base md:text-lg leading-relaxed line-clamp-2 md:line-clamp-3 mb-6">
                                             {article.excerpt}
                                         </p>
-                                        <div className="flex items-center text-sm font-bold uppercase tracking-widest text-[#1B2A4A] dark:text-white group-hover:text-[#C9A84C] dark:group-hover:text-[#C9A84C] transition-colors mt-auto">
+                                        <div className="flex items-center text-sm font-bold uppercase tracking-widest text-[#1b294b] dark:text-white group-hover:text-[#cfb659] dark:group-hover:text-[#cfb659] transition-colors mt-auto">
                                             Read Article <ArrowRight className="ml-2 w-4 h-4" />
                                         </div>
                                     </div>
@@ -222,7 +222,7 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
                     <div className="py-24 text-center text-gray-500 min-h-[40vh] flex flex-col items-center justify-center">
                         <p className="text-lg font-thai font-semibold">ยังไม่มีบทความในขณะนี้</p>
                         {page > 1 && (
-                            <Link href="/articles" className="mt-4 text-[#C9A84C] hover:underline uppercase tracking-widest font-sans text-sm font-bold">
+                            <Link href="/articles" className="mt-4 text-[#cfb659] hover:underline uppercase tracking-widest font-sans text-sm font-bold">
                                 กลับหน้าแรก
                             </Link>
                         )}

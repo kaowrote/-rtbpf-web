@@ -149,7 +149,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
 
                 {/* Title Overlay */}
                 <div className="container relative z-10 px-6 mx-auto pb-12 md:pb-24">
-                    <Link href="/articles" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-[#C9A84C] hover:text-white transition-colors mb-6 group">
+                    <Link href="/articles" className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-[#cfb659] hover:text-white transition-colors mb-6 group">
                         <ArrowLeft className="mr-2 h-4 w-4 transform group-hover:-translate-x-1 transition-transform" />
                         {t("backToNews")}
                     </Link>
@@ -167,7 +167,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                         {/* Meta details */}
                         <div className="flex flex-wrap items-center gap-6 text-white/80 font-sans text-sm uppercase tracking-wider font-semibold">
                             <span className="flex items-center">
-                                <Calendar className="w-4 h-4 mr-2 text-[#C9A84C]" />
+                                <Calendar className="w-4 h-4 mr-2 text-[#cfb659]" />
                                 {formattedDate}
                             </span>
                             <span className="flex items-center">
@@ -199,7 +199,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                     {/* Right/Center Column: Main Text */}
                     <article className="lg:w-3/4 order-1 lg:order-2">
                         {displayExcerpt && (
-                            <p className="text-xl md:text-2xl lg:text-3xl font-thai font-semibold text-[#C9A84C] leading-snug mb-16 border-l-4 border-[#C9A84C] pl-6 md:pl-8 italic">
+                            <p className="text-xl md:text-2xl lg:text-3xl font-thai font-semibold text-[#cfb659] leading-snug mb-16 border-l-4 border-[#cfb659] pl-6 md:pl-8 italic">
                                 &quot;{displayExcerpt}&quot;
                             </p>
                         )}
@@ -218,7 +218,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                                         <Link 
                                             key={tag} 
                                             href={`/articles?tag=${encodeURIComponent(tag)}`}
-                                            className="px-4 py-2 bg-gray-50 dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 text-gray-600 dark:text-gray-400 font-thai text-sm hover:border-[#C9A84C] hover:text-[#C9A84C] transition-all rounded-sm uppercase tracking-wider"
+                                            className="px-4 py-2 bg-gray-50 dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 text-gray-600 dark:text-gray-400 font-thai text-sm hover:border-[#cfb659] hover:text-[#cfb659] transition-all rounded-sm uppercase tracking-wider"
                                         >
                                             #{tag}
                                         </Link>
@@ -254,7 +254,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                             <h2 className="text-2xl md:text-4xl font-bold font-thai text-black dark:text-white uppercase tracking-wide">
                                 {t("related")}
                             </h2>
-                            <Link href="/articles" className="inline-flex items-center text-sm font-bold uppercase tracking-widest text-[#1B2A4A] dark:text-white hover:text-[#C9A84C] dark:hover:text-[#C9A84C] transition-colors">
+                            <Link href="/articles" className="inline-flex items-center text-sm font-bold uppercase tracking-widest text-[#1b294b] dark:text-white hover:text-[#cfb659] dark:hover:text-[#cfb659] transition-colors">
                                 {t("viewAll")} <ArrowRight className="ml-2 w-4 h-4" />
                             </Link>
                         </div>
@@ -288,7 +288,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                                                     { (related as any).category && (tCat.has((related as any).category.name) ? tCat((related as any).category.name) : (related as any).category.name) }
                                                 </Badge>
                                             )}
-                                            <h3 className="text-xl font-bold font-thai text-black dark:text-white group-hover:text-[#C9A84C] transition-colors leading-snug mb-4">
+                                            <h3 className="text-xl font-bold font-thai text-black dark:text-white group-hover:text-[#cfb659] transition-colors leading-snug mb-4">
                                                 {(related as any).translations?.[0]?.title || related.title}
                                             </h3>
                                             <span className="text-xs uppercase tracking-widest font-bold text-gray-500 group-hover:text-black dark:group-hover:text-white transition-colors">

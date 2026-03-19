@@ -69,7 +69,7 @@ export function CommentForm({
         return (
             <div className={`bg-gray-50 dark:bg-zinc-900/60 rounded-xl border border-gray-200 dark:border-zinc-800 p-6 text-center ${compact ? "p-4" : ""}`}>
                 <p className="text-gray-500 dark:text-gray-400 font-thai text-sm">
-                    <a href="/auth/signin" className="text-[#C9A84C] hover:underline font-semibold">
+                    <a href="/auth/signin" className="text-[#cfb659] hover:underline font-semibold">
                         เข้าสู่ระบบ
                     </a>{" "}
                     เพื่อแสดงความคิดเห็น
@@ -82,7 +82,7 @@ export function CommentForm({
         <form onSubmit={handleSubmit} className="relative">
             <div
                 className={`bg-gray-50 dark:bg-zinc-900/60 rounded-xl border border-gray-200 dark:border-zinc-800 
-                    focus-within:border-[#C9A84C]/50 focus-within:ring-1 focus-within:ring-[#C9A84C]/20 
+                    focus-within:border-[#cfb659]/50 focus-within:ring-1 focus-within:ring-[#cfb659]/20 
                     transition-all ${compact ? "rounded-lg" : ""}`}
             >
                 {/* User avatar row */}
@@ -95,7 +95,7 @@ export function CommentForm({
                         />
                     ) : (
                         <div
-                            className={`rounded-full bg-gradient-to-br from-[#C9A84C] to-[#a08636] flex items-center justify-center text-white font-bold ${
+                            className={`rounded-full bg-gradient-to-br from-[#cfb659] to-[#a08636] flex items-center justify-center text-white font-bold ${
                                 compact ? "w-6 h-6 text-[10px]" : "w-8 h-8 text-xs"
                             }`}
                         >
@@ -140,7 +140,7 @@ export function CommentForm({
                             type="submit"
                             disabled={!content.trim() || submitting}
                             className={`flex items-center gap-1.5 font-semibold font-thai rounded-lg transition-all disabled:opacity-40 disabled:cursor-not-allowed
-                                bg-[#C9A84C] hover:bg-[#b8993e] text-white ${
+                                bg-[#cfb659] hover:bg-[#b8993e] text-white ${
                                     compact
                                         ? "text-xs px-3 py-1.5"
                                         : "text-sm px-4 py-2"

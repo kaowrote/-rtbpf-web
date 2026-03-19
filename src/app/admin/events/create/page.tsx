@@ -93,7 +93,7 @@ export default function EventCreatePage() {
                     <Button
                         onClick={() => handleSave()}
                         disabled={isLoading}
-                        className="h-10 rounded-none font-bold uppercase tracking-widest text-xs bg-[#1B2A4A] dark:bg-white text-white dark:text-black hover:bg-black dark:hover:bg-[#C9A84C] transition-colors"
+                        className="h-10 rounded-none font-bold uppercase tracking-widest text-xs bg-[#1b294b] dark:bg-white text-white dark:text-black hover:bg-black dark:hover:bg-[#cfb659] transition-colors"
                     >
                         {isLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Globe className="w-4 h-4 mr-2" />}
                         Publish Event
@@ -111,7 +111,7 @@ export default function EventCreatePage() {
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                             placeholder="กรอกชื่อกิจกรรม หรืองานประกาศรางวัล..."
-                            className="text-lg font-thai font-semibold h-14 border-gray-200 dark:border-zinc-800 focus-visible:ring-[#C9A84C]"
+                            className="text-lg font-thai font-semibold h-14 border-gray-200 dark:border-zinc-800 focus-visible:ring-[#cfb659]"
                         />
                     </div>
 
@@ -190,7 +190,7 @@ export default function EventCreatePage() {
                                     title="Event Status"
                                     value={status}
                                     onChange={(e) => setStatus(e.target.value)}
-                                    className="w-full text-sm font-bold uppercase tracking-widest p-3 border border-gray-200 dark:border-zinc-800 rounded bg-gray-50 dark:bg-zinc-900 text-black dark:text-white focus:outline-none focus:border-[#C9A84C]"
+                                    className="w-full text-sm font-bold uppercase tracking-widest p-3 border border-gray-200 dark:border-zinc-800 rounded bg-gray-50 dark:bg-zinc-900 text-black dark:text-white focus:outline-none focus:border-[#cfb659]"
                                 >
                                     <option value="UPCOMING">Upcoming</option>
                                     <option value="OPEN_FOR_REGISTRATION">Open for Registration</option>
