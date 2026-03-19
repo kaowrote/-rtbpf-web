@@ -19,6 +19,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ThemeProvider } from "@/components/shared/ThemeProvider";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { AuthSessionProvider } from "@/components/shared/AuthSessionProvider";
 import { prisma } from "@/lib/prisma";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
@@ -96,11 +97,13 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <AuthSessionProvider>
           <TooltipProvider>
             <Navbar siteName={siteName} />
             <main className="flex-1 flex flex-col">{children}</main>
             <Footer />
           </TooltipProvider>
+          </AuthSessionProvider>
         </ThemeProvider>
         </NextIntlClientProvider>
       </body>

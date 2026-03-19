@@ -1,11 +1,14 @@
 import React from "react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Share2, Facebook, Twitter, Link2, Calendar, ArrowRight } from "lucide-react";
+import { ArrowLeft, Calendar, ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
 import type { Metadata } from "next";
+import { ShareButtons } from "@/components/shared/ShareButtons";
+import { ShareFAB } from "@/components/shared/ShareFAB";
+import { CommentSection } from "@/components/comments/CommentSection";
+import { siteConfig } from "@/config/site";
 
 import { Link } from "@/i18n/routing";
 import { getTranslations } from "next-intl/server";
@@ -126,6 +129,10 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
     const displayExcerpt = (article as any).translations?.[0]?.excerpt || article.excerpt;
     const displayContent = (article as any).translations?.[0]?.content ? ((article as any).translations[0].content as string) : (article.content as string);
 
+    const shareUrl = `${siteConfig.url}/${locale}/articles/${slug}`;
+    const shareTitle = displayTitle;
+    const shareDescription = displayExcerpt || "";
+
     return (
         <div className="flex flex-col min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
 
@@ -179,17 +186,13 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                     <aside className="lg:w-1/4 pt-2 order-2 lg:order-1 hidden lg:block">
                         <div className="sticky top-32">
                             <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-4">{t("shareStory")}</h3>
-                            <div className="flex lg:flex-col gap-4">
-                                <Button variant="outline" size="icon" className="rounded-full border-gray-200 dark:border-zinc-800 hover:text-[#C9A84C] hover:border-[#C9A84C] dark:hover:border-[#C9A84C] text-black dark:text-white bg-transparent">
-                                    <Facebook className="h-4 w-4" />
-                                </Button>
-                                <Button variant="outline" size="icon" className="rounded-full border-gray-200 dark:border-zinc-800 hover:text-[#C9A84C] hover:border-[#C9A84C] dark:hover:border-[#C9A84C] text-black dark:text-white bg-transparent">
-                                    <Twitter className="h-4 w-4" />
-                                </Button>
-                                <Button variant="outline" size="icon" className="rounded-full border-gray-200 dark:border-zinc-800 hover:text-[#C9A84C] hover:border-[#C9A84C] dark:hover:border-[#C9A84C] text-black dark:text-white bg-transparent">
-                                    <Link2 className="h-4 w-4" />
-                                </Button>
-                            </div>
+                            <ShareButtons
+                                url={shareUrl}
+                                title={shareTitle}
+                                description={shareDescription}
+                                direction="column"
+                                variant="outline"
+                            />
                         </div>
                     </aside>
 
@@ -227,16 +230,21 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                         {/* Mobile share block */}
                         <div className="mt-16 pt-8 border-t border-gray-200 dark:border-white/10 lg:hidden flex items-center justify-between">
                             <span className="text-sm font-bold uppercase tracking-widest text-gray-400">{t("share")}</span>
-                            <div className="flex gap-4">
-                                <Button variant="ghost" size="icon" className="rounded-full hover:text-[#C9A84C]"><Facebook className="h-5 w-5" /></Button>
-                                <Button variant="ghost" size="icon" className="rounded-full hover:text-[#C9A84C]"><Twitter className="h-5 w-5" /></Button>
-                                <Button variant="ghost" size="icon" className="rounded-full hover:text-[#C9A84C]"><Link2 className="h-5 w-5" /></Button>
-                            </div>
+                            <ShareButtons
+                                url={shareUrl}
+                                title={shareTitle}
+                                description={shareDescription}
+                                direction="row"
+                                variant="ghost"
+                            />
                         </div>
                     </article>
 
                 </div>
             </section>
+
+            {/* 2.5 COMMENTS */}
+            <CommentSection articleId={article.id} locale={locale} />
 
             {/* 3. RELATED ARTICLES */}
             {relatedArticles.length > 0 && (
@@ -294,6 +302,9 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                     </div>
                 </section>
             )}
+
+            {/* Floating Share FAB (mobile) */}
+            <ShareFAB url={shareUrl} title={shareTitle} description={shareDescription} />
 
         </div>
     );

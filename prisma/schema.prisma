@@ -28,6 +28,8 @@ model User {
   articlesPublished Article[]     @relation("ArticlePublisher")
   sessions          Session[]
   media             Media[]
+  comments          Comment[]
+  commentLikes      CommentLike[]
 
   @@map("users")
 }
@@ -121,6 +123,7 @@ model Article {
   category      Category?     @relation(fields: [categoryId], references: [id])
   publisher     User?         @relation("ArticlePublisher", fields: [publisherId], references: [id])
   translations  Translation[]
+  comments      Comment[]
 
   @@index([slug])
   @@index([publishedAt])
@@ -329,5 +332,39 @@ enum EventStatus {
   ONGOING
   COMPLETED
   CANCELLED
+}
+
+model Comment {
+  id        String        @id @default(cuid())
+  content   String        @db.Text
+  articleId String        @map("article_id")
+  userId    String        @map("user_id")
+  parentId  String?       @map("parent_id")
+  createdAt DateTime      @default(now()) @map("created_at")
+  updatedAt DateTime      @updatedAt @map("updated_at")
+  article   Article       @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parent    Comment?      @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies   Comment[]     @relation("CommentReplies")
+  likes     CommentLike[]
+
+  @@index([articleId])
+  @@index([userId])
+  @@index([parentId])
+  @@map("comments")
+}
+
+model CommentLike {
+  id        String   @id @default(cuid())
+  commentId String   @map("comment_id")
+  userId    String   @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([commentId, userId])
+  @@index([commentId])
+  @@index([userId])
+  @@map("comment_likes")
 }
 
