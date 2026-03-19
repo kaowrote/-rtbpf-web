@@ -88,7 +88,7 @@ export default async function AdminDashboardPage() {
                 </div>
                 <div className="flex gap-4">
                     <Link href="/admin/articles/create">
-                        <Button className="bg-[#1b294b] text-white hover:bg-[#cfb659] transition-colors rounded-none font-bold uppercase tracking-widest text-xs px-6">
+                        <Button className="bg-[#000000] text-white hover:bg-[#cfb659] transition-colors rounded-none font-bold uppercase tracking-widest text-xs px-6">
                             + New Article
                         </Button>
                     </Link>

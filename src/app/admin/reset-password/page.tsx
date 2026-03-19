@@ -68,7 +68,7 @@ function ResetPasswordForm() {
                  <AlertCircle className="w-12 h-12 text-red-500 mx-auto" />
                  <h2 className="text-white text-xl font-bold font-thai uppercase tracking-wider">Invalid Link</h2>
                  <p className="text-gray-400 font-thai text-sm">ลิงก์นี้ไม่ถูกต้องหรือหมดอายุแล้ว กรุณาขอลิงก์กู้คืนรหัสผ่านใหม่อีกครั้ง</p>
-                 <Button onClick={() => router.push("/admin/forgot-password")} className="w-full mt-4 bg-transparent border-[#1b294b] text-gray-400 hover:text-white uppercase tracking-widest text-xs font-bold font-sans">
+                 <Button onClick={() => router.push("/admin/forgot-password")} className="w-full mt-4 bg-transparent border-[#000000] text-gray-400 hover:text-white uppercase tracking-widest text-xs font-bold font-sans">
                      Request New Link
                  </Button>
             </div>
@@ -76,7 +76,7 @@ function ResetPasswordForm() {
     }
 
     return (
-        <div className="bg-[#0d1529]/60 backdrop-blur-xl border border-[#1b294b]/50 rounded-2xl p-8 shadow-2xl">
+        <div className="bg-[#0d1529]/60 backdrop-blur-xl border border-[#000000]/50 rounded-2xl p-8 shadow-2xl">
             {!isSubmitted ? (
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {error && (
@@ -99,7 +99,7 @@ function ResetPasswordForm() {
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                                 disabled={isPending}
-                                className="h-12 pl-11 pr-12 bg-[#0a0f1e] border-[#1b294b] text-white placeholder-gray-600 rounded-lg focus-visible:ring-[#cfb659]"
+                                className="h-12 pl-11 pr-12 bg-[#0a0f1e] border-[#000000] text-white placeholder-gray-600 rounded-lg focus-visible:ring-[#cfb659]"
                             />
                             <button
                                 type="button"
@@ -122,7 +122,7 @@ function ResetPasswordForm() {
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 required
                                 disabled={isPending}
-                                className="h-12 pl-11 bg-[#0a0f1e] border-[#1b294b] text-white placeholder-gray-600 rounded-lg focus-visible:ring-[#cfb659]"
+                                className="h-12 pl-11 bg-[#0a0f1e] border-[#000000] text-white placeholder-gray-600 rounded-lg focus-visible:ring-[#cfb659]"
                             />
                         </div>
                     </div>
@@ -156,12 +156,12 @@ export default function ResetPasswordPage() {
             {/* Background Decorations */}
             <div className="absolute inset-0 overflow-hidden">
                 <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#cfb659]/5 rounded-full blur-3xl" />
-                <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[#1b294b]/20 rounded-full blur-3xl" />
+                <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[#000000]/20 rounded-full blur-3xl" />
             </div>
 
             <div className="relative z-10 w-full max-w-md px-6">
                 <div className="text-center mb-10 font-sans">
-                    <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-[#1b294b] to-[#0d1529] border border-[#cfb659]/30 shadow-2xl mb-6">
+                    <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-[#000000] to-[#0d1529] border border-[#cfb659]/30 shadow-2xl mb-6">
                         <Shield className="w-10 h-10 text-[#cfb659]" />
                     </div>
                     <h1 className="text-3xl font-bold text-white tracking-tighter uppercase">

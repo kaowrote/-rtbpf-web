@@ -254,7 +254,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                             <h2 className="text-2xl md:text-4xl font-bold font-thai text-black dark:text-white uppercase tracking-wide">
                                 {t("related")}
                             </h2>
-                            <Link href="/articles" className="inline-flex items-center text-sm font-bold uppercase tracking-widest text-[#1b294b] dark:text-white hover:text-[#cfb659] dark:hover:text-[#cfb659] transition-colors">
+                            <Link href="/articles" className="inline-flex items-center text-sm font-bold uppercase tracking-widest text-[#000000] dark:text-white hover:text-[#cfb659] dark:hover:text-[#cfb659] transition-colors">
                                 {t("viewAll")} <ArrowRight className="ml-2 w-4 h-4" />
                             </Link>
                         </div>

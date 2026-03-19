@@ -39,7 +39,7 @@ export function UserAvatar({ name, email, image, className, size = "default" }: 
             "bg-rose-500",
             "bg-indigo-500",
             "bg-cyan-500",
-            "bg-[#1b294b]", // Primary Navy
+            "bg-[#000000]", // Primary Navy
             "bg-[#cfb659]", // Primary Gold
         ];
         

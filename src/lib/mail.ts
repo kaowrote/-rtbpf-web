@@ -20,7 +20,7 @@ export const sendInviteEmail = async (email: string, name: string, role: string)
             subject: 'Invite: เว็บไซต์สมาพันธ์ฯ (RTBPF CMS)',
             html: `
                 <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
-                    <h2 style="color: #1b294b;">สวัสดีคุณ ${name || 'สมาชิกใหม่'}</h2>
+                    <h2 style="color: #000000;">สวัสดีคุณ ${name || 'สมาชิกใหม่'}</h2>
                     <p>คุณได้รับเชิญให้เข้าร่วมใช้งานระบบจัดการเนื้อหา (CMS) ของ <strong>สมาพันธ์สมาคมวิชาชีพวิทยุกระจายเสียงและวิทยุโทรทัศน์ (RTBPF)</strong></p>
                     <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0;">
                         <p style="margin: 0; font-weight: bold; color: #555;">รายละเอียดการเข้าใช้งาน:</p>
@@ -59,7 +59,7 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
             subject: 'Reset Password: กู้คืนรหัสผ่าน RTBPF CMS',
             html: `
                 <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
-                    <h2 style="color: #1b294b;">กู้คืนรหัสผ่าน</h2>
+                    <h2 style="color: #000000;">กู้คืนรหัสผ่าน</h2>
                     <p>เราได้รับคำขอให้รีเซ็ตรหัสผ่านสำหรับบัญชีของคุณที่เชื่อมโยงกับอีเมล ${email}</p>
                     <p>หากคุณเป็นคนร้องขอ กรุณาคลิกที่ปุ่มด้านล่างเพื่อกำหนดรหัสผ่านใหม่:</p>
                     <div style="text-align: center; margin: 30px 0;">

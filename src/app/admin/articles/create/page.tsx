@@ -92,7 +92,7 @@ export default function ArticleCreatePage() {
                     <Button
                         onClick={() => handleSave("PUBLISHED")}
                         disabled={isLoading}
-                        className="h-10 rounded-none font-bold uppercase tracking-widest text-xs bg-[#1b294b] dark:bg-white text-white dark:text-black hover:bg-black dark:hover:bg-[#cfb659] transition-colors"
+                        className="h-10 rounded-none font-bold uppercase tracking-widest text-xs bg-[#000000] dark:bg-white text-white dark:text-black hover:bg-black dark:hover:bg-[#cfb659] transition-colors"
                     >
                         {isLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Globe className="w-4 h-4 mr-2" />}
                         Publish

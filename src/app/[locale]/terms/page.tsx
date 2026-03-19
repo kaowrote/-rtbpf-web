@@ -10,7 +10,7 @@ export default function TermsPage() {
     return (
         <div className="flex flex-col min-h-screen bg-white dark:bg-[#0a0a0a]">
             {/* HEROS */}
-            <section className="relative w-full py-20 bg-[#1b294b] text-white">
+            <section className="relative w-full py-20 bg-[#000000] text-white">
                 <div className="container px-6 mx-auto text-center relative z-10 space-y-4">
                     <Badge className="bg-[#cfb659] text-black hover:bg-[#cfb659]/90 uppercase tracking-widest font-sans font-bold px-4 py-1.5 rounded-none text-xs">
                         Terms of Service

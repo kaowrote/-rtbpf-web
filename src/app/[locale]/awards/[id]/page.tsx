@@ -64,7 +64,7 @@ export default function AwardDetailPage({ params }: { params: Promise<{ id: stri
                         </Link>
 
                         <div className="flex flex-wrap items-center gap-3 mb-6">
-                            <Badge className="bg-[#1b294b] text-white hover:bg-[#1b294b]/90 dark:bg-[#1f2b46] rounded-none px-3 py-1 font-sans text-xs uppercase tracking-widest">
+                            <Badge className="bg-[#000000] text-white hover:bg-[#000000]/90 dark:bg-[#1f2b46] rounded-none px-3 py-1 font-sans text-xs uppercase tracking-widest">
                                 {award.year}
                             </Badge>
                             <Badge className="bg-transparent border border-black dark:border-white text-black dark:text-white rounded-none px-3 py-1 font-thai font-semibold text-xs tracking-wide">
@@ -157,7 +157,7 @@ export default function AwardDetailPage({ params }: { params: Promise<{ id: stri
 
                         {/* Nominees List */}
                         <div className="bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-zinc-800 shadow-sm">
-                            <div className="bg-[#1b294b] dark:bg-[#111827] text-white p-6 flex items-center justify-between">
+                            <div className="bg-[#000000] dark:bg-[#111827] text-white p-6 flex items-center justify-between">
                                 <h3 className="text-lg font-bold font-thai tracking-wide">รายชื่อผู้เข้าชิง (Nominees)</h3>
                                 <Trophy className="text-[#cfb659] h-5 w-5" />
                             </div>

@@ -20,7 +20,7 @@ export default function ContactPage() {
         <div className="flex flex-col min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
 
             {/* ===== HERO ===== */}
-            <section className="relative w-full py-24 md:py-32 bg-[#1b294b] text-white overflow-hidden">
+            <section className="relative w-full py-24 md:py-32 bg-[#000000] text-white overflow-hidden">
                 <div className="absolute inset-0 opacity-10">
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_25%,rgba(201,168,76,0.3)_0%,transparent_50%),radial-gradient(circle_at_75%_75%,rgba(201,168,76,0.2)_0%,transparent_50%)]"></div>
                 </div>

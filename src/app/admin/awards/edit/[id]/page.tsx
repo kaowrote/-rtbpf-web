@@ -291,7 +291,7 @@ export default function AdminAwardsEditPage({
                             Cancel
                         </Button>
                     </Link>
-                    <Button type="submit" disabled={isLoading || isFetchingData} className="bg-[#1b294b] text-white hover:bg-[#cfb659] rounded-none uppercase tracking-widest text-xs font-bold px-8 h-12 transition-colors disabled:opacity-50">
+                    <Button type="submit" disabled={isLoading || isFetchingData} className="bg-[#000000] text-white hover:bg-[#cfb659] rounded-none uppercase tracking-widest text-xs font-bold px-8 h-12 transition-colors disabled:opacity-50">
                         {isLoading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Saving...</> : "Update Nominee"}
                     </Button>
                 </div>

@@ -97,7 +97,7 @@ export default function AboutPage() {
             </section>
 
             {/* ===== VISION & MISSION ===== */}
-            <section className="w-full py-20 md:py-28 bg-[#1b294b] text-white">
+            <section className="w-full py-20 md:py-28 bg-[#000000] text-white">
                 <div className="container mx-auto px-6 max-w-5xl">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
                         <div className="flex flex-col">

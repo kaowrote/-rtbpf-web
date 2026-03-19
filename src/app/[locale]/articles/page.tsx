@@ -179,7 +179,7 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
                                         <p className="text-gray-600 dark:text-gray-400 font-thai text-base md:text-lg leading-relaxed line-clamp-2 md:line-clamp-3 mb-6">
                                             {article.excerpt}
                                         </p>
-                                        <div className="flex items-center text-sm font-bold uppercase tracking-widest text-[#1b294b] dark:text-white group-hover:text-[#cfb659] dark:group-hover:text-[#cfb659] transition-colors mt-auto">
+                                        <div className="flex items-center text-sm font-bold uppercase tracking-widest text-[#000000] dark:text-white group-hover:text-[#cfb659] dark:group-hover:text-[#cfb659] transition-colors mt-auto">
                                             Read Article <ArrowRight className="ml-2 w-4 h-4" />
                                         </div>
                                     </div>

@@ -301,7 +301,7 @@ export default function AdminUserDetailPage() {
                                 <Button 
                                     onClick={handleSave}
                                     disabled={isSaving}
-                                    className="bg-[#1b294b] text-white hover:bg-[#cfb659] rounded-none uppercase tracking-widest text-xs font-bold px-8 h-12 transition-colors"
+                                    className="bg-[#000000] text-white hover:bg-[#cfb659] rounded-none uppercase tracking-widest text-xs font-bold px-8 h-12 transition-colors"
                                 >
                                     {isSaving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
                                     Save Changes
@@ -359,7 +359,7 @@ export default function AdminUserDetailPage() {
                                 <Button 
                                     onClick={handleSave}
                                     disabled={isSaving}
-                                    className="bg-[#1b294b] text-white hover:bg-[#cfb659] rounded-none uppercase tracking-widest text-xs font-bold px-8 h-12 transition-colors"
+                                    className="bg-[#000000] text-white hover:bg-[#cfb659] rounded-none uppercase tracking-widest text-xs font-bold px-8 h-12 transition-colors"
                                 >
                                     <Save className="w-4 h-4 mr-2" /> Update Role
                                 </Button>

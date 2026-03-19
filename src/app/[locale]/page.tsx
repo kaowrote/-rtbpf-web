@@ -321,7 +321,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 
             {/* Card 3 */}
             <div className="bg-gray-50 dark:bg-zinc-900 p-10 border border-gray-100 dark:border-zinc-800 shadow-sm hover:shadow-xl transition-shadow duration-300 xl:rounded-2xl">
-              <div className="w-12 h-12 bg-[#1b294b] dark:bg-[#1f2b46] text-white flex items-center justify-center mb-8 rounded-full">
+              <div className="w-12 h-12 bg-[#000000] dark:bg-[#1f2b46] text-white flex items-center justify-center mb-8 rounded-full">
                 <span className="font-bold text-xl font-serif">E</span>
               </div>
               <h3 className="text-2xl font-bold uppercase tracking-wide text-black dark:text-white mb-4">{t("eventsTitle")}</h3>

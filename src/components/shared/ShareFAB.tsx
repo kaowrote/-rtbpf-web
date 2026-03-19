@@ -92,7 +92,7 @@ export function ShareFAB({ url, title, description = "" }: ShareFABProps) {
                     <Button
                         onClick={handleFABClick}
                         size="icon"
-                        className="w-14 h-14 rounded-full bg-[#1b294b] hover:bg-[#cfb659] text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                        className="w-14 h-14 rounded-full bg-[#000000] hover:bg-[#cfb659] text-white shadow-lg hover:shadow-xl transition-all duration-300"
                         aria-label="Share this article"
                     >
                         {isOpen ? (

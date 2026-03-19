@@ -29,7 +29,7 @@ export default function AdminSettingsPage() {
         twitterUrl: "",
         youtubeUrl: "",
         primaryAccentColor: "#cfb659",
-        primaryNavyColor: "#1b294b"
+        primaryNavyColor: "#000000"
     });
 
     useEffect(() => {
@@ -262,7 +262,7 @@ export default function AdminSettingsPage() {
                         <Button
                             onClick={handleSaveGeneral}
                             disabled={isSaving || isLoading}
-                            className="bg-[#1b294b] text-white hover:bg-[#cfb659] shadow-lg rounded-none uppercase tracking-widest text-xs font-bold px-12 h-14 transition-colors disabled:opacity-50"
+                            className="bg-[#000000] text-white hover:bg-[#cfb659] shadow-lg rounded-none uppercase tracking-widest text-xs font-bold px-12 h-14 transition-colors disabled:opacity-50"
                         >
                             {isSaving ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Updating...</> : <><Save className="w-4 h-4 mr-2" /> Save System Settings</>}
                         </Button>
@@ -310,7 +310,7 @@ export default function AdminSettingsPage() {
                                 <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3 block">Primary Navy Color</label>
                                 <div className="flex gap-3">
                                     {[
-                                        { bg: "bg-[#1b294b]", id: "#1b294b", name: "Navy (Default)" },
+                                        { bg: "bg-[#000000]", id: "#000000", name: "Navy (Default)" },
                                         { bg: "bg-[#111827]", id: "#111827", name: "Slate" },
                                         { bg: "bg-[#1E293B]", id: "#1E293B", name: "Dark Slate" },
                                         { bg: "bg-[#0F172A]", id: "#0F172A", name: "Deep Blue" },
@@ -327,7 +327,7 @@ export default function AdminSettingsPage() {
                                         value={settings.primaryNavyColor}
                                         onChange={(c) => setSettings({...settings, primaryNavyColor: c})}
                                         label="Primary Navy"
-                                        presets={["#1b294b", "#111827", "#1E293B", "#0F172A"]}
+                                        presets={["#000000", "#111827", "#1E293B", "#0F172A"]}
                                     />
                                 </div>
                                 <div className="mt-2 flex items-center gap-2">
@@ -348,7 +348,7 @@ export default function AdminSettingsPage() {
                     </div>
 
                     <div className="flex justify-end">
-                        <Button className="bg-[#1b294b] text-white hover:bg-[#cfb659] rounded-none uppercase tracking-widest text-xs font-bold px-10 h-12 transition-colors">
+                        <Button className="bg-[#000000] text-white hover:bg-[#cfb659] rounded-none uppercase tracking-widest text-xs font-bold px-10 h-12 transition-colors">
                             <Save className="w-4 h-4 mr-2" /> Save Changes
                         </Button>
                     </div>
@@ -383,7 +383,7 @@ export default function AdminSettingsPage() {
                     </div>
 
                     <div className="flex justify-end">
-                        <Button className="bg-[#1b294b] text-white hover:bg-[#cfb659] rounded-none uppercase tracking-widest text-xs font-bold px-10 h-12 transition-colors">
+                        <Button className="bg-[#000000] text-white hover:bg-[#cfb659] rounded-none uppercase tracking-widest text-xs font-bold px-10 h-12 transition-colors">
                             <Save className="w-4 h-4 mr-2" /> Save Changes
                         </Button>
                     </div>
@@ -454,7 +454,7 @@ export default function AdminSettingsPage() {
                     </div>
 
                     <div className="flex justify-end">
-                        <Button className="bg-[#1b294b] text-white hover:bg-[#cfb659] rounded-none uppercase tracking-widest text-xs font-bold px-10 h-12 transition-colors">
+                        <Button className="bg-[#000000] text-white hover:bg-[#cfb659] rounded-none uppercase tracking-widest text-xs font-bold px-10 h-12 transition-colors">
                             <Save className="w-4 h-4 mr-2" /> Save Changes
                         </Button>
                     </div>

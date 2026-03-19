@@ -104,7 +104,7 @@ export default async function AdminAwardsPage({ searchParams }: PageProps) {
                 {!isJury && (
                     <div className="flex gap-3">
                         <Link href="/admin/awards/create">
-                            <Button className="bg-[#1b294b] text-white hover:bg-[#cfb659] transition-colors rounded-none font-bold uppercase tracking-widest text-xs px-6">
+                            <Button className="bg-[#000000] text-white hover:bg-[#cfb659] transition-colors rounded-none font-bold uppercase tracking-widest text-xs px-6">
                                 <Plus className="w-4 h-4 mr-2" /> Add Nominee
                             </Button>
                         </Link>

@@ -113,7 +113,7 @@ export default function ProfilePage() {
                 {/* Left: Info Card */}
                 <div className="lg:col-span-1 space-y-6">
                     <div className="bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-zinc-800 rounded-2xl p-6 text-center shadow-sm">
-                        <div className="w-24 h-24 bg-gradient-to-br from-[#1b294b] to-[#0d1529] rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-[#cfb659]/20 text-4xl font-bold text-[#cfb659]">
+                        <div className="w-24 h-24 bg-gradient-to-br from-[#000000] to-[#0d1529] rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-[#cfb659]/20 text-4xl font-bold text-[#cfb659]">
                             {formData.name ? formData.name.charAt(0).toUpperCase() : formData.email.charAt(0).toUpperCase()}
                         </div>
                         <h2 className="text-xl font-bold text-black dark:text-white">{formData.name || "User"}</h2>
@@ -225,7 +225,7 @@ export default function ProfilePage() {
                             <Button
                                 type="submit"
                                 disabled={isPending}
-                                className="h-14 px-10 bg-[#1b294b] hover:bg-[#cfb659] text-white rounded-lg font-bold uppercase tracking-widest text-xs transition-all shadow-lg flex items-center gap-2"
+                                className="h-14 px-10 bg-[#000000] hover:bg-[#cfb659] text-white rounded-lg font-bold uppercase tracking-widest text-xs transition-all shadow-lg flex items-center gap-2"
                             >
                                 {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                                 {isPending ? "Saving..." : "Update Profile"}
