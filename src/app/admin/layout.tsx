@@ -1,5 +1,6 @@
 "use client";
 
+import "@/app/[locale]/globals.css";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -78,7 +79,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             .catch(() => {});
     }, [isLoginPage, isForgotPasswordPage, isResetPasswordPage]);
 
-    // Close mobile menu on route change
     useEffect(() => {
         setMobileMenuOpen(false);
     }, [pathname]);
@@ -102,12 +102,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     if (isLoginPage || isForgotPasswordPage || isResetPasswordPage) {
         return <>{children}</>;
     }
-
-    const initials = user?.name
-        ? user.name.charAt(0).toUpperCase()
-        : user?.email
-            ? user.email.charAt(0).toUpperCase()
-            : "A";
 
     const displayName = user?.name || user?.email?.split("@")[0] || "Admin User";
     const displayRole = user?.role ? (ROLE_LABELS[user.role] || user.role) : "Admin";
@@ -158,7 +152,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                                 sidebarCollapsed && "justify-center px-2",
                                                 active
                                                     ? "bg-[#cfb659] text-[#1b294b] shadow-lg shadow-[#cfb659]/20"
-                                                    : "text-white/60 hover:bg-white/8 hover:text-white"
+                                                    : "text-white/60 hover:bg-white/[0.08] hover:text-white"
                                             )}
                                         >
                                             <item.icon className={cn(
@@ -294,7 +288,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <div className="sticky top-0 z-30 bg-white/80 dark:bg-[#0d0d0d]/80 backdrop-blur-md border-b border-gray-100 dark:border-zinc-800 px-6 lg:px-8 py-3">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3 lg:gap-0">
-                            <div className="w-8 lg:hidden" /> {/* spacer for hamburger */}
+                            <div className="w-8 lg:hidden" />
                             <nav className="flex items-center text-sm text-gray-400">
                                 <Link href="/admin" className="hover:text-[#cfb659] transition-colors font-medium">
                                     CMS
