@@ -68,9 +68,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const isLoginPage = pathname === "/admin/login";
     const isForgotPasswordPage = pathname === "/admin/forgot-password";
     const isResetPasswordPage = pathname === "/admin/reset-password";
+    const isLogoutPage = pathname === "/admin/logout";
 
     useEffect(() => {
-        if (isLoginPage || isForgotPasswordPage || isResetPasswordPage) return;
+        if (isLoginPage || isForgotPasswordPage || isResetPasswordPage || isLogoutPage) return;
         fetch("/api/auth/session")
             .then((res) => res.json())
             .then((data) => {
@@ -99,7 +100,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         }
     };
 
-    if (isLoginPage || isForgotPasswordPage || isResetPasswordPage) {
+    if (isLoginPage || isForgotPasswordPage || isResetPasswordPage || isLogoutPage) {
         return <>{children}</>;
     }
 
