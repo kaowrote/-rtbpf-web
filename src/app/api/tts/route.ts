@@ -54,12 +54,12 @@ export async function POST(request: NextRequest) {
 
         // Get API key from system settings or env
         const apiKeySetting = await prisma.systemSetting.findUnique({
-            where: { key: "googleAiStudioKey" },
+            where: { key: "apiKeyGoogleAI" },
         });
         const apiKey = apiKeySetting?.value || process.env.GEMINI_API_KEY;
 
         if (!apiKey) {
-            return errorResponse("Google AI Studio API key not configured", 500);
+            return errorResponse("Google AI Studio API key ยังไม่ได้ตั้งค่า — ไปที่ Settings > API Keys", 500);
         }
 
         // Use Google Cloud TTS via REST API (or fallback to browser TTS)
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
         // In production, this would call Google Cloud TTS API
         
         const ttsApiKeySetting = await prisma.systemSetting.findUnique({
-            where: { key: "googleCloudTtsKey" },
+            where: { key: "apiKeyGoogleTTS" },
         });
         const ttsKey = ttsApiKeySetting?.value || apiKey;
 

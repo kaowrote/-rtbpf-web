@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import TipTapEditor from "@/components/admin/TipTapEditor";
 import ImageUpload from "@/components/admin/ImageUpload";
 import TranslationManager from "@/components/admin/TranslationManager";
+import AiImageGenerator from "@/components/admin/AiImageGenerator";
 
 export default function ArticleEditPage({
     params,
@@ -294,6 +295,12 @@ export default function ArticleEditPage({
                             />
                         </div>
                     </div>
+
+                    {/* AI Image Generator */}
+                    <AiImageGenerator
+                        articleTitle={title}
+                        onImageGenerated={(url) => setFeaturedImage(url)}
+                    />
 
                     <div className="bg-white dark:bg-[#0a0a0a] p-6 border border-gray-100 dark:border-zinc-800 shadow-sm rounded-xl">
                         <h3 className="font-bold uppercase tracking-widest border-b border-gray-100 dark:border-zinc-800 pb-4 text-black dark:text-white">Statistics</h3>

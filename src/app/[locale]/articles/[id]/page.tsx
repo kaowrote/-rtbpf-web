@@ -13,6 +13,7 @@ import { generateArticleSchema, generateBreadcrumbSchema } from "@/lib/structure
 
 import { Link } from "@/i18n/routing";
 import { getTranslations } from "next-intl/server";
+import ArticlePlayer from "@/components/shared/ArticlePlayer";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 60; // Revalidate cache every 60 seconds
@@ -204,7 +205,14 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                 </div>
             </section>
 
-            {/* 2. ARTICLE CONTENT */}
+            {/* 2. TTS LISTEN BUTTON */}
+            <section className="container mx-auto px-6 lg:px-8 pt-8">
+                <div className="max-w-5xl mx-auto flex justify-end">
+                    <ArticlePlayer articleId={article.id} articleTitle={displayTitle} languageCode={locale} />
+                </div>
+            </section>
+
+            {/* 3. ARTICLE CONTENT */}
             <section className="container mx-auto px-6 lg:px-8 py-16 md:py-24">
                 <div className="max-w-5xl mx-auto flex flex-col lg:flex-row gap-12 lg:gap-24">
 

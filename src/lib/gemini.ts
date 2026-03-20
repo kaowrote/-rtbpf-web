@@ -1,13 +1,25 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { prisma } from "@/lib/prisma";
 
-const apiKey = process.env.GEMINI_API_KEY!;
-const genAI = new GoogleGenerativeAI(apiKey);
+/** Get the Gemini API key — reads from DB first, then falls back to env var */
+export async function getGeminiApiKey(): Promise<string> {
+    // 1. Try DB setting (set via Settings > API Keys tab)
+    try {
+        const setting = await prisma.systemSetting.findUnique({
+            where: { key: "apiKeyGoogleAI" },
+        });
+        if (setting?.value) return setting.value;
+    } catch {
+        // DB not available, fall through
+    }
+    // 2. Fall back to env var
+    if (process.env.GEMINI_API_KEY) return process.env.GEMINI_API_KEY;
+    throw new Error("Gemini API Key ยังไม่ได้ตั้งค่า — ไปที่ Settings > API Keys เพื่อใส่ key");
+}
 
 export async function translateWithAI(sourceFields: { title: string; excerpt?: string; content: any }, targetLanguage: string) {
-    if (!apiKey) {
-        throw new Error("GEMINI_API_KEY is not set in environment variables.");
-    }
-
+    const apiKey = await getGeminiApiKey();
+    const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
     const prompt = `
