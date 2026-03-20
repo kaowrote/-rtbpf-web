@@ -38,6 +38,7 @@ export default function AdminSettingsPage() {
         apiKeyGoogleTTS: "",
         apiKeyGoogleTranslate: "",
         apiKeyOpenAI: "",
+        apiKeyKieAI: "",
     });
     const [showKeys, setShowKeys] = useState<Record<string, boolean>>({});
     const [savingApiKeys, setSavingApiKeys] = useState(false);
@@ -59,6 +60,7 @@ export default function AdminSettingsPage() {
                         ...(response.data.apiKeyGoogleTTS !== undefined && { apiKeyGoogleTTS: response.data.apiKeyGoogleTTS || "" }),
                         ...(response.data.apiKeyGoogleTranslate !== undefined && { apiKeyGoogleTranslate: response.data.apiKeyGoogleTranslate || "" }),
                         ...(response.data.apiKeyOpenAI !== undefined && { apiKeyOpenAI: response.data.apiKeyOpenAI || "" }),
+                        ...(response.data.apiKeyKieAI !== undefined && { apiKeyKieAI: response.data.apiKeyKieAI || "" }),
                     }));
                 }
             })
@@ -688,6 +690,51 @@ export default function AdminSettingsPage() {
                         </div>
                     </div>
 
+                    {/* Kie.ai API Key */}
+                    <div className="bg-white dark:bg-[#0a0a0a] p-8 border border-gray-100 dark:border-zinc-800 shadow-sm rounded-xl">
+                        <div className="flex items-center justify-between mb-6">
+                            <div>
+                                <h2 className="text-lg font-bold uppercase tracking-widest text-black dark:text-white flex items-center gap-2">
+                                    <span className="w-8 h-8 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-lg flex items-center justify-center text-base">🎨</span>
+                                    Kie.ai
+                                </h2>
+                                <p className="text-xs text-gray-500 font-thai mt-1">สำหรับ AI Image Generation (Nano Banana, Imagen4, Flux-2, GPT Image ฯลฯ)</p>
+                            </div>
+                            {apiKeys.apiKeyKieAI ? (
+                                <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 rounded-none text-[10px] uppercase tracking-widest font-bold gap-1">
+                                    <CheckCircle className="w-3 h-3" /> Configured
+                                </Badge>
+                            ) : (
+                                <Badge variant="outline" className="rounded-none text-[10px] uppercase tracking-widest font-bold border-amber-400 text-amber-500 dark:border-amber-600 gap-1">
+                                    <AlertCircle className="w-3 h-3" /> Required for AI Image
+                                </Badge>
+                            )}
+                        </div>
+                        <div>
+                            <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2 block">API Key</label>
+                            <div className="flex gap-2">
+                                <Input
+                                    type={showKeys.apiKeyKieAI ? "text" : "password"}
+                                    value={showKeys.apiKeyKieAI ? apiKeys.apiKeyKieAI : (apiKeys.apiKeyKieAI ? maskKey(apiKeys.apiKeyKieAI) : "")}
+                                    onChange={(e) => setApiKeys({...apiKeys, apiKeyKieAI: e.target.value})}
+                                    onFocus={() => setShowKeys(prev => ({...prev, apiKeyKieAI: true}))}
+                                    placeholder="kie_..."
+                                    className="h-12 bg-gray-50 dark:bg-black border-gray-200 dark:border-zinc-700 rounded-none font-mono text-sm focus-visible:ring-[#cfb659] flex-1"
+                                />
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => toggleShowKey("apiKeyKieAI")}
+                                    className="h-12 w-12 rounded-none border-gray-200 dark:border-zinc-700"
+                                    title={showKeys.apiKeyKieAI ? "Hide" : "Show"}
+                                >
+                                    {showKeys.apiKeyKieAI ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                </Button>
+                            </div>
+                            <p className="text-[10px] text-gray-400 mt-2 font-thai">ไปที่ <a href="https://kie.ai/api-key" target="_blank" rel="noopener noreferrer" className="text-violet-500 hover:underline">kie.ai/api-key</a> เพื่อรับ API Key</p>
+                        </div>
+                    </div>
+
                     {/* Info Card */}
                     <div className="bg-blue-50 dark:bg-blue-950/10 p-6 border border-blue-200 dark:border-blue-900/30 rounded-xl">
                         <div className="flex items-start gap-3">
@@ -695,8 +742,8 @@ export default function AdminSettingsPage() {
                             <div>
                                 <p className="text-sm font-bold text-blue-800 dark:text-blue-300 font-thai">หมายเหตุเรื่อง API Keys</p>
                                 <ul className="text-xs text-blue-600 dark:text-blue-400 font-thai mt-2 space-y-1 list-disc list-inside">
-                                    <li><strong>Google AI Studio</strong> — เป็น key หลัก ใช้ได้ทั้ง AI Generation, TTS, และ Translation</li>
-                                    <li>key อื่นๆ เป็น Optional ใส่เพิ่มเพื่อแยก quota หรือใช้ service เฉพาะ</li>
+                                    <li><strong>Kie.ai</strong> — ใช้สำหรับ AI Image Generation (สร้างภาพประกอบข่าว)</li>
+                                    <li><strong>Google AI Studio</strong> — ใช้สำหรับ TTS, Translation, และ AI เสริมอื่นๆ</li>
                                     <li>API Keys จะถูกเก็บเข้ารหัสในฐานข้อมูล ปลอดภัย</li>
                                 </ul>
                             </div>

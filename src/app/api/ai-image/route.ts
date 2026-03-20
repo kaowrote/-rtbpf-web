@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { GoogleGenAI } from "@google/genai";
 import { supabaseAdmin, STORAGE_BUCKET, getPublicUrl } from "@/lib/supabase";
 import { requireEditor } from "@/lib/auth-guard";
 import { prisma } from "@/lib/prisma";
-import { getGeminiApiKey } from "@/lib/gemini";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60; // Allow up to 60s for image generation
+
+const KIE_API_BASE = "https://api.kie.ai";
 
 // Style presets with optimized prompt prefixes
 const STYLE_PROMPTS: Record<string, string> = {
@@ -19,6 +19,47 @@ const STYLE_PROMPTS: Record<string, string> = {
     cinematic: "Cinematic movie scene, dramatic lighting, widescreen composition, film grain, depth of field, photorealistic.",
     minimal: "Minimalist flat design illustration, clean geometric shapes, limited color palette, modern graphic design, vector-like.",
 };
+
+// Helper: Get kie.ai API key from DB or env
+async function getKieApiKey(): Promise<string> {
+    try {
+        const setting = await prisma.systemSetting.findUnique({
+            where: { key: "apiKeyKieAI" },
+        });
+        if (setting?.value) return setting.value;
+    } catch { /* ignore */ }
+    
+    // Fallback to env
+    if (process.env.KIE_API_KEY) return process.env.KIE_API_KEY;
+    throw new Error("NO_KIE_API_KEY");
+}
+
+// Helper: Sleep utility
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+// Helper: Poll kie.ai task until success/failure
+async function pollTask(taskId: string, apiKey: string, maxAttempts = 30): Promise<any> {
+    for (let i = 0; i < maxAttempts; i++) {
+        const res = await fetch(`${KIE_API_BASE}/api/v1/jobs/recordInfo?taskId=${taskId}`, {
+            headers: { Authorization: `Bearer ${apiKey}` },
+        });
+        const json = await res.json();
+        
+        if (json.code !== 200) {
+            throw new Error(`Poll error: ${json.msg || "Unknown error"}`);
+        }
+        
+        const state = json.data?.state;
+        if (state === "success") return json.data;
+        if (state === "fail") {
+            throw new Error(json.data?.failMsg || "Image generation failed");
+        }
+        
+        // waiting / queuing / generating — wait and retry
+        await sleep(2000); // 2 second intervals
+    }
+    throw new Error("TIMEOUT");
+}
 
 export async function POST(request: NextRequest) {
     try {
@@ -34,9 +75,16 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Get API key from DB or env
-        const apiKey = await getGeminiApiKey();
-        const ai = new GoogleGenAI({ apiKey });
+        // Get kie.ai API key
+        let apiKey: string;
+        try {
+            apiKey = await getKieApiKey();
+        } catch {
+            return NextResponse.json(
+                { success: false, error: { message: "กรุณาใส่ Kie.ai API Key ที่ Settings > API Keys" } },
+                { status: 400 }
+            );
+        }
 
         // Build the prompt
         const stylePrefix = STYLE_PROMPTS[style] || STYLE_PROMPTS.news;
@@ -47,61 +95,111 @@ export async function POST(request: NextRequest) {
             "Important: Do NOT include any text, watermarks, or logos in the image. The image should be clean and ready for use as a news article cover.",
         ].filter(Boolean).join("\n");
 
-        // Generate image with Gemini — try models in order of preference
-        const IMAGE_MODELS = [
-            "gemini-2.5-flash-image",
-            "gemini-3.1-flash-image-preview",
-            "gemini-3-pro-image-preview",
-        ];
+        // Map aspect ratio — kie.ai supports these directly
+        const kieAspectRatio = aspectRatio || "16:9";
 
-        let response: any = null;
-        let lastError: any = null;
+        // Create task via kie.ai Market API (Nano Banana 2)
+        const createRes = await fetch(`${KIE_API_BASE}/api/v1/jobs/createTask`, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${apiKey}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                model: "nano-banana-2",
+                input: {
+                    prompt: fullPrompt,
+                    aspect_ratio: kieAspectRatio,
+                    resolution: "2K",
+                    output_format: "jpg",
+                },
+            }),
+        });
 
-        for (const model of IMAGE_MODELS) {
+        const createJson = await createRes.json();
+
+        if (createJson.code !== 200 || !createJson.data?.taskId) {
+            console.error("Kie.ai create task error:", createJson);
+            
+            // Handle specific error codes
+            if (createJson.code === 401) {
+                return NextResponse.json(
+                    { success: false, error: { message: "Kie.ai API Key ไม่ถูกต้อง — ตรวจสอบที่ Settings > API Keys" } },
+                    { status: 401 }
+                );
+            }
+            if (createJson.code === 402) {
+                return NextResponse.json(
+                    { success: false, error: { message: "Kie.ai เครดิตไม่เพียงพอ — เติมเครดิตที่ kie.ai" } },
+                    { status: 402 }
+                );
+            }
+            if (createJson.code === 429) {
+                return NextResponse.json(
+                    { success: false, error: { message: "เกินอัตราการใช้งาน — รอสักครู่แล้วลองใหม่" } },
+                    { status: 429 }
+                );
+            }
+            
+            return NextResponse.json(
+                { success: false, error: { message: `Kie.ai error: ${createJson.msg || "Unknown error"}` } },
+                { status: 500 }
+            );
+        }
+
+        const taskId = createJson.data.taskId;
+        console.log(`Kie.ai task created: ${taskId}, polling for result...`);
+
+        // Poll until task completes
+        let taskResult: any;
+        try {
+            taskResult = await pollTask(taskId, apiKey);
+        } catch (pollErr: any) {
+            if (pollErr.message === "TIMEOUT") {
+                return NextResponse.json(
+                    { success: false, error: { message: "สร้างภาพใช้เวลานาน — ลองอีกครั้ง" } },
+                    { status: 504 }
+                );
+            }
+            return NextResponse.json(
+                { success: false, error: { message: `เกิดข้อผิดพลาด: ${pollErr.message}` } },
+                { status: 500 }
+            );
+        }
+
+        // Extract result URLs from task result
+        let resultUrls: string[] = [];
+        if (taskResult.resultJson) {
             try {
-                response = await ai.models.generateContent({
-                    model,
-                    contents: fullPrompt,
-                    config: {
-                        responseModalities: ["Text", "Image"],
-                    },
-                });
-                break; // Success, exit loop
-            } catch (err: any) {
-                lastError = err;
-                console.warn(`Model ${model} failed, trying next...`, err.message);
-                continue;
+                const parsed = typeof taskResult.resultJson === "string" 
+                    ? JSON.parse(taskResult.resultJson) 
+                    : taskResult.resultJson;
+                resultUrls = parsed.resultUrls || parsed.result_urls || [];
+            } catch {
+                console.error("Failed to parse resultJson:", taskResult.resultJson);
             }
         }
 
-        if (!response) {
-            throw lastError || new Error("All image generation models failed");
-        }
-
-        // Extract image data from response
-        let imageData: string | null = null;
-        let mimeType = "image/png";
-
-        if (response.candidates && response.candidates[0]?.content?.parts) {
-            for (const part of response.candidates[0].content.parts) {
-                if (part.inlineData) {
-                    imageData = part.inlineData.data || null;
-                    mimeType = part.inlineData.mimeType || "image/png";
-                    break;
-                }
-            }
-        }
-
-        if (!imageData) {
+        if (!resultUrls.length) {
             return NextResponse.json(
                 { success: false, error: { message: "AI ไม่สามารถสร้างภาพได้ ลองเปลี่ยน prompt หรือ style แล้วลองใหม่" } },
                 { status: 422 }
             );
         }
 
-        // Convert base64 to buffer
-        const buffer = Buffer.from(imageData, "base64");
-        const ext = mimeType.includes("png") ? "png" : mimeType.includes("webp") ? "webp" : "jpg";
+        // Download the first result image
+        const imageUrl = resultUrls[0];
+        const imageRes = await fetch(imageUrl);
+        if (!imageRes.ok) {
+            return NextResponse.json(
+                { success: false, error: { message: "ดาวน์โหลดภาพจาก AI ไม่สำเร็จ" } },
+                { status: 500 }
+            );
+        }
+
+        const imageBuffer = Buffer.from(await imageRes.arrayBuffer());
+        const contentType = imageRes.headers.get("content-type") || "image/jpeg";
+        const ext = contentType.includes("png") ? "png" : contentType.includes("webp") ? "webp" : "jpg";
         const timestamp = Date.now();
         const random = Math.random().toString(36).substring(2, 8);
         const fileName = `ai-${style}-${timestamp}-${random}.${ext}`;
@@ -110,8 +208,8 @@ export async function POST(request: NextRequest) {
         // Upload to Supabase Storage
         const { data, error } = await supabaseAdmin.storage
             .from(STORAGE_BUCKET)
-            .upload(filePath, buffer, {
-                contentType: mimeType,
+            .upload(filePath, imageBuffer, {
+                contentType,
                 cacheControl: "3600",
                 upsert: false,
             });
@@ -135,8 +233,8 @@ export async function POST(request: NextRequest) {
                     path: data.path,
                     name: fileName,
                     originalName: `AI Generated (${style}) - ${title.substring(0, 50)}`,
-                    type: mimeType,
-                    size: buffer.length,
+                    type: contentType,
+                    size: imageBuffer.length,
                     folder: "ai-generated",
                     userId,
                 },
@@ -149,34 +247,30 @@ export async function POST(request: NextRequest) {
                 url: publicUrl,
                 path: data.path,
                 fileName,
-                size: buffer.length,
+                size: imageBuffer.length,
                 style,
                 aspectRatio,
+                model: "nano-banana-2",
+                taskId,
             },
         });
     } catch (error: any) {
         console.error("AI Image Generation error:", error);
         
-        // Parse specific error types for better UX messages
         const errMsg = error.message || "";
-        const errStatus = error.status || 0;
-        
         let userMessage: string;
-        if (errStatus === 429 || errMsg.includes("quota") || errMsg.includes("RESOURCE_EXHAUSTED")) {
-            userMessage = "เกินโควต้าการใช้งาน AI Image — รอสักครู่แล้วลองใหม่ หรืออัปเกรดแผน Google AI Studio";
-        } else if (errStatus === 403 || errMsg.includes("PERMISSION_DENIED")) {
-            userMessage = "API Key ไม่มีสิทธิ์ใช้ Image Generation — ตรวจสอบ API Key Restrictions ที่ Google AI Studio";
-        } else if (errStatus === 404 || errMsg.includes("NOT_FOUND")) {
-            userMessage = "โมเดลสร้างภาพไม่พร้อมใช้งาน — ลองอีกครั้งในภายหลัง";
-        } else if (errMsg.includes("API_KEY") || errMsg.includes("invalid")) {
-            userMessage = "API Key ไม่ถูกต้องหรือหมดอายุ — ตรวจสอบที่ Settings > API Keys";
+        
+        if (errMsg.includes("NO_KIE_API_KEY")) {
+            userMessage = "กรุณาใส่ Kie.ai API Key ที่ Settings > API Keys";
+        } else if (errMsg.includes("quota") || errMsg.includes("RESOURCE_EXHAUSTED")) {
+            userMessage = "เกินโควต้า — รอสักครู่แล้วลองใหม่";
         } else {
             userMessage = `เกิดข้อผิดพลาดในการสร้างภาพ: ${errMsg.substring(0, 100)}`;
         }
 
         return NextResponse.json(
             { success: false, error: { message: userMessage } },
-            { status: errStatus === 429 ? 429 : 500 }
+            { status: 500 }
         );
     }
 }
