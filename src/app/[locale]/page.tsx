@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { prisma } from "@/lib/prisma";
 
 import { getTranslations } from "next-intl/server";
+import AiImageBadge from "@/components/shared/AiImageBadge";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 60; // Cache 60 seconds
@@ -92,6 +93,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             className="object-cover opacity-60"
             priority
           />
+          <AiImageBadge imageUrl={featuredArticle?.featuredImage} className="bottom-4 left-4" />
           {/* Gradient for text readability */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-black/40 to-transparent"></div>
         </div>
@@ -143,6 +145,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
                     />
+                    <AiImageBadge imageUrl={sideArticles[0].featuredImage} />
                   </div>
                   <p className="text-accent font-bold uppercase tracking-widest text-xs mb-2">
                     {sideArticles[0].category?.translations[0]?.name || sideArticles[0].category?.name || t("news")}
@@ -170,6 +173,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
                         />
+                        <AiImageBadge imageUrl={article.featuredImage} />
                       </div>
                     )}
                     <p className="text-accent font-bold uppercase tracking-widest text-[10px] mb-1">

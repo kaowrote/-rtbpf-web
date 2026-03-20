@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>RTBPF V2.0 — Project Summary</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;600;700&family=Inter:wght@300;400;600;700&display=swap');
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: 'IBM Plex Sans Thai', 'Inter', sans-serif;
+    background: #fff;
+    color: #1a1a2e;
+    font-size: 11px;
+    line-height: 1.6;
+    padding: 30px 40px;
+  }
+
+  @media print {
+    body { padding: 10px 20px; font-size: 10px; }
+    .page-break { page-break-before: always; }
+    h2 { page-break-after: avoid; }
+    table { page-break-inside: avoid; }
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #1B2A4A 0%, #0f1d36 100%);
+    color: white;
+    padding: 30px 40px;
+    margin: -30px -40px 30px;
+    border-bottom: 4px solid #C9A84C;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #C9A84C;
+    margin-bottom: 4px;
+  }
+  .header .subtitle {
+    font-size: 13px;
+    color: rgba(255,255,255,0.8);
+  }
+  .header .date {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 8px;
+  }
+
+  /* Section titles */
+  h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1B2A4A;
+    border-bottom: 2px solid #C9A84C;
+    padding-bottom: 6px;
+    margin: 24px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h2 .num {
+    background: #1B2A4A;
+    color: #C9A84C;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+  h3 {
+    font-size: 12px;
+    font-weight: 700;
+    color: #1B2A4A;
+    margin: 14px 0 6px;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0 16px;
+    font-size: 10.5px;
+  }
+  th {
+    background: #1B2A4A;
+    color: white;
+    padding: 6px 10px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 10px;
+  }
+  td {
+    padding: 5px 10px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  tr:nth-child(even) td {
+    background: #f8f9fa;
+  }
+  tr:hover td {
+    background: #FFF8E1;
+  }
+
+  /* Status badges */
+  .done { color: #16a34a; font-weight: 700; }
+  .skip { color: #dc2626; font-weight: 700; }
+
+  /* Highlight box */
+  .highlight {
+    background: linear-gradient(135deg, #FFF8E1, #FFFDE7);
+    border-left: 4px solid #C9A84C;
+    padding: 12px 16px;
+    margin: 12px 0;
+    border-radius: 0 8px 8px 0;
+    font-weight: 600;
+  }
+
+  /* Stats grid */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 12px 0;
+  }
+  .stat-card {
+    background: #f0f4ff;
+    border: 1px solid #c7d2fe;
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+  }
+  .stat-card .number {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1B2A4A;
+  }
+  .stat-card .label {
+    font-size: 9px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .footer {
+    margin-top: 30px;
+    padding-top: 12px;
+    border-top: 2px solid #e5e7eb;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 9px;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>📊 RTBPF V2.0 — Project Summary</h1>
+  <div class="subtitle">สมาพันธ์สมาคมวิชาชีพวิทยุกระจายเสียงและวิทยุโทรทัศน์</div>
+  <div class="date">อัปเดต: 20 มีนาคม 2569 | Confidential Document</div>
+</div>
+
+<!-- QUICK STATS -->
+<div class="stats-grid">
+  <div class="stat-card"><div class="number">22/23</div><div class="label">Modules เสร็จ</div></div>
+  <div class="stat-card"><div class="number">151</div><div class="label">Source Files</div></div>
+  <div class="stat-card"><div class="number">20,380</div><div class="label">Lines of Code</div></div>
+  <div class="stat-card"><div class="number">0.18฿</div><div class="label">ค่าใช้จ่าย/ข่าว</div></div>
+</div>
+
+<!-- 1. MODULE MAP -->
+<h2><span class="num">1</span> แผนทั้งหมด (Module Map)</h2>
+<table>
+  <tr><th>Module</th><th>ชื่อ</th><th>สถานะ</th><th>รายละเอียด</th></tr>
+  <tr><td>M01</td><td>Project Setup</td><td class="done">✅</td><td>Next.js 15, Prisma, Supabase, TailwindCSS</td></tr>
+  <tr><td>M02</td><td>Design System</td><td class="done">✅</td><td>Theme Navy (#1B2A4A) + Gold (#C9A84C)</td></tr>
+  <tr><td>M03</td><td>Authentication</td><td class="done">✅</td><td>Login, Register, Forgot/Reset Password, Email Verify</td></tr>
+  <tr><td>M04</td><td>Roles & Permissions</td><td class="done">✅</td><td>Super Admin, Admin, Editor, User + RBAC</td></tr>
+  <tr><td>M05</td><td>Articles & Content</td><td class="done">✅</td><td>CRUD บทความ, Slug, Categories, Tags</td></tr>
+  <tr><td>M06</td><td>TTS (ฟังข่าว)</td><td class="done">✅</td><td>Google Cloud TTS + Browser fallback</td></tr>
+  <tr><td>M07</td><td>Social Media Embeds</td><td class="done">✅</td><td>Facebook, Twitter/X, Instagram, TikTok</td></tr>
+  <tr><td>M08</td><td>Awards System</td><td class="done">✅</td><td>AwardYear → Categories → Nominees + Voting</td></tr>
+  <tr><td>M09</td><td>Events System</td><td class="done">✅</td><td>CRUD Events, Gallery, Date/Location</td></tr>
+  <tr><td>M10</td><td>CMS Dashboard</td><td class="done">✅</td><td>Stats, Activity, Personal Stats Card</td></tr>
+  <tr><td>M11</td><td>Rich Text Editor</td><td class="done">✅</td><td>TipTap — formatting, embeds, media, fullscreen</td></tr>
+  <tr><td>M12</td><td>Media Library</td><td class="done">✅</td><td>Upload, Gallery, Supabase Storage</td></tr>
+  <tr><td>M13</td><td>CMS Embed Manager</td><td class="done">✅</td><td>Facebook, Twitter embed in editor</td></tr>
+  <tr><td>M14</td><td>i18n</td><td class="done">✅</td><td>8 ภาษา: TH, EN, KO, JA, ZH, FR, DE, ES</td></tr>
+  <tr><td>M15</td><td>AI Translation Pipeline</td><td class="done">✅</td><td>Gemini 2.0 Flash — auto translate</td></tr>
+  <tr><td>M16</td><td>Translation CMS</td><td class="done">✅</td><td>Dashboard, batch translate, per-article</td></tr>
+  <tr><td>M17</td><td>Voting System</td><td class="done">✅</td><td>Award voting, ballot, results</td></tr>
+  <tr><td>M18</td><td>Notifications</td><td class="done">✅</td><td>Bell icon, real-time alerts</td></tr>
+  <tr><td>M19</td><td>Comments</td><td class="done">✅</td><td>Article comments, likes, moderation</td></tr>
+  <tr><td>M20</td><td>Membership</td><td class="done">✅</td><td>User profile, activity center</td></tr>
+  <tr><td>M21</td><td>AI Recommendation</td><td class="skip">❌ ข้าม</td><td>ข้ามไว้ — ไม่จำเป็นในเฟสนี้</td></tr>
+  <tr><td>M22</td><td>PWA</td><td class="done">✅</td><td>Progressive Web App, manifest, icons</td></tr>
+  <tr><td>M23</td><td>SEO</td><td class="done">✅</td><td>Sitemap, robots.txt, structured data</td></tr>
+  <tr><td>M24</td><td>AI Image Generation</td><td class="done">✅</td><td>Kie.ai (Nano Banana 2) — 8 สไตล์</td></tr>
+  <tr><td>M25</td><td>AI Watermark</td><td class="done">✅</td><td>"Gen From AI" badge มุมล่างซ้าย</td></tr>
+</table>
+
+<!-- 2. ALL FEATURES -->
+<h2><span class="num">2</span> Feature ทั้งหมด</h2>
+
+<div class="two-col">
+<div>
+<h3>🔵 Public Website (หน้าบ้าน)</h3>
+<table>
+  <tr><th>Feature</th><th>รายละเอียด</th></tr>
+  <tr><td>Homepage</td><td>Hero, Latest news, Events, Awards</td></tr>
+  <tr><td>Article Detail</td><td>Full article, TTS, share, comments</td></tr>
+  <tr><td>Articles Listing</td><td>Category filter, pagination, tag search</td></tr>
+  <tr><td>Events</td><td>Listing + detail, gallery, location</td></tr>
+  <tr><td>Awards</td><td>Years, categories, nominees, voting</td></tr>
+  <tr><td>Membership</td><td>Profile, activity, credit ledger</td></tr>
+  <tr><td>Language Switcher</td><td>8 ภาษา สลับได้ทันที</td></tr>
+  <tr><td>Dark Mode</td><td>Light/Dark toggle</td></tr>
+  <tr><td>PWA</td><td>ติดตั้งเป็น app ได้</td></tr>
+  <tr><td>SEO</td><td>Sitemap, structured data, meta</td></tr>
+</table>
+</div>
+<div>
+<h3>🟢 Admin CMS (หลังบ้าน)</h3>
+<table>
+  <tr><th>Feature</th><th>รายละเอียด</th></tr>
+  <tr><td>Dashboard</td><td>Stats, กราฟ, Personal stats</td></tr>
+  <tr><td>Article CRUD</td><td>สร้าง/แก้/ลบ/เผยแพร่</td></tr>
+  <tr><td>Event CRUD</td><td>สร้าง/แก้/ลบ/เผยแพร่</td></tr>
+  <tr><td>Awards Mgmt</td><td>ปี, สาขา, ผู้เข้าชิง</td></tr>
+  <tr><td>TipTap Editor</td><td>Rich text + embeds</td></tr>
+  <tr><td>Media Library</td><td>Upload, gallery</td></tr>
+  <tr><td>Translation</td><td>Batch translate 8 ภาษา</td></tr>
+  <tr><td>User Mgmt</td><td>Approve, suspend, roles</td></tr>
+  <tr><td>Settings</td><td>General, API Keys, Branding</td></tr>
+  <tr><td>Notifications</td><td>ระบบแจ้งเตือน</td></tr>
+</table>
+</div>
+</div>
+
+<h3>🤖 AI Features</h3>
+<table>
+  <tr><th>Feature</th><th>Provider</th><th>รายละเอียด</th></tr>
+  <tr><td>🌐 AI Translation</td><td>Gemini 2.0 Flash</td><td>แปลอัตโนมัติ 8 ภาษา (title + excerpt + content)</td></tr>
+  <tr><td>🎨 AI Image Generation</td><td>Kie.ai (Nano Banana 2)</td><td>8 สไตล์ (News, Infographic, Illustration, Anime, Digital Art, Sketch, Cinematic, Minimal) × 3 aspect ratios</td></tr>
+  <tr><td>🔊 TTS Audio</td><td>Google Cloud TTS</td><td>ฟังบทความที่เผยแพร่แล้ว + Audio Player</td></tr>
+  <tr><td>★ AI Watermark</td><td>Custom Component</td><td>"Gen From AI" badge อัตโนมัติมุมล่างซ้าย 100%</td></tr>
+</table>
+
+<!-- 3. TECH STACK -->
+<div class="page-break"></div>
+<h2><span class="num">3</span> Tech Stack & Code Stats</h2>
+
+<div class="two-col">
+<div>
+<h3>Technology Stack</h3>
+<table>
+  <tr><th>Layer</th><th>Technology</th></tr>
+  <tr><td>Framework</td><td>Next.js 15 (App Router)</td></tr>
+  <tr><td>Language</td><td>TypeScript 5.x</td></tr>
+  <tr><td>Styling</td><td>TailwindCSS 4 + shadcn/ui</td></tr>
+  <tr><td>Database</td><td>PostgreSQL (Supabase)</td></tr>
+  <tr><td>ORM</td><td>Prisma</td></tr>
+  <tr><td>Auth</td><td>NextAuth.js v5</td></tr>
+  <tr><td>Rich Text</td><td>TipTap</td></tr>
+  <tr><td>AI Translation</td><td>Google Gemini 2.0 Flash</td></tr>
+  <tr><td>AI Image</td><td>Kie.ai (Nano Banana 2)</td></tr>
+  <tr><td>TTS</td><td>Google Cloud TTS</td></tr>
+  <tr><td>Storage</td><td>Supabase Storage</td></tr>
+  <tr><td>i18n</td><td>next-intl (8 locales)</td></tr>
+  <tr><td>Hosting</td><td>Vercel</td></tr>
+</table>
+</div>
+<div>
+<h3>Code Statistics</h3>
+<table>
+  <tr><th>Metric</th><th>จำนวน</th></tr>
+  <tr><td><strong>Total Source Files</strong></td><td><strong>151 ไฟล์</strong></td></tr>
+  <tr><td><strong>Total Lines of Code</strong></td><td><strong>20,380 บรรทัด</strong></td></tr>
+  <tr><td>TSX (React Components)</td><td>90 ไฟล์</td></tr>
+  <tr><td>TS (Backend/Logic)</td><td>60 ไฟล์</td></tr>
+  <tr><td>Components</td><td>54 components</td></tr>
+  <tr><td>Admin Pages</td><td>22 pages</td></tr>
+  <tr><td>Public Pages</td><td>14 pages</td></tr>
+  <tr><td>API Routes</td><td>40 endpoints</td></tr>
+  <tr><td>i18n Files</td><td>8 files (8 ภาษา)</td></tr>
+  <tr><td>DB Models</td><td>20 tables</td></tr>
+  <tr><td>Schema Lines</td><td>424 บรรทัด</td></tr>
+</table>
+</div>
+</div>
+
+<h3>Database Tables (20 Tables)</h3>
+<table>
+  <tr><th>Table</th><th>ใช้ทำอะไร</th><th>Table</th><th>ใช้ทำอะไร</th></tr>
+  <tr><td>User</td><td>ข้อมูลผู้ใช้, role, credits</td><td>Comment</td><td>ความคิดเห็น</td></tr>
+  <tr><td>Account</td><td>OAuth accounts</td><td>CommentLike</td><td>Like ความคิดเห็น</td></tr>
+  <tr><td>Session</td><td>User sessions</td><td>AwardVote</td><td>โหวตรางวัล</td></tr>
+  <tr><td>VerificationToken</td><td>Email verification</td><td>AudioArticle</td><td>เสียง TTS cache</td></tr>
+  <tr><td>ActivityLog</td><td>บันทึกกิจกรรม</td><td>Notification</td><td>แจ้งเตือน</td></tr>
+  <tr><td>Category</td><td>หมวดหมู่ข่าว</td><td>Language</td><td>ภาษาที่รองรับ</td></tr>
+  <tr><td>Article</td><td>บทความ/ข่าว</td><td>Translation</td><td>ข้อมูลแปลภาษา</td></tr>
+  <tr><td>AwardYear</td><td>ปีรางวัล</td><td>Media</td><td>ไฟล์สื่อ</td></tr>
+  <tr><td>AwardCategory</td><td>สาขารางวัล</td><td>SystemSetting</td><td>ตั้งค่าระบบ, API keys</td></tr>
+  <tr><td>AwardNominee</td><td>ผู้เข้าชิงรางวัล</td><td>Event</td><td>อีเวนต์/กิจกรรม</td></tr>
+</table>
+
+<!-- 4. CMS -->
+<h2><span class="num">4</span> ระบบ CMS รองรับ</h2>
+
+<table>
+  <tr><th>ประเภท</th><th>CRUD</th><th>แปล 8 ภาษา</th><th>AI Image</th><th>TTS</th><th>Social Share</th></tr>
+  <tr><td>บทความ/ข่าว</td><td class="done">✅</td><td class="done">✅</td><td class="done">✅</td><td class="done">✅</td><td class="done">✅</td></tr>
+  <tr><td>อีเวนต์</td><td class="done">✅</td><td class="done">✅</td><td>—</td><td>—</td><td class="done">✅</td></tr>
+  <tr><td>รางวัล</td><td class="done">✅</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+</table>
+
+<div class="two-col" style="margin-top:12px">
+<div>
+<h3>Rich Text Editor</h3>
+<table>
+  <tr><th>ความสามารถ</th><th>✅</th></tr>
+  <tr><td>Bold, Italic, Strikethrough, Underline</td><td>✅</td></tr>
+  <tr><td>Headings (H1, H2, H3)</td><td>✅</td></tr>
+  <tr><td>Lists (Ordered, Unordered)</td><td>✅</td></tr>
+  <tr><td>Alignment (4 แบบ)</td><td>✅</td></tr>
+  <tr><td>Links, Images, Blockquote</td><td>✅</td></tr>
+  <tr><td>Fullscreen Mode</td><td>✅</td></tr>
+  <tr><td>Social Embeds (FB, X, IG, TikTok, YT)</td><td>✅</td></tr>
+</table>
+</div>
+<div>
+<h3>User Roles (RBAC)</h3>
+<table>
+  <tr><th>Role</th><th>สิทธิ์</th></tr>
+  <tr><td>Super Admin</td><td>ทุกอย่าง + users + settings</td></tr>
+  <tr><td>Admin</td><td>Content + users ในองค์กร</td></tr>
+  <tr><td>Editor</td><td>สร้าง/แก้ content</td></tr>
+  <tr><td>User</td><td>อ่าน, comment, vote</td></tr>
+</table>
+</div>
+</div>
+
+<!-- 5. COSTS -->
+<h2><span class="num">5</span> ค่าใช้จ่าย AI Features</h2>
+
+<h3>ราคาต่อ 1 ข่าว (ครบทุกฟีเจอร์)</h3>
+<table>
+  <tr><th>รายการ</th><th>Service</th><th>ราคา/หน่วย</th><th>USD</th><th>THB</th></tr>
+  <tr><td>🎨 ภาพ AI (1 ภาพ)</td><td>Kie.ai Nano Banana 2</td><td>~$0.003/ภาพ</td><td>$0.003</td><td>~0.10 ฿</td></tr>
+  <tr><td>🌐 แปลภาษา (7 ภาษา)</td><td>Gemini 2.0 Flash</td><td>$0.10/1M tokens</td><td>$0.0001</td><td>~0.01 ฿</td></tr>
+  <tr><td>🔊 เสียง TTS (1 บทความ)</td><td>Google Cloud TTS</td><td>$4/1M chars</td><td>$0.002</td><td>~0.07 ฿</td></tr>
+  <tr style="background:#FFF8E1;font-weight:700"><td>รวมทั้งหมด</td><td></td><td></td><td>~$0.005</td><td>~0.18 ฿</td></tr>
+</table>
+
+<h3>ประมาณการรายเดือน</h3>
+<table>
+  <tr><th>จำนวนข่าว/เดือน</th><th>ภาพ AI</th><th>แปลภาษา</th><th>TTS</th><th style="background:#C9A84C;color:#fff">รวม (THB)</th></tr>
+  <tr><td>10 ข่าว</td><td>1 ฿</td><td>0.10 ฿</td><td>0.70 ฿</td><td><strong>~2 ฿</strong></td></tr>
+  <tr><td>50 ข่าว</td><td>5 ฿</td><td>0.50 ฿</td><td>3.50 ฿</td><td><strong>~9 ฿</strong></td></tr>
+  <tr><td>100 ข่าว</td><td>10 ฿</td><td>1 ฿</td><td>7 ฿</td><td><strong>~18 ฿</strong></td></tr>
+  <tr><td>500 ข่าว</td><td>50 ฿</td><td>5 ฿</td><td>35 ฿</td><td><strong>~90 ฿</strong></td></tr>
+  <tr><td>1,000 ข่าว</td><td>100 ฿</td><td>10 ฿</td><td>70 ฿</td><td><strong>~180 ฿</strong></td></tr>
+</table>
+
+<div class="highlight">💡 สรุป: ผลิตข่าว 100 ข่าว/เดือน ครบภาพ AI + แปล 8 ภาษา + เสียง TTS → ไม่ถึง 20 บาท!</div>
+
+<!-- 6. SKILLS -->
+<div class="page-break"></div>
+<h2><span class="num">6</span> Skills ในระบบ (15 Skills)</h2>
+
+<div class="two-col">
+<div>
+<h3>Core Skills (11 ชุด)</h3>
+<table>
+  <tr><th>Skill</th><th>คำอธิบาย</th></tr>
+  <tr><td>project-setup</td><td>ตั้งค่าโปรเจ็กต์</td></tr>
+  <tr><td>database-schema</td><td>โครงสร้าง DB, Prisma</td></tr>
+  <tr><td>authentication</td><td>Auth — login, register, roles</td></tr>
+  <tr><td>admin-layout</td><td>Admin panel layout, sidebar</td></tr>
+  <tr><td>cms-management</td><td>Article/Event CRUD workflow</td></tr>
+  <tr><td>ai-translation</td><td>AI translation (Gemini)</td></tr>
+  <tr><td>internationalization</td><td>i18n, next-intl, 8 locales</td></tr>
+  <tr><td>comment-system</td><td>Comments, likes</td></tr>
+  <tr><td>social-share</td><td>Share buttons, OG tags</td></tr>
+  <tr><td>theme-colors</td><td>Navy + Gold, dark mode</td></tr>
+  <tr><td>deployment</td><td>Build, deploy to Vercel</td></tr>
+</table>
+</div>
+<div>
+<h3>Process Skills (4 ชุด)</h3>
+<table>
+  <tr><th>Skill</th><th>คำอธิบาย</th></tr>
+  <tr><td>pre-project-planning</td><td>วางแผนก่อนโค้ด, Implementation Plan</td></tr>
+  <tr><td>testing-verification</td><td>Browser testing, checklists, screenshots</td></tr>
+  <tr><td>checkpoint-workflow</td><td>Task tracking, mode switching</td></tr>
+  <tr><td>project-documentation</td><td>Reference Docs, API Docs, Guides</td></tr>
+</table>
+
+<h3 style="margin-top:20px">Skills Flow</h3>
+<div style="background:#f0f4ff;border:1px solid #c7d2fe;border-radius:8px;padding:12px;font-size:10px;line-height:1.8">
+  <strong>1. pre-project-planning</strong><br>
+  → Research → Implementation Plan → Approval<br><br>
+  <strong>2. checkpoint-workflow</strong><br>
+  → PLANNING → EXECUTION → VERIFICATION<br><br>
+  <strong>3. testing-verification</strong><br>
+  → Browser Tests → Checklists → Screenshots<br><br>
+  <strong>4. project-documentation</strong><br>
+  → Reference Docs → API Docs → User Guides
+</div>
+</div>
+</div>
+
+<!-- 7. RECOMMENDATIONS -->
+<h2><span class="num">7</span> แนะนำเพิ่มเติม</h2>
+
+<table>
+  <tr><th>ลำดับ</th><th>ระดับ</th><th>รายการ</th><th>เหตุผล</th></tr>
+  <tr><td>1</td><td style="color:#dc2626;font-weight:700">🔴 สำคัญ</td><td>Analytics Dashboard</td><td>Google Analytics / Plausible เพื่อดู traffic จริง</td></tr>
+  <tr><td>2</td><td style="color:#dc2626;font-weight:700">🔴 สำคัญ</td><td>Image Optimization</td><td>Next.js Image + CDN สำหรับ production</td></tr>
+  <tr><td>3</td><td style="color:#dc2626;font-weight:700">🔴 สำคัญ</td><td>Backup Strategy</td><td>Automated DB backup ผ่าน Supabase</td></tr>
+  <tr><td>4</td><td style="color:#eab308;font-weight:700">🟡 เฟสถัดไป</td><td>AI Content Generation</td><td>AI เขียนข่าวจาก RSS / Google Trends</td></tr>
+  <tr><td>5</td><td style="color:#eab308;font-weight:700">🟡 เฟสถัดไป</td><td>Email Newsletter</td><td>ส่งข่าวอัตโนมัติให้สมาชิก</td></tr>
+  <tr><td>6</td><td style="color:#eab308;font-weight:700">🟡 เฟสถัดไป</td><td>Social Auto-Post</td><td>โพสต์ข่าวอัตโนมัติไป FB/X</td></tr>
+  <tr><td>7</td><td style="color:#eab308;font-weight:700">🟡 เฟสถัดไป</td><td>TTS Multi-Language</td><td>สร้างเสียง TTS ทุกภาษา</td></tr>
+  <tr><td>8</td><td style="color:#eab308;font-weight:700">🟡 เฟสถัดไป</td><td>Image Gallery</td><td>หลายภาพต่อบทความ (carousel)</td></tr>
+  <tr><td>9</td><td style="color:#16a34a;font-weight:700">🟢 Nice-to-Have</td><td>Live Preview</td><td>Preview ก่อน publish</td></tr>
+  <tr><td>10</td><td style="color:#16a34a;font-weight:700">🟢 Nice-to-Have</td><td>Scheduled Publishing</td><td>ตั้งเวลาเผยแพร่ (ต้องเพิ่ม cron)</td></tr>
+  <tr><td>11</td><td style="color:#16a34a;font-weight:700">🟢 Nice-to-Have</td><td>Content Versioning</td><td>เก็บ revision history</td></tr>
+  <tr><td>12</td><td style="color:#16a34a;font-weight:700">🟢 Nice-to-Have</td><td>AI Recommendation</td><td>แนะนำข่าวที่เกี่ยวข้องด้วย AI</td></tr>
+  <tr><td>13</td><td style="color:#16a34a;font-weight:700">🟢 Nice-to-Have</td><td>Multi-tenant</td><td>รองรับหลายองค์กร</td></tr>
+</table>
+
+<!-- FOOTER -->
+<div class="footer">
+  RTBPF V2.0 Project Summary — Confidential — Generated 20 March 2569
+</div>
+
+</body>
+</html>

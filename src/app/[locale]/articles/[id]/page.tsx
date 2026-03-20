@@ -14,6 +14,7 @@ import { generateArticleSchema, generateBreadcrumbSchema } from "@/lib/structure
 import { Link } from "@/i18n/routing";
 import { getTranslations } from "next-intl/server";
 import ArticlePlayer from "@/components/shared/ArticlePlayer";
+import AiImageBadge from "@/components/shared/AiImageBadge";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 60; // Revalidate cache every 60 seconds
@@ -172,6 +173,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                     className="object-cover"
                     priority
                 />
+                <AiImageBadge imageUrl={article.featuredImage} className="bottom-4 left-4" />
                 <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-tr from-black/90 via-black/40 to-transparent"></div>
 
                 {/* Title Overlay */}
@@ -306,12 +308,15 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
                                     <Link key={related.id} href={`/articles/${related.slug}`} className="group flex flex-col md:flex-row gap-6 items-center bg-white dark:bg-[#0a0a0a] border border-gray-100 dark:border-zinc-800 shadow-sm hover:shadow-lg transition-all pr-6 rounded-sm overflow-hidden">
                                         <div className="relative w-full md:w-5/12 aspect-[4/3] bg-gray-100 dark:bg-zinc-900 shrink-0">
                                             {related.featuredImage ? (
-                                                <Image
-                                                    src={related.featuredImage}
-                                                    alt={related.title}
-                                                    fill
-                                                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                                                />
+                                                <>
+                                                    <Image
+                                                        src={related.featuredImage}
+                                                        alt={related.title}
+                                                        fill
+                                                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                                                    />
+                                                    <AiImageBadge imageUrl={related.featuredImage} />
+                                                </>
                                             ) : (
                                                 <div className="w-full h-full bg-gray-800" />
                                             )}

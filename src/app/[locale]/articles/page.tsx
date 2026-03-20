@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
 import type { Metadata } from "next";
+import AiImageBadge from "@/components/shared/AiImageBadge";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 60;
@@ -141,6 +142,7 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
                                 className="object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
                                 priority
                             />
+                            <AiImageBadge imageUrl={featuredArticle.imageUrl} className="bottom-4 left-4 z-30" />
                             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent flex flex-col justify-end p-6 md:p-12 lg:p-16">
                                 <Badge className="bg-[#cfb659] text-black hover:bg-white uppercase tracking-widest text-xs px-3 py-1 mb-4 w-fit rounded-none font-bold border-none">
                                     {featuredArticle.category}
@@ -259,6 +261,7 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
                                                     fill
                                                     className="object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out"
                                                 />
+                                                <AiImageBadge imageUrl={article.imageUrl} />
                                                 <div className="absolute top-4 left-4 bg-black/80 backdrop-blur-md text-white px-3 py-1 text-[10px] uppercase font-bold tracking-widest font-sans border border-white/10">
                                                     {article.category}
                                                 </div>

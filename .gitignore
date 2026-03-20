@@ -44,3 +44,6 @@ next-env.d.ts
 
 node_modules
 .env*.local
+
+# sensitive docs
+docs/API_KEYS_REFERENCE.md
